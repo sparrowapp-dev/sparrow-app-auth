@@ -1,41 +1,29 @@
 <script lang="ts">
-  import { Router, Route} from "svelte-navigator";
-  import "font-awesome/css/font-awesome.css";
-  import LoginPage from "./pages/Auth/login-page/LoginPage.svelte";
-  import RegisterPage from "./pages/Auth/register-page/RegisterPage.svelte";
-  import Authguard from "./routing/Authguard.svelte";
-  import Navigate from "./routing/Navigate.svelte";
-  
-  import UpdatePassword from "./pages/Auth/update-password/UpdatePassword.svelte";
-  import ResetPassword from "./pages/Auth/reset-password/ResetPassword.svelte";
-  import ForgotPassword from "./pages/Auth/forgot-password/ForgotPassword.svelte";
-  
-  export let url = "/";
-  
+	import { Router, Route } from 'svelte-navigator';
+	import 'font-awesome/css/font-awesome.css';
+	import LoginPage from './pages/Auth/login-page/LoginPage.svelte';
+	import RegisterPage from './pages/Auth/register-page/RegisterPage.svelte';
+	import Navigate from './routing/Navigate.svelte';
 
-  // onMount(async () => {
-  //   let isloggedIn;
-   
-  // });
+	import UpdatePassword from './pages/Auth/update-password/UpdatePassword.svelte';
+	import ResetPassword from './pages/Auth/reset-password/ResetPassword.svelte';
+	import ForgotPassword from './pages/Auth/forgot-password/ForgotPassword.svelte';
+	import OauthRedirect from './pages/Auth/oauth-redirect/OauthRedirect.svelte';
+	import AuthSuccess from './pages/Auth/auth-success/AuthSuccess.svelte';
+
+	export let url = '/';
 </script>
 
 <Router {url}>
-  <Authguard>
-    <!-- <section slot="loggedIn">
-      <Route path="/dashboard/*" component={Dashboard} />
-      <Route path="/*"><Navigate to="/dashboard" /></Route>
-    </section> -->
-    <section slot="unauthorized">
-      <Route path="/forgot/password" component={ForgotPassword} />
-      <Route path="/login" component={LoginPage} />
-      <Route path="/register" component={RegisterPage} />
-      <Route path="/update/password" component={UpdatePassword} />
-      <Route path="/reset/password" component={ResetPassword} />
-      <Route path="/*"><Navigate to="/login" /></Route>
-    </section>
-  </Authguard>
+	<Route path="/forgot/password" component={ForgotPassword} />
+	<Route path="/login" component={LoginPage} />
+	<Route path="/register" component={RegisterPage} />
+	<Route path="/update/password" component={UpdatePassword} />
+	<Route path="/reset/password" component={ResetPassword} />
+	<Route path="/redirect" component={OauthRedirect} />
+	<Route path="/success" component={AuthSuccess} />
+	<Route path="/*"><Navigate to="/login" /></Route>
 </Router>
-
 
 <style>
 </style>

@@ -1,4 +1,4 @@
-import { loginUser } from "$lib/services/auth.service";
+import { loginUser } from '$lib/services/auth.service';
 import type { loginUserPostBody } from '$lib/utils/dto';
 import { checkValidation, loginSchema } from '$lib/utils/validation';
 import { navigate } from 'svelte-navigator';
@@ -11,32 +11,26 @@ export const navigateToRegister = () => {
 //---------------- Handle Login ------------------//
 const handleLogin = async (loginCredentials: loginUserPostBody) => {
 	const response = await loginUser(loginCredentials);
-	console.log(response);
-	// if (response.isSuccessful) {
-	// 	setAuthJwt(constants.AUTH_TOKEN, response?.data?.data?.accessToken.token);
-	// 	setAuthJwt(constants.REF_TOKEN, response?.data?.data?.refreshToken.token);
-	// 	setUser(jwtDecode(response.data?.data?.accessToken?.token));
-	// 	navigate('/dashboard/collections');
-	// 	_activeSidebarTabViewModel.addActiveTab('collections');
-	// 	return response;
-	// } else {
-	// 	navigate('/');
-	// 	isResponseError.set(true);
-	// 	throw 'error login user: ' + response.message;
-	// }
+	if (response.isSuccessful) {
+		const accessToken = response?.data?.data?.accessToken.token;
+		const refreshToken = response?.data?.data?.refreshToken.token;
+		navigate('/success');
+		navigate(
+			`sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}`
+		);
+	} else {
+		navigate('/');
+		throw 'error login user: ' + response.message;
+	}
+	return;
 };
 
 //------------------------- Handle Login Validation -----------------//
-export const handleLoginValidation = async (
-  loginCredentials: loginUserPostBody,
-) => {
-  const { isError, errorObject } = await checkValidation(
-    loginSchema,
-    loginCredentials,
-  );
-  if (isError) {
-    return errorObject;
-  }
+export const handleLoginValidation = async (loginCredentials: loginUserPostBody) => {
+	const { isError, errorObject } = await checkValidation(loginSchema, loginCredentials);
+	if (isError) {
+		return errorObject;
+	}
 
-  return handleLogin(loginCredentials);
+	return handleLogin(loginCredentials);
 };

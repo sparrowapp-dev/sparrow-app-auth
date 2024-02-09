@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Link, navigate } from 'svelte-navigator';
-	import { isLoading, isResponseError, setUser } from '$lib/store/auth.store';
-	import { jwtDecode } from '$lib/utils/jwt';
+	import { isLoading, isResponseError } from '$lib/store/auth.store';
 	import googleLogo from '$lib/assets/googlelogo.svg';
 	import eyeHide from '$lib/assets/eye-hide.svg';
 	import eyeShow from '$lib/assets/eye-show.svg';
@@ -27,21 +26,6 @@
 		}
 	};
 
-	//------------------------------ TOKEN -----------------------------------//
-
-	// Use the window object to maximize the page
-
-	const urlParams = new URLSearchParams(window.location.search);
-	const token = urlParams.get('t');
-
-	if (token) {
-		setUser(jwtDecode(token));
-		navigate('/');
-	}
-
-	//------------------------------ Login State --------------------------//
-	// let loginState = false;
-
 	//---------------- Login Validation --------------------//
 	let validationErrors: any = {};
 
@@ -53,7 +37,7 @@
 	let isLoadingPage: boolean;
 	const handleSignInWithGoogle = async () => {
 		isLoadingPage = true;
-		// await authNavigate();
+		navigate('https://api.sparrowapp.dev/api/auth/google/callback');
 	};
 
 	let isPasswordtouched: boolean = false;

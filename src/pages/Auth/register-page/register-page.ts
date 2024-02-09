@@ -1,22 +1,18 @@
 import { registerUser } from '$lib/services/auth.service';
-import { register_user } from '$lib/store/auth.store';
-// import { notifications } from '$lib/utils/notifications';
+import type { registerUserPostBody } from '$lib/utils/dto';
 import { checkValidation, registrationSchema } from '$lib/utils/validation';
-// import { navigate } from 'svelte-navigator';
+import { navigate } from 'svelte-navigator';
 
-const handleRegister = async (userData) => {
+const handleRegister = async (userData: registerUserPostBody) => {
 	const response = await registerUser(userData);
-	register_user.set(response);
-	// if (response.isSuccessful) {
-	// 	notifications.success('Registration successful!');
-	// 	navigate('/welcome');
-	// } else {
-	// 	notifications.error(response.message);
-	// 	throw 'error registering user: ' + response.message;
-	// }
+	if (response.isSuccessful) {
+		navigate(`sparrow://welcome?response=${JSON.stringify(response)}`);
+	} else {
+		throw 'error registering user: ' + response.message;
+	}
 };
 
-export const handleRegisterValidation = async (userData) => {
+export const handleRegisterValidation = async (userData: registerUserPostBody) => {
 	const { isError, errorObject } = await checkValidation(registrationSchema, userData);
 	if (isError) {
 		return errorObject;

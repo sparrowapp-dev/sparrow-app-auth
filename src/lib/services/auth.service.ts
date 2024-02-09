@@ -5,7 +5,7 @@ import type {
 	verifyPostbody,
 	resetPasswordPostBody
 } from '$lib/utils/dto';
-import { makeRequest, getRefHeaders } from '$lib/api/api.common';
+import { makeRequest } from '$lib/api/api.common';
 import constants from '$lib/utils/constants';
 const apiUrl: string = constants.API_URL;
 
@@ -25,9 +25,7 @@ const loginUser = async (userInfo: loginUserPostBody) => {
 };
 
 const loginWithGoogle = async () => {
-	const response = await makeRequest('GET', `${apiUrl}/api/auth/google`, {
-		headers: getRefHeaders()
-	});
+	const response = await makeRequest('GET', `${apiUrl}/api/auth/google`);
 
 	return response;
 };
@@ -54,27 +52,4 @@ const resetPassword = async (changePasswordBody: resetPasswordPostBody) => {
 	return response;
 };
 
-const userLogout = async () => {
-	const response = await makeRequest('GET', `${apiUrl}/api/user/logout`, {
-		headers: getRefHeaders()
-	});
-	return response;
-};
-
-const refreshToken = async () => {
-	const response = await makeRequest('POST', `${apiUrl}/api/auth/refresh-token`, {
-		headers: getRefHeaders()
-	});
-	return response;
-};
-
-export {
-	registerUser,
-	loginUser,
-	forgotPassword,
-	refreshToken,
-	userLogout,
-	loginWithGoogle,
-	verifyEmail,
-	resetPassword
-};
+export { registerUser, loginUser, forgotPassword, loginWithGoogle, verifyEmail, resetPassword };
