@@ -1,11 +1,11 @@
 <script lang="ts">
-  import Header from "$lib/components/header/Header.svelte";
+  // import Header from "$lib/components/header/Header.svelte";
   import angleLeft from "$lib/assets/angleLeft.svg";
   import starIcon from "$lib/assets/starIcon.svg";
 
   import { handleForgotPasswordValidation } from "./forgot-password";
   import { isLoading, username } from "$lib/store/auth.store";
-  import PageLoader from "$lib/components/Transition/PageLoader.svelte";
+  // import PageLoader from "$lib/components/Transition/PageLoader.svelte";
   import { Link } from "svelte-navigator";
 
   let validationErrors: any = {};
@@ -46,9 +46,8 @@
   class="card-body d-flex flex-column bg-black text-white mx-auto rounded overflow-hidden"
   style="height: 100vh;"
 >
-  <Header />
   {#if isLoadingPage}
-    <PageLoader />
+    <!-- <PageLoader /> -->
   {:else}
     <div
       class="d-flex mb-5 flex-column align-items-center justify-content-center"

@@ -1,15 +1,15 @@
 import { forgotPassword } from "$lib/services/auth.service";
 import type { EmailPostBody } from "$lib/utils/dto";
-import { notifications } from "$lib/utils/notifications";
+// import { notifications } from "$lib/utils/notifications";
 import { checkValidation, forgotPasswordSchema } from "$lib/utils/validation";
 import { navigate } from "svelte-navigator";
 
 export const handleForgotPassword = async (
   forgotPasswordCredential: EmailPostBody,
 ) => {
-  await forgotPassword(forgotPasswordCredential);
-  notifications.success("Verification code sent to registered email ID");
-  navigate("/update/password");
+	await forgotPassword(forgotPasswordCredential);
+	// notifications.success("Verification code sent to registered email ID");
+	navigate('/update/password');
 };
 
 //------------------------- Handle Login Validation -----------------//

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Router, Route, navigate } from "svelte-navigator";
+  import { Router, Route} from "svelte-navigator";
   import "font-awesome/css/font-awesome.css";
   import LoginPage from "./pages/Auth/login-page/LoginPage.svelte";
   import RegisterPage from "./pages/Auth/register-page/RegisterPage.svelte";
@@ -10,16 +10,13 @@
   import ResetPassword from "./pages/Auth/reset-password/ResetPassword.svelte";
   import ForgotPassword from "./pages/Auth/forgot-password/ForgotPassword.svelte";
   
-  import { onMount } from "svelte";
-
-
   export let url = "/";
   
 
-  onMount(async () => {
-    let isloggedIn;
+  // onMount(async () => {
+  //   let isloggedIn;
    
-  });
+  // });
 </script>
 
 <Router {url}>
@@ -39,4 +36,6 @@
   </Authguard>
 </Router>
 
-<Toast />
+
+<style>
+</style>

@@ -1,7 +1,7 @@
 import { verifyEmail } from "$lib/services/auth.service";
 import { errorMessageText } from "$lib/store/auth.store";
 import type { verifyPostbody } from "$lib/utils/dto";
-import { notifications } from "$lib/utils/notifications";
+// import { notifications } from "$lib/utils/notifications";
 export const isSuccessfulResponse = writable(false);
 
 import { navigate } from "svelte-navigator";
@@ -12,9 +12,9 @@ export const handleVerifyEmail = async (
 ) => {
   const response = await verifyEmail(verifyCodeCredential);
   if (response.isSuccessful) {
-    notifications.success("Email Verified Successfully");
-    navigate("/reset/password");
-  } else {
+		// notifications.success("Email Verified Successfully");
+		navigate('/reset/password');
+	} else {
     isSuccessfulResponse.set(true);
     if (response.message === "verificationCode should not be empty") {
       errorMessageText.set("Please enter the 6-digit verification code.");

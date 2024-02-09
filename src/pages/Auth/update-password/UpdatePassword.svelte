@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Header from "$lib/components/header/Header.svelte";
   import angleLeft from "$lib/assets/angleLeft.svg";
   import lineIcon from "$lib/assets/line.svg";
   import starIcon from "$lib/assets/starIcon.svg";
@@ -9,7 +8,7 @@
   import { writable } from "svelte/store";
   import { onDestroy } from "svelte";
   import { Link, navigate } from "svelte-navigator";
-  import PageLoader from "$lib/components/Transition/PageLoader.svelte";
+  // import PageLoader from "$lib/components/Transition/PageLoader.svelte";
 
   const seconds = writable(59);
   const verifyString = writable("");
@@ -87,9 +86,8 @@
   class="card-body d-flex flex-column bg-black text-white mx-auto rounded overflow-hidden"
   style="height: 100vh;"
 >
-  <Header />
   {#if isLoadingPage}
-    <PageLoader />
+    <!-- <PageLoader /> -->
   {:else}
     <div
       class="d-flex mb-5 flex-column align-items-center justify-content-center"
@@ -147,7 +145,7 @@
                     bind:value={verificationCode1}
                     on:input={() => {
                       if (verificationCode1.length === 1) {
-                        document.getElementById("verificationCode2").focus();
+                        document.getElementById("verificationCode2")?.focus();
                       } else if (verificationCode1.length > 1) {
                         verificationCode1 = verificationCode1.charAt(0);
                       }
@@ -167,7 +165,7 @@
                     bind:value={verificationCode2}
                     on:input={() => {
                       if (verificationCode2.length === 1) {
-                        document.getElementById("verificationCode3").focus();
+                        document.getElementById("verificationCode3")?.focus();
                       } else if (verificationCode2.length > 1) {
                         verificationCode2 = verificationCode2.charAt(0);
                       }
@@ -187,7 +185,7 @@
                     bind:value={verificationCode3}
                     on:input={() => {
                       if (verificationCode3.length === 1) {
-                        document.getElementById("verificationCode4").focus();
+                        document.getElementById("verificationCode4")?.focus();
                       } else if (verificationCode3.length > 1) {
                         verificationCode3 = verificationCode3.charAt(0);
                       }
@@ -207,7 +205,7 @@
                     bind:value={verificationCode4}
                     on:input={() => {
                       if (verificationCode4.length === 1) {
-                        document.getElementById("verificationCode5").focus();
+                        document.getElementById("verificationCode5")?.focus();
                       } else if (verificationCode4.length > 1) {
                         verificationCode4 = verificationCode4.charAt(0);
                       }
@@ -227,7 +225,7 @@
                     bind:value={verificationCode5}
                     on:input={() => {
                       if (verificationCode5.length === 1) {
-                        document.getElementById("verificationCode6").focus();
+                        document.getElementById("verificationCode6")?.focus();
                       } else if (verificationCode5.length > 1) {
                         verificationCode5 = verificationCode5.charAt(0);
                       }
@@ -247,7 +245,7 @@
                     bind:value={verificationCode6}
                     on:input={() => {
                       if (verificationCode6.length === 1) {
-                        document.getElementById("verificationCode7").focus();
+                        document.getElementById("verificationCode7")?.focus();
                       } else if (verificationCode6.length > 1) {
                         verificationCode6 = verificationCode6.charAt(0);
                       }
