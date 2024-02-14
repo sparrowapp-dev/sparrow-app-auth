@@ -26,8 +26,8 @@ jobs:
     - name: Deploy WebApp to Static Web App
       uses: Azure/static-web-apps-deploy@v1
       with:
-        azure_static_web_apps_api_token: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-        repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for GitHub integrations (i.e. PR comments)
+        azure_static_web_apps_api_token: ${{ secrets.MANAGE_DEPLOYMENT_TOKEN }}
+        repo_token: ${{ secrets.MY_GITHUB_TOKEN }} # Used for GitHub integrations (i.e. PR comments)
         action: 'upload'
         app_location: 'webapp'
         api_location: ''
