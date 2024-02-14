@@ -18,22 +18,16 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Install apt-utils
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y apt-utils
-
     - name: build app
       run: |
         yarn
         yarn build
-
     - name: Deploy WebApp to Static Web App
       uses: Azure/static-web-apps-deploy@v1
       with:
-        azure_static_web_apps_api_token: ${{ secrets.MANAGE_DEPLOYMENT_TOKEN }}
-        #repo_token: ${{ secrets.MY_GITHUB_TOKEN }} # Used for GitHub integrations (i.e. PR comments)
+        MANAGE_DEPLOYMENT_TOKEN: ${{ secrets.MANAGE_DEPLOYMENT_TOKEN }}
+        MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }} # Used for GitHub integrations (i.e. PR comments)
         action: 'upload'
-        #app_location: 'webapp'
-        #api_location: ''
+        app_location: 'webapp'
+        api_location: ''
         output_location: './dist'
