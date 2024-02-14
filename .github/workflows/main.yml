@@ -1,4 +1,4 @@
-name: deploy svelte-azure
+name: deployment
 
 on:
   push:
@@ -18,17 +18,15 @@ jobs:
       with:
         node-version: '20'
 
-    - name: npm install, build, and test
+    - name: build app
       run: |
         yarn
-        npm run dev
-        npm run test --if-present
-  
+        yarn build
 
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'sparrow-app-auth'
+        app-name: 'sparrow-app'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile }}
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
         package: ./dist
