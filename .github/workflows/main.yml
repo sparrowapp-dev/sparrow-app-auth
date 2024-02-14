@@ -31,4 +31,4 @@ jobs:
         app-name: 'sparrow-app-auth'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile }}
-        package: .
+        package: ./dist
