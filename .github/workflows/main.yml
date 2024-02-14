@@ -29,6 +29,6 @@ jobs:
         azure_static_web_apps_api_token: ${{ secrets.MANAGE_DEPLOYMENT_TOKEN }}
         repo_token: ${{ secrets.MY_GITHUB_TOKEN }} # Used for GitHub integrations (i.e. PR comments)
         action: 'upload'
-        app_location: 'webapp'
-        api_location: ''
+        #app_location: 'webapp'
+        #api_location: ''
         output_location: './dist'
