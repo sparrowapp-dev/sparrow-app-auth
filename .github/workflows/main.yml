@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install Node.js 16.2.2
+    - name: Install Node.js 16.20.2
       run: |
         nvm install 16.20.2
 
