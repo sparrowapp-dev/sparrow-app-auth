@@ -21,6 +21,9 @@ jobs:
     - name: build app
       run: |
         npm install
+        npm cache clean --force         #*try clearing out npm cache*
+        npm install --legacy-peer-deps  #*run the command with the --legacy-peer-deps option*
+        npm install --force             #* run the command with the --force*
         npm build
         
     - name: Deploy WebApp to Static Web App
