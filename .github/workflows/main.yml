@@ -23,8 +23,10 @@ jobs:
         #npm cache clean --force           #*try clearing out npm cache*
         #npm install --legacy-peer-deps    #*run the command with the --legacy-peer-deps option*
         #npm install --force               #* run the command with the --force*
-        npm install 
-        npm run build
+        #npm install 
+        #npm run build
+        yarn
+        yarn run dev
     - name: Deploy WebApp to Static Web App
       uses: Azure/static-web-apps-deploy@v1
       with:
