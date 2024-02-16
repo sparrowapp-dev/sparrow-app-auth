@@ -1,29 +1,29 @@
--name: demo-trial-auth
+name: deployment
 
 on:
   push:
     branches:
-    - main
+      - main
   workflow_dispatch:
-  
+
 jobs:
-  my_job:
-    name: deploy to staging
-    runs-on: windows-latest
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-    
-   - name: Set up Node.js version
+
+    - name: Set up Node.js version
       uses: actions/setup-node@v2
       with:
-        node-version: '18'        
+        node-version: '20'
 
     - name: build app
       run: |
         yarn
         yarn build
 
+<<<<<<< HEAD
 - name: 'Deploy to Azure Web App'
   uses: azure/webapps-deploy@v2
   with: 
@@ -31,3 +31,12 @@ jobs:
     slot-name: 'production'
     publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
      package: ./        
+=======
+    - name: 'Deploy to Azure Web App'
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'sparrow-app'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+        package: ./dist
+>>>>>>> 65f3103901d39413d6227cdb55d458c0570d0a7f
