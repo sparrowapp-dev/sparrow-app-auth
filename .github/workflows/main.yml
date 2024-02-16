@@ -1,58 +1,28 @@
-<<<<<<< HEAD
--name: demo-trial-auth
-=======
 name: deployment
->>>>>>> fc7f55fa07b5e31e2ff0e73506f2819ea5b4379f
 
 on:
   push:
     branches:
-<<<<<<< HEAD
-    - main
-  workflow_dispatch:
-  
-jobs:
-  my_job:
-    name: deploy to staging
-=======
       - main
   workflow_dispatch:
 
 jobs:
   build-and-deploy:
->>>>>>> fc7f55fa07b5e31e2ff0e73506f2819ea5b4379f
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-<<<<<<< HEAD
-    
-   - name: Set up Node.js version
-      uses: actions/setup-node@v2
-      with:
-        node-version: '18'        
-=======
 
     - name: Set up Node.js version
       uses: actions/setup-node@v2
       with:
         node-version: '20'
->>>>>>> fc7f55fa07b5e31e2ff0e73506f2819ea5b4379f
 
     - name: build app
       run: |
         yarn
         yarn build
 
-<<<<<<< HEAD
-  - name: 'Deploy to Azure Web App'
-    uses: azure/webapps-deploy@v2
-    with: 
-      app-name: 'demo-trial-auth'
-      slot-name: 'production'
-      publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-      package: ./dist        
-=======
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v2
       with:
@@ -60,4 +30,3 @@ jobs:
         slot-name: 'production'
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
         package: ./dist
->>>>>>> fc7f55fa07b5e31e2ff0e73506f2819ea5b4379f
