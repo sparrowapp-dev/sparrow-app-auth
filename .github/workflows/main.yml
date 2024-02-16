@@ -30,4 +30,4 @@ jobs:
     app-name: 'demo-trial-auth'
     slot-name: 'production'
     publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-     package: .        
+     package: ./        
