@@ -1,1 +1,33 @@
+-name: demo-trial-auth
 
+on:
+  push:
+    branches:
+    - main
+  workflow_dispatch:
+  
+jobs:
+  my_job:
+    name: deploy to staging
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+   - name: Set up Node.js version
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'        
+
+    - name: build app
+      run: |
+        yarn
+        yarn build
+
+- name: 'Deploy to Azure Web App'
+  uses: azure/webapps-deploy@v2
+  with: 
+    app-name: 'demo-trial-auth'
+    slot-name: 'production'
+    publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+     package: .        
