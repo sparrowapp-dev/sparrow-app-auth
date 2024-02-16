@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -23,20 +23,10 @@ jobs:
         yarn
         yarn build
 
-<<<<<<< HEAD
 - name: 'Deploy to Azure Web App'
   uses: azure/webapps-deploy@v2
   with: 
     app-name: 'demo-trial-auth'
     slot-name: 'production'
     publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-     package: ./        
-=======
-    - name: 'Deploy to Azure Web App'
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: 'sparrow-app'
-        slot-name: 'production'
-        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-        package: ./dist
->>>>>>> 65f3103901d39413d6227cdb55d458c0570d0a7f
+     package: ./dist        
