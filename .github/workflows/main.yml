@@ -24,10 +24,10 @@ jobs:
         yarn
         yarn build
 
-- name: 'Deploy to Azure Web App'
-  uses: azure/webapps-deploy@v2
-  with: 
-    app-name: 'demo-trial-auth'
-    slot-name: 'production'
-    publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-     package: .        
+  - name: 'Deploy to Azure Web App'
+    uses: azure/webapps-deploy@v2
+    with: 
+      app-name: 'demo-trial-auth'
+      slot-name: 'production'
+      publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+      package: ./dist        
