@@ -9,10 +9,12 @@
 	import eyeHide from '$lib/assets/eye-hide.svg';
 	import eyeShow from '$lib/assets/eye-show.svg';
 	import { Link } from 'svelte-navigator';
+	import sparrowicon from '$lib/assets/sparrow-icon-bg.svg';
 
 	let userData = {
 		email: '',
-		name: '',
+		firstName: '',
+		lastName: '',
 		password: '',
 		tnsCheckbox: false
 	};
@@ -45,7 +47,7 @@
 	const validateName = () => {
 		const nameRegex = /^[A-Za-z\s]+$/;
 		let isNameTouched = true;
-		isNameValid = nameRegex.test(userData.name);
+		isNameValid = nameRegex.test(userData.firstName);
 
 		if (isNameValid && isNameTouched) {
 			validationErrors.name = '';
@@ -134,20 +136,17 @@
 	};
 </script>
 
-<div
-	class="card-body d-flex flex-column bg-black text-white mx-auto rounded overflow-hidden"
-	style="height: 100vh;"
->
-	{#if isLoadingPage}
-		<!-- <PageLoader /> -->
-	{:else}
-		<div class="d-flex mb-5 flex-column align-items-center justify-content-center">
-			<p
-				class="text-whiteColor mt-5 ms-2 me-2 mb-4"
-				style="font-size: 40px; width:408px; height:48px;font-weight:500;"
-			>
-				Welcome to Sparrow!
-			</p>
+<div class="parent d-flex align-items-center justify-content-center text-white rounded">
+	<div class="entry-point rounded container d-flex flex-column align-items-center justify-content-center w-100">
+        <div class="text-white d-flex justify-content-center align-items-center">
+            <img src={sparrowicon} width="60px" alt="" class="" />
+        </div>
+		<p
+			class="container-header pt-4 pb-5 fs-28 text-whiteColor text-center ms-2 me-2  fw-bold"
+			style="font-size: 28px;"
+		>
+			Welcome to Sparrow!
+		</p>
 
 			<form
 				class="register-form text-whiteColor ps-1 pe-1 gap-16"
@@ -157,14 +156,14 @@
 					validationErrors = await handleRegisterValidation(userData);
 				}}
 			>
-				<p class="card-subtitle fs-4 mb-3">Create Account</p>
+				<p class="card-subtitle sparrow-fs-20 mb-3">Create Account</p>
 				<div class="form-group gap-0 mb-3">
 					<div>
-						<label for="email" class="form-label">Email</label>
+						<label for="email" class="form-label sparrow-fs-14">Email</label>
 						<img src={starIcon} alt="" class="mb-3" style="width: 7px;" />
 					</div>
 					<input
-						class="form-control mt-1 bg-black border:{validationErrors.email
+						class="form-control mt-1 border:{validationErrors.email
 							? '3px'
 							: '1px'} solid {isEmailValid
 							? 'border-success'
@@ -188,42 +187,66 @@
 				</div>
 				<div class="form-group mb-3">
 					<div>
-						<label for="name">Full Name</label>
+						<label for="name" class="sparrow-fs-14">First Name</label>
 						<img src={starIcon} alt="" class="mb-3" style="width: 7px;" />
 					</div>
 
 					<input
-						class="form-control mt-1 bg-black border:{validationErrors.email
+						class="form-control mt-1 border:{validationErrors.firstName
 							? '3px'
 							: '1px'} solid {isNameValid
 							? 'border-success'
-							: validationErrors.name
+							: validationErrors.firstName
 								? 'border-error'
 								: isNameTouched
 									? 'border-error'
 									: 'border-default'}"
 						type="text"
 						name="name"
-						placeholder="Please enter your full name"
+						placeholder="Please enter your first name"
 						id="name"
 						required
-						bind:value={userData.name}
+						bind:value={userData.firstName}
 						on:input={validateName}
 					/>
 
-					{#if validationErrors.name}
-						<small class="text-dangerColor form-text">{validationErrors.name}</small>
+					{#if validationErrors.firstName}
+						<small class="text-dangerColor form-text">{validationErrors.firstName}</small>
 					{/if}
+				</div>
+
+				<div class="form-group mb-3">
+					<div>
+						<label for="name" class="sparrow-fs-14">Last Name</label>
+					</div>
+
+					<input
+						class="form-control mt-1 border:{false
+							? '3px'
+							: '1px'} solid {false
+							? 'border-success'
+							: false
+								? 'border-error'
+								: false
+									? 'border-error'
+									: 'border-default'}"
+						type="text"
+						name="lastname"
+						placeholder="Please enter your last name"
+						id="lastname"
+						required
+						bind:value={userData.lastName}
+					/>
 				</div>
 
 				<div class="form-group">
 					<div>
-						<label for="password" id="password">Password</label>
+						<label for="password" id="password" class="sparrow-fs-14">Password</label>
 						<img src={starIcon} alt="" class="mb-3" style="width: 7px;" />
 					</div>
 					<div class="d-flex">
 						<input
-							class="form-control mt-1 bg-black border:{validationErrors.password
+							class="form-control mt-1 border:{validationErrors.password
 								? '3px'
 								: '1px'} solid {isPasswordValid1 && isPasswordValid2 && isPasswordValid3
 								? 'border-success'
@@ -240,17 +263,17 @@
 							bind:value={userData.password}
 							on:input={validatePassword}
 						/>
-						<button
+						<!-- <button
 							type="button"
 							on:click={togglePasswordVisibility}
-							class="bg-blackColor border-0 eye-icon d-flex align-items-center"
+							class=" border-0 eye-icon d-flex align-items-center"
 						>
 							{#if isPasswordVisible}
 								<img src={eyeShow} alt="eye-show" />
 							{:else}
 								<img src={eyeHide} alt="eye-hie" />
 							{/if}
-						</button>
+						</button> -->
 					</div>
 				</div>
 
@@ -268,7 +291,7 @@
 										? 'text-successColor'
 										: isPasswordTouched
 											? 'text-dangerColor'
-											: 'text-defaultColor'}"
+											: 'text-textColor'}"
 								>
 									Min 8 characters
 								</p>
@@ -284,7 +307,7 @@
 										? 'text-successColor'
 										: isPasswordTouched
 											? 'text-dangerColor'
-											: 'text-defaultColor'}"
+											: 'text-textColor'}"
 								>
 									Has at least one number
 								</p>
@@ -300,7 +323,7 @@
 										? 'text-successColor'
 										: isPasswordTouched
 											? 'text-dangerColor'
-											: 'text-defaultColor'}"
+											: 'text-textColor'}"
 									style="text:{!isPasswordValid3 ? 'red' : 'red'}"
 								>
 									Has at least one special character
@@ -313,7 +336,7 @@
 				<div class="form-group mt-2" data-tauri-drag-region>
 					<input
 						type="checkbox"
-						class="form-check-input bg-black"
+						class="form-check-input"
 						id="tnsCheckbox"
 						bind:checked={userData.tnsCheckbox}
 						on:input={validateCheckbox}
@@ -340,7 +363,7 @@
 				</div>
 			</form>
 		</div>
-	{/if}
+	
 </div>
 
 <style>
@@ -372,4 +395,20 @@
 			height: auto; /* Remove fixed height for larger screens */
 		}
 	}
+	.parent{
+        min-height: 100vh;
+        overflow: auto;
+    }
+    .entry-point{
+        margin: 30px !important;
+        background: linear-gradient(to bottom, rgba(51, 51, 51, 0.16), rgba(42, 42, 51, 1));
+        max-width: 504px;
+        padding: 48px 48px 64px 48px !important;
+    }
+    input{
+        background-color: transparent;
+    }
+    a{
+        text-decoration: none;
+    }
 </style>
