@@ -4,12 +4,14 @@
 	import googleLogo from '$lib/assets/googlelogo.svg';
 	import eyeHide from '$lib/assets/eye-hide.svg';
 	import eyeShow from '$lib/assets/eye-show.svg';
-	import { handleLoginValidation } from './login-page';
-	import sparrowicon from '$lib/assets/sparrowIcon.svg';
+	import { handleLogin, handleLoginValidation } from './login-page';
+	import sparrowicon from '$lib/assets/sparrow-icon-bg.svg';
 	import LoginLoader from '$lib/components/transition/LoginLoader.svelte';
-
+	import Redirect from '../redirect/Redirect.svelte';
+	export let id;
+	
 	let isEmailTouched = false;
-
+	let isLogin = false;
 	let isEmailValid = false;
 	const validateEmail = () => {
 		const emailRegex =
@@ -31,7 +33,7 @@
 
 	//------------ login Credentials ---------------//
 	let loginCredentials = {
-		email: '',
+		email: id || "",
 		password: ''
 	};
 	let isLoadingPage: boolean;
@@ -75,21 +77,43 @@
 
 	let isSignInPopup: boolean = false;
 	const handleSignInPopup = (flag: boolean) => {
-		if (validationErrors.isSuccessful) {
+		if (validationErrors?.isSuccessful) {
 			isSignInPopup = flag;
 		}
 	};
+
+	let redirectRules = {
+		title: 'Welcome to Sparrow!',
+		description: 'Bridging Frontend and Backend Development.',
+		message: `Easily document and manage APIs for seamless collaboration between frontend and backend teams. Get started now to simplify your development workflows.`,
+		isSpinner: true,
+		buttonText: 'Open Desktop App',
+		buttonClick: () => {},
+		loadingMessage: 'Please wait while we sign you in....'
+	};
 </script>
 
-{#if isSignInPopup}
-	<LoginLoader onClick={handleSignInPopup} {isLoadingPage} />
+
+{#if isLogin}
+	<Redirect
+		title={redirectRules.title}
+		description={redirectRules.description}
+		message={redirectRules.message}
+		isSpinner={redirectRules.isSpinner}
+		buttonText={redirectRules.buttonText}
+		buttonClick={redirectRules.buttonClick}
+		loadingMessage={redirectRules.loadingMessage}
+	/>
 {/if}
 
-<div class="card-body d-flex flex-column bg-black text-white mx-auto rounded" style="height:100vh;">
-	<div class="container d-flex flex-column align-items-center justify-content-center">
+<div class="parent d-flex align-items-center justify-content-center text-white rounded">
+	<div class="entry-point rounded container d-flex flex-column align-items-center justify-content-center w-100">
+        <div class="text-white d-flex justify-content-center align-items-center">
+            <img src={sparrowicon} width="60px" alt="" class="" />
+        </div>
 		<p
-			class="container-header text-whiteColor mt-5 ms-2 me-2 mb-4"
-			style="font-size:40px;width:408px; height:48px;font-weight:500;"
+			class="container-header pt-4 pb-5 fs-28 text-whiteColor text-center ms-2 me-2  fw-bold"
+			style="font-size: 28px;"
 		>
 			Welcome to Sparrow!
 		</p>
@@ -103,19 +127,37 @@
 				if (validationErrors) {
 					errorMessage = 'Please enter an email id';
 				}
-				if (validationErrors.isSuccessful) {
+				if (validationErrors?.isSuccessful) {
 					isSignInPopup = true;
+				}
+				if (
+					!validationErrors?.email &&
+					!validationErrors?.password
+				) {
+					const response = await handleLogin(loginCredentials);
+					if (response) {
+						isLogin = true;
+						setTimeout(() => {
+							let data = JSON.parse(window.atob(response?.accessToken?.token?.split(".")[1]));
+							redirectRules.title = `Welcome back ${data.name}`;
+							redirectRules.description = `Redirecting you to desktop app...`;
+							redirectRules.message = `If the application does not open automatically,
+please click below.`;
+							redirectRules.loadingMessage = '';
+							redirectRules.isSpinner = false;
+						}, 5000);
+					}
 				}
 			}}
 		>
-			<p class="card-subtitle fs-4 mb-3">Sign In</p>
+			<p class="card-subtitle sparrow-fs-20 mb-3">Sign In</p>
 			<div class="mb-3">
-				<label for="exampleInputEmail1" class="form-label text-red">Email</label>
+				<label for="exampleInputEmail1" class="form-label text-red sparrow-fs-14">Email</label>
 				<input
 					type="email"
-					class="form-control bg-black border:{validationErrors.email || isPasswordError === true
+					class="form-control sparrow-fs-16 border:{validationErrors?.email || isPasswordError === true
 						? '3px'
-						: '1px'} solid {validationErrors.email || isPasswordError === true
+						: '1px'} solid {validationErrors?.email || isPasswordError === true
 						? 'border-error'
 						: 'border-default'}"
 					id="exampleInputEmail1"
@@ -127,15 +169,15 @@
 					on:input={validateEmail}
 				/>
 
-				{#if validationErrors.email && loginCredentials.email.length > 0}
-					<small class="form-text text-dangerColor"> {validationErrors.email}</small>
+				{#if validationErrors?.email && loginCredentials.email.length > 0}
+					<small class="form-text text-dangerColor"> {validationErrors?.email}</small>
 				{:else if loginCredentials.email.length === 0}
 					<small class="form-text text-dangerColor"> {errorMessage}</small>
 				{/if}
 			</div>
 
 			<div class="mb-4">
-				<label for="exampleInputPassword1" class="form-label">Password</label>
+				<label for="exampleInputPassword1" class="form-label sparrow-fs-14">Password</label>
 				<div class="d-flex">
 					<input
 						type="password"
@@ -144,13 +186,13 @@
 						id="exampleInputPassword1"
 						placeholder="Please enter your Password"
 						bind:value={loginCredentials.password}
-						class="form-control bg-black border:{isPasswordError === true
+						class="form-control sparrow-fs-16 border:{isPasswordError === true
 							? '3px'
-							: '1px'} solid {isPasswordError === true || validationErrors.password
+							: '1px'} solid {isPasswordError === true || validationErrors?.password
 							? 'border-error'
 							: 'border-default'}"
 					/>
-					<button
+					<!-- <button
 						type="button"
 						on:click={togglePasswordVisibility}
 						class="bg-blackColor border-0 eye-icon d-flex align-items-center"
@@ -160,12 +202,12 @@
 						{:else}
 							<img src={eyeHide} alt="eye-hie" />
 						{/if}
-					</button>
+					</button> -->
 				</div>
 
-				{#if validationErrors.password || validationErrors.password?.length === 0}
-					<small class="form-text text-dangerColor">{validationErrors.password}</small>
-				{:else if isPasswordError === true || validationErrors.password?.length > 0}
+				{#if validationErrors?.password || validationErrors?.password?.length === 0}
+					<small class="form-text text-dangerColor">{validationErrors?.password}</small>
+				{:else if isPasswordError === true || validationErrors?.password?.length > 0}
 					<small class="form-text text-dangerColor"
 						>The email and password combination you entered appears to be incorrect. Please try
 						again.</small
@@ -213,16 +255,19 @@
           </button> -->
 			</div>
 			<!-- "New to the website? Create an account" link -->
-			<div class="gap-3 d-flex align-items-center">
+			<!-- <div class="gap-3 d-flex align-items-center">
 				<p class="fs-6 mt-3">New to sparrow?</p>
 				<Link to="/register" style="color: #007BFF;" class=" text-decoration-none text-primaryColor"
 					>Create Account</Link
 				>
-			</div>
+			</div> -->
 		</div>
-	</div>
-	<div class="BottomLogo text-white d-flex justify-content-center align-items-center">
-		<img src={sparrowicon} alt="" class="w-50" />
+		<div class="w-100 d-flex align-items-center justify-content-center">
+            <a href="" class="px-2">Need Help?</a>
+            <span class="px-2">|</span>
+            <a href="" class="px-2">Report Issue</a>
+
+        </div>
 	</div>
 </div>
 
@@ -264,4 +309,21 @@
 			height: auto;
 		}
 	}
+
+	.parent{
+        min-height: 100vh;
+        overflow: auto;
+    }
+    .entry-point{
+        margin: 30px !important;
+        background: linear-gradient(to bottom, rgba(51, 51, 51, 0.16), rgba(42, 42, 51, 1));
+        max-width: 504px;
+        padding: 48px 48px 64px 48px !important;
+    }
+    input{
+        background-color: transparent;
+    }
+    a{
+        text-decoration: none;
+    }
 </style>

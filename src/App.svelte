@@ -11,18 +11,21 @@
 	import OauthRedirect from './pages/Auth/oauth-redirect/OauthRedirect.svelte';
 	import AuthSuccess from './pages/Auth/auth-success/AuthSuccess.svelte';
 	import EntryPoint from './pages/Auth/entry-point/EntryPoint.svelte';
+	import Redirect from './pages/Auth/redirect/Redirect.svelte';
 
 	export let url = '/';
 </script>
 
 <Router {url}>
 	<Route path="/forgot/password" component={ForgotPassword} />
+	<Route path="/login/:id" component={LoginPage} />
 	<Route path="/login" component={LoginPage} />
 	<Route path="/init" component={EntryPoint} />
+	<Route path="/register/:id" component={RegisterPage} />
 	<Route path="/register" component={RegisterPage} />
 	<Route path="/update/password" component={UpdatePassword} />
 	<Route path="/reset/password" component={ResetPassword} />
-	<Route path="/redirect" component={OauthRedirect} />
+	<Route path="/redirect" component={Redirect} />
 	<Route path="/success" component={AuthSuccess} />
 	<Route path="/*"><Navigate to="/init" /></Route>
 </Router>
