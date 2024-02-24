@@ -1,28 +1,48 @@
 <script>
 	import { onMount } from 'svelte';
 	import { navigate } from 'svelte-navigator';
+	import Redirect from '../redirect/Redirect.svelte';
 
 	onMount(() => {
 		const urlParams = new URLSearchParams(window.location.search);
 		const accessToken = urlParams.get('accessToken');
 		const refreshToken = urlParams.get('refreshToken');
+		const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}`;
+
 		if (accessToken && refreshToken) {
-			navigate('/success');
-			navigate(`sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}`);
+			setTimeout(() => {
+				let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
+				redirectRules.title = `Welcome back ${data.name}`;
+				redirectRules.description = `Redirecting you to desktop app...`;
+				redirectRules.message = `If the application does not open automatically,
+				please click below.`;
+				
+				redirectRules.loadingMessage = '';
+				redirectRules.isSpinner = false;
+				navigate(sparrowRedirect);
+				redirectRules.buttonClick = () => {
+					navigate(sparrowRedirect);
+				};
+			}, 5000);
 		}
 	});
+	let redirectRules = {
+		title: 'Welcome to Sparrow!',
+		description: 'Bridging Frontend and Backend Development.',
+		message: `Easily document and manage APIs for seamless collaboration between frontend and backend teams. Get started now to simplify your development workflows.`,
+		isSpinner: true,
+		buttonText: 'Open Desktop App',
+		buttonClick: () => {},
+		loadingMessage: 'Please wait while we sign you in....'
+	};
 </script>
 
-<div
-	class="card-body d-flex flex-column bg-black text-white mx-auto rounded overflow-hidden"
-	style="height: 100vh;"
->
-	<div class="d-flex mb-5 flex-column align-items-center justify-content-center">
-		<p
-			class="text-whiteColor mt-5 ms-2 me-2 mb-4"
-			style="font-size: 40px; width:408px; height:48px;font-weight:500;"
-		>
-			Welcome to Sparrow!
-		</p>
-	</div>
-</div>
+<Redirect
+	title={redirectRules.title}
+	description={redirectRules.description}
+	message={redirectRules.message}
+	isSpinner={redirectRules.isSpinner}
+	buttonText={redirectRules.buttonText}
+	buttonClick={redirectRules.buttonClick}
+	loadingMessage={redirectRules.loadingMessage}
+/>

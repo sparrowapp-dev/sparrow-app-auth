@@ -15,9 +15,9 @@
 </script>
 
 <!-- <Header /> -->
-<div class="background-overlay" transition:fade={{ delay: 0, duration: 100 }}>
+<div class="background-overlay d-flex align-items-center justify-content-center" transition:fade={{ delay: 0, duration: 100 }}>
 	<div
-		class="container d-flex flex-column mb-0 px-4 pb-0 pt-4"
+		class="container rounded container d-flex flex-column align-items-center justify-content-center w-100"
 		transition:fly={{ y: 50, delay: 0, duration: 100 }}
 		on:introstart
 		on:outroend
@@ -73,26 +73,20 @@
 
 <style>
 	.background-overlay {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
-		-webkit-backdrop-filter: blur(3px);
-    background-color: black;
-		backdrop-filter: blur(3px);
-		z-index: 5;
+		min-height: 100vh;
+		overflow: auto;
 	}
 
 	.container {
-		position: fixed;
-		height: 433px;
-		width: 585px;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		z-index: 6;
-		border-radius: 10px;
+		margin: 30px !important;
+        max-width: 700px;
+        padding: 48px 48px 64px 48px !important;
+	}
+	.container-header{
+		  background: linear-gradient(45deg, #B4A9FD, #EEF8FF);
+  		-webkit-background-clip: text;
+  		-webkit-text-fill-color: transparent;
+
 	}
 
 	.buttons {

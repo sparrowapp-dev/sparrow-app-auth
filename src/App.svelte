@@ -11,8 +11,7 @@
 	import OauthRedirect from './pages/Auth/oauth-redirect/OauthRedirect.svelte';
 	import AuthSuccess from './pages/Auth/auth-success/AuthSuccess.svelte';
 	import EntryPoint from './pages/Auth/entry-point/EntryPoint.svelte';
-	import Redirect from './pages/Auth/redirect/Redirect.svelte';
-
+	import bg from "$lib/assets/body-gradient.svg";
 	export let url = '/';
 </script>
 
@@ -25,10 +24,12 @@
 	<Route path="/register" component={RegisterPage} />
 	<Route path="/update/password" component={UpdatePassword} />
 	<Route path="/reset/password" component={ResetPassword} />
-	<Route path="/redirect" component={Redirect} />
-	<Route path="/success" component={AuthSuccess} />
+	<Route path="/redirect" component={OauthRedirect} />
+	<!-- <Route path="/success" component={AuthSuccess} /> -->
 	<Route path="/*"><Navigate to="/init" /></Route>
 </Router>
+<!-- <div style="height:300px; position:fixed; bottom:0; left:0;
+right:0;" class="w-100">
+	<img src={bg} alt="" style="height:100%; width:100%;">
+</div> -->
 
-<style>
-</style>
