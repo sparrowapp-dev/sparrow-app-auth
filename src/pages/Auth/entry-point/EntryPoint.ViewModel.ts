@@ -5,11 +5,7 @@ import { navigate } from 'svelte-navigator';
 
 //---------------- Handle Login ------------------//
 export const handleEntry = async (entryCredentials) => {
-	const response = await getUser(entryCredentials.email);
-	if (response.isSuccessful) {
-		return response.data;
-	}
-	return;
+	return  await getUser(entryCredentials.email);
 };
 
 //------------------------- Handle Login Validation -----------------//
