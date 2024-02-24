@@ -184,11 +184,11 @@
 						!validationErrors?.password
 					) {
 						const response = await handleRegister(userData);
-						if (response) {
+						if (response.isSuccessful) {
 							isRegistered = true;
-							const accessToken = response?.accessToken?.token;
-							const refreshToken = response?.refreshToken?.token;
-							const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}`;
+							const accessToken = response?.data.accessToken?.token;
+							const refreshToken = response?.data.refreshToken?.token;
+							const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}`;
 							setTimeout(() => {
 								let data = JSON.parse(window.atob(accessToken?.split(".")[1]));
 								redirectRules.title = `Welcome ${data.name}`;
@@ -202,6 +202,9 @@
 									navigate(sparrowRedirect);		
 								}
 							}, 5000);
+						}
+						else{
+							alert(response.message);
 						}
 					}
 				}}

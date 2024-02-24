@@ -130,8 +130,9 @@
 						isSignInPopup = true;
 					}
 					if (!validationErrors?.email && !validationErrors?.password) {
-						const response = await handleLogin(loginCredentials);
-						if (response) {
+						const result = await handleLogin(loginCredentials);
+						if (result.isSuccessful) {
+							const response = result.data;
 							isLogin = true;
 							const accessToken = response?.accessToken?.token;
 							const refreshToken = response?.refreshToken?.token;
@@ -150,6 +151,10 @@
 									navigate(sparrowRedirect);		
 								}
 							}, 5000);
+						}
+						else{
+							const response = result.message;
+							throw 'error login user: ' + response;
 						}
 					}
 				}}

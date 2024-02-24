@@ -7,13 +7,7 @@ import { navigate } from 'svelte-navigator';
 export const handleEntry = async (entryCredentials) => {
 	const response = await getUser(entryCredentials.email);
 	if (response.isSuccessful) {
-		// const accessToken = response?.data?.data?.accessToken.token;
-		// const refreshToken = response?.data?.data?.refreshToken.token;
-		// navigate('/success');
-		// navigate(
-		// 	`sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}`
-		// );
-		return response.data.data;
+		return response.data;
 	}
 	return;
 };

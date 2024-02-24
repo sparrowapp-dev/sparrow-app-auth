@@ -9,13 +9,7 @@ export const handleRegister = async (userData) => {
 		name: userData.firstName + " " + userData.lastName, 
 		password: userData.password
 	});
-	if (response.isSuccessful) {
-		// navigate(`sparrow://welcome?response=${JSON.stringify(response)}`);
-		return response.data.data;
-	} else {
-		return;
-		// throw 'error registering user: ' + response.message;
-	}
+	return response;
 };
 
 export const handleRegisterValidation = async (userData) => {
