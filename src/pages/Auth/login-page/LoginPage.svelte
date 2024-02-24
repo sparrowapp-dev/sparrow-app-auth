@@ -183,7 +183,7 @@
 
 				<div class="mb-4">
 					<label for="exampleInputPassword1" class="form-label sparrow-fs-14">Password</label>
-					<div class="d-flex">
+					<div class="d-flex position-relative">
 						<input
 							type="password"
 							autocomplete="off"
@@ -191,23 +191,23 @@
 							id="exampleInputPassword1"
 							placeholder="Please enter your Password"
 							bind:value={loginCredentials.password}
-							class="form-control sparrow-fs-16 border:{isPasswordError === true
+							class="form-control sparrow-fs-16 pe-5 border:{isPasswordError === true
 								? '3px'
 								: '1px'} solid {isPasswordError === true || validationErrors?.password
 								? 'border-error'
 								: 'border-default'}"
 						/>
-						<!-- <button
+						<button
 							type="button"
 							on:click={togglePasswordVisibility}
-							class="bg-blackColor border-0 eye-icon d-flex align-items-center"
+							class="border-0 position-absolute eye-icon d-flex align-items-center"
 						>
 							{#if isPasswordVisible}
 								<img src={eyeShow} alt="eye-show" />
 							{:else}
 								<img src={eyeHide} alt="eye-hie" />
 							{/if}
-						</button> -->
+						</button>
 					</div>
 
 					{#if validationErrors?.password || validationErrors?.password?.length === 0}
@@ -277,30 +277,14 @@
 {/if}
 
 <style>
-	.eye-icon > img {
-		position: absolute;
-		transform: translateX(-4vmax);
+	.eye-icon{
+		top:5px;
+		right:5px;
+		background-color: transparent;
 	}
 
 	.btn-primary {
 		background: linear-gradient(270deg, #6147ff -1.72%, #1193f0 100%);
-	}
-
-	@media (min-width: 1000px) {
-		.eye-icon > img {
-			position: absolute;
-			transform: translateX(-2vmax);
-		}
-		.BottomLogo {
-			width: Hug (205px);
-			height: Hug (52px);
-			padding: 8px;
-			gap: 6px;
-		}
-		.BottomLogo > img {
-			width: 200px;
-			height: 80px;
-		}
 	}
 
 	.parent {

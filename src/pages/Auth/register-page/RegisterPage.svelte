@@ -292,9 +292,9 @@
 						<label for="password" id="password" class="sparrow-fs-14">Password</label>
 						<img src={starIcon} alt="" class="mb-3" style="width: 7px;" />
 					</div>
-					<div class="d-flex">
+					<div class="d-flex position-relative">
 						<input
-							class="form-control sparrow-fs-16 mt-1 border:{validationErrors?.password
+							class="form-control sparrow-fs-16 mt-1 pe-5 border:{validationErrors?.password
 								? '3px'
 								: '1px'} solid {isPasswordValid1 && isPasswordValid2 && isPasswordValid3
 								? 'border-success'
@@ -311,17 +311,17 @@
 							bind:value={userData.password}
 							on:input={validatePassword}
 						/>
-						<!-- <button
+						<button
 								type="button"
 								on:click={togglePasswordVisibility}
-								class=" border-0 eye-icon d-flex align-items-center"
+								class=" border-0 position-absolute eye-icon d-flex align-items-center"
 							>
 								{#if isPasswordVisible}
 									<img src={eyeShow} alt="eye-show" />
 								{:else}
 									<img src={eyeHide} alt="eye-hie" />
 								{/if}
-							</button> -->
+							</button>
 					</div>
 				</div>
 	
@@ -433,17 +433,10 @@
 	.btn-primary {
 		background: linear-gradient(270deg, #6147ff -1.72%, #1193f0 100%);
 	}
-
-	.eye-icon > img {
-		position: absolute;
-		transform: translateX(-4vmax);
-	}
-
-	@media (min-width: 1000px) {
-		.eye-icon > img {
-			position: absolute;
-			transform: translateX(-2vmax);
-		}
+	.eye-icon{
+		top:10px;
+		right:5px;
+		background-color: transparent;
 	}
 	.parent {
 		min-height: 100vh;
