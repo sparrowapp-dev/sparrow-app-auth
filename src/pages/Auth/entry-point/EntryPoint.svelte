@@ -3,6 +3,8 @@
 	import sparrowicon from '$lib/assets/sparrow-icon-bg.svg';
 	import { navigate } from 'svelte-navigator';
 	import Redirect from '../redirect/Redirect.svelte';
+	import constants from '$lib/utils/constants';
+	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
 
 	let isEmailTouched = false;
 	//---------------- Login Validation --------------------//
@@ -65,8 +67,8 @@
 							redirectRules.description = `${entryCredentials?.email} is already registered using google account.`;
 							redirectRules.loadingMessage = `Please wait while we are redirecting you to your google account....`;
 							setTimeout(() => {
-								navigate('https://api.sparrowapp.dev/api/auth/google/callback');
-							}, 5000);
+								navigate(constants.SPARROW_OAUTH);
+							}, 1000);
 						} else if (response?.email) {
 							// registered with email
 							isEntry = true;
@@ -75,7 +77,7 @@
 							redirectRules.loadingMessage = `Please wait while we are redirecting you to your email account....`;
 							setTimeout(() => {
 								navigate(`/login/${entryCredentials?.email}`);
-							}, 5000);
+							}, 1000);
 						} else {
 							navigate(`/register/${entryCredentials?.email}`);
 						}
@@ -112,11 +114,7 @@
 					<button class="btn btn-primary w-100 text-whiteColor border-0">Continue</button>
 				</div>
 			</form>
-			<div class="w-100 d-flex align-items-center justify-content-center">
-				<a href="mailto:email@example.com" class="px-2">Need Help?</a>
-				<span class="px-2">|</span>
-				<a href="mailto:email@example.com" class="px-2">Report Issue</a>
-			</div>
+			<SupportHelp/>
 		</div>
 	</div>
 {/if}
@@ -137,8 +135,5 @@
 	}
 	input {
 		background-color: transparent;
-	}
-	a {
-		text-decoration: none;
 	}
 </style>

@@ -12,6 +12,10 @@
 	import sparrowicon from '$lib/assets/sparrow-icon-bg.svg';
 	import Redirect from '../redirect/Redirect.svelte';
 	import googleLogo from '$lib/assets/googlelogo.svg';
+	import constants from '$lib/utils/constants';
+	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
+	import Oauth from '$lib/components/o-auth/Oauth.svelte';
+	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 	export let id;
 	let isRegistered = false;
 	let redirectRules = {
@@ -204,7 +208,7 @@
 							}, 5000);
 						}
 						else{
-							alert(response.message);
+							notifications.error(response.message);
 						}
 					}
 				}}
@@ -407,27 +411,8 @@
 				</div>
 	
 			</form>
-			<div class="d-flex flex-column align-items-center justify-content-center">
-				<p>or continue with</p>
-				<div class="d-flex gap-4">
-					<button
-						on:click={()=>{
-							navigate('https://api.sparrowapp.dev/api/auth/google/callback');
-						}}
-						style="width: 32px; height:32px"
-						class="bg-dark border-0 rounded"
-					>
-						<img src={googleLogo} alt="Google Logo" class="w-100 h-100 p-1" />
-					</button>
-				
-				</div>
-			
-			</div>
-			<div class="w-100 d-flex align-items-center justify-content-center">
-				<a href="" class="px-2">Need Help?</a>
-				<span class="px-2">|</span>
-				<a href="" class="px-2">Report Issue</a>
-			</div>
+			<Oauth/>
+			<SupportHelp/>
 		</div>
 	</div>
 {/if}
@@ -453,8 +438,5 @@
 	}
 	input {
 		background-color: transparent;
-	}
-	a {
-		text-decoration: none;
 	}
 </style>

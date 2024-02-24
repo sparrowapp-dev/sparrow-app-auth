@@ -8,6 +8,10 @@
 	import sparrowicon from '$lib/assets/sparrow-icon-bg.svg';
 	import LoginLoader from '$lib/components/transition/LoginLoader.svelte';
 	import Redirect from '../redirect/Redirect.svelte';
+	import constants from '$lib/utils/constants';
+	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
+	import Oauth from '$lib/components/o-auth/Oauth.svelte';
+	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 	export let id;
 
 	let isEmailTouched = false;
@@ -37,10 +41,6 @@
 		password: ''
 	};
 	let isLoadingPage: boolean;
-	const handleSignInWithGoogle = async () => {
-		isLoadingPage = true;
-		navigate('https://api.sparrowapp.dev/api/auth/google/callback');
-	};
 
 	let isPasswordtouched: boolean = false;
 
@@ -150,11 +150,11 @@
 								redirectRules.buttonClick= ()=>{
 									navigate(sparrowRedirect);		
 								}
-							}, 5000);
+							}, 1000);
 						}
 						else{
 							const response = result.message;
-							throw 'error login user: ' + response;
+							notifications.error(response);
 						}
 					}
 				}}
@@ -239,44 +239,8 @@
 					>
 				</div>
 			</form>
-			<div class="d-flex flex-column align-items-center justify-content-center">
-				<p>or continue with</p>
-				<div class="d-flex gap-4">
-					<!-- <button
-				on:click={() => handleSignInWithProvider("Github")}
-				style="width: 32px; height:32px"
-				class="bg-dark border-0 rounded"
-			  >
-				<img src={githubLogo} alt="Github Logo" class="w-100 h-100" />
-			  </button> -->
-					<button
-						on:click={handleSignInWithGoogle}
-						style="width: 32px; height:32px"
-						class="bg-dark border-0 rounded"
-					>
-						<img src={googleLogo} alt="Google Logo" class="w-100 h-100 p-1" />
-					</button>
-					<!-- <button
-				on:click={() => handleSignInWithProvider("Microsoft")}
-				style="width: 32px; height:32px"
-				class="bg-dark border-0 rounded"
-			  >
-				<img src={microsoftLogo} alt="Microsoft Logo" class="w-100 h-100" />
-			  </button> -->
-				</div>
-				<!-- "New to the website? Create an account" link -->
-				<!-- <div class="gap-3 d-flex align-items-center">
-					<p class="fs-6 mt-3">New to sparrow?</p>
-					<Link to="/register" style="color: #007BFF;" class=" text-decoration-none text-primaryColor"
-						>Create Account</Link
-					>
-				</div> -->
-			</div>
-			<div class="w-100 d-flex align-items-center justify-content-center">
-				<a href="" class="px-2">Need Help?</a>
-				<span class="px-2">|</span>
-				<a href="" class="px-2">Report Issue</a>
-			</div>
+			<Oauth/>
+			<SupportHelp/>
 		</div>
 	</div>
 {/if}
@@ -304,8 +268,5 @@
 	}
 	input {
 		background-color: transparent;
-	}
-	a {
-		text-decoration: none;
 	}
 </style>
