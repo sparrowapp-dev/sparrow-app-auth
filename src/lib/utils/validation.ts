@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+)$/;
 
 //----------------------------- Check Validation ---------------------//
 export const checkValidation = async (validationSchema, val) => {
@@ -20,9 +21,9 @@ export const registrationSchema = yup.object().shape({
 	email: yup
 		.string()
 		.email()
-		.required('Please enter an email')
-		.matches(/^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})$/, 'Must be a valid email address'),
-	name: yup.string().required('Please enter your full name'),
+		.matches(/^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})$/, 'Must be a valid email address')
+		.required('Please enter an email'),
+	firstName: yup.string().required('Please enter your first name'),
 	password: yup
 		.string()
 		.required()
@@ -40,12 +41,24 @@ export const loginSchema = yup.object().shape({
 	email: yup
 		.string()
 		.email()
-		.required('Please enter an email')
 		.matches(
 			/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 			'Please enter a valid email ID.'
-		),
+			)
+			.required('Please enter an email')
+		,
 	password: yup.string().required('Please enter a password')
+});
+
+//------------------- Entry Schema ---------------------------//
+export const entrySchema = yup.object().shape({
+	email: yup
+		.string()
+		.email()
+		.matches(
+			emailRegex,'Please enter a valid email ID.'
+			)
+		,
 });
 
 export const forgotPasswordSchema = yup.object().shape({

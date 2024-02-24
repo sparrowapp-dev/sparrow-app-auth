@@ -8,6 +8,8 @@ const constants = {
   REF_TOKEN: "REF_TOKEN",
   WORKSPACE_LIMIT: 5,
   API_LIMIT: 5,
+  SPARROW_OAUTH:import.meta.env.VITE_SPARROW_OAUTH,
+  SPARROW_SUPPORT_EMAIL:import.meta.env.VITE_SPARROW_SUPPORT_EMAIL
 };
 
 export default constants;

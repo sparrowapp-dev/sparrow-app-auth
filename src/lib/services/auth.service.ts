@@ -30,6 +30,12 @@ const loginWithGoogle = async () => {
 	return response;
 };
 
+const getUser = async (email: string) => {
+	const response = await makeRequest('GET', `${apiUrl}/api/user/email/${email}`);
+
+	return response;
+};
+
 const forgotPassword = async (emailInfo: EmailPostBody) => {
 	const response = await makeRequest('POST', `${apiUrl}/api/user/send-verification-email`, {
 		body: emailInfo
@@ -52,4 +58,4 @@ const resetPassword = async (changePasswordBody: resetPasswordPostBody) => {
 	return response;
 };
 
-export { registerUser, loginUser, forgotPassword, loginWithGoogle, verifyEmail, resetPassword };
+export { registerUser, loginUser, forgotPassword, loginWithGoogle, verifyEmail, resetPassword, getUser };
