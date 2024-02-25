@@ -44,7 +44,7 @@ export const loginSchema = yup.object().shape({
 			)
 			.required('Please enter an email Id.')
 		,
-	password: yup.string().required('Please enter a password')
+	password: yup.string().required('Please enter a password.')
 });
 
 //------------------- Entry Schema ---------------------------//

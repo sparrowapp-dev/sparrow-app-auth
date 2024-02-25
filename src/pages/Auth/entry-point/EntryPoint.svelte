@@ -39,7 +39,7 @@
 		buttonClick={redirectRules.buttonClick}
 		loadingMessage={redirectRules.loadingMessage}
 	/>
-	{:else}
+{:else}
 	<div class="parent d-flex align-items-center justify-content-center text-white rounded">
 		<div
 			class="entry-point rounded container d-flex flex-column align-items-center justify-content-center w-100"
@@ -48,8 +48,7 @@
 				<img src={sparrowicon} width="60px" alt="" class="" />
 			</div>
 			<p
-				class="container-header pt-4 pb-5 fs-28 text-whiteColor text-center ms-2 me-2 fw-bold"
-				style="font-size: 28px;"
+				class="container-header pt-4 pb-5 sparrow-fs-28 text-whiteColor text-center ms-2 me-2 fw-bold"
 			>
 				Welcome to Sparrow!
 			</p>
@@ -61,8 +60,8 @@
 					validationErrors = await handleEntryValidation(entryCredentials);
 					if (!validationErrors?.email) {
 						const response = await handleEntry(entryCredentials);
-						if(response.isSuccessful){
-							if (response?.data?.registeredWith === "google") {
+						if (response.isSuccessful) {
+							if (response?.data?.registeredWith === 'google') {
 								// Registered with google auth
 								isEntry = true;
 								redirectRules.title = `Redirecting you to sign in with google account...`;
@@ -71,10 +70,10 @@
 								setTimeout(() => {
 									navigate(constants.SPARROW_OAUTH);
 								}, 1000);
-							} else if (response?.data?.registeredWith === "email") {
+							} else if (response?.data?.registeredWith === 'email') {
 								// registered with email
 								isEntry = true;
-								redirectRules.title= `Redirecting to your account...`;
+								redirectRules.title = `Redirecting to your account...`;
 								redirectRules.description = `${entryCredentials?.email} has been previously used to login via email account.`;
 								redirectRules.loadingMessage = `Please wait while we are redirecting you to your email account....`;
 								setTimeout(() => {
@@ -83,8 +82,7 @@
 							} else {
 								navigate(`/register/${entryCredentials?.email}`);
 							}
-						}
-						else{
+						} else {
 							notifications.error(response?.message);
 						}
 					}
@@ -105,22 +103,27 @@
 						placeholder="Please enter your registered email id"
 						autocorrect="off"
 						autocapitalize="none"
+						autocomplete="off"
 						bind:value={entryCredentials.email}
+						on:blur={async () => {
+							isEmailTouched = true;
+							validationErrors = await handleEntryValidation(entryCredentials);
+						}}
 						on:input={async () => {
 							validationErrors = await handleEntryValidation(entryCredentials);
 						}}
 					/>
-	
+
 					{#if validationErrors?.email && isEmailTouched}
 						<small class="form-text text-dangerColor"> {validationErrors?.email}</small>
 					{/if}
 				</div>
-	
+
 				<div class="mb-1">
 					<button class="btn btn-primary w-100 text-whiteColor border-0">Continue</button>
 				</div>
 			</form>
-			<SupportHelp/>
+			<SupportHelp />
 		</div>
 	</div>
 {/if}

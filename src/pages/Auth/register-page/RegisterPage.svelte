@@ -6,7 +6,7 @@
 	import starIcon from '$lib/assets/starIcon.svg';
 	import eyeHide from '$lib/assets/eye-hide.svg';
 	import eyeShow from '$lib/assets/eye-show.svg';
-	import {navigate } from 'svelte-navigator';
+	import { navigate } from 'svelte-navigator';
 	import sparrowicon from '$lib/assets/sparrow-icon-bg.svg';
 	import Redirect from '../redirect/Redirect.svelte';
 	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
@@ -30,7 +30,7 @@
 		password: '',
 		tnsCheckbox: false
 	};
-
+	let isDuplicateEmail = false;
 	let validationErrors: any = {};
 
 	let isPasswordValid1 = false;
@@ -71,7 +71,6 @@
 		return false;
 	};
 
-
 	let isPasswordVisible = false;
 
 	const togglePasswordVisibility = () => {
@@ -102,8 +101,7 @@
 				<img src={sparrowicon} width="60px" alt="" class="" />
 			</div>
 			<p
-				class="container-header pt-4 pb-5 fs-28 text-whiteColor text-center ms-2 me-2 fw-bold"
-				style="font-size: 28px;"
+				class="container-header pt-4 pb-5 sparrow-fs-28 text-whiteColor text-center ms-2 me-2 fw-bold"
 			>
 				Welcome to Sparrow!
 			</p>
@@ -133,7 +131,7 @@
 							const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}`;
 							setTimeout(() => {
 								let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
-								redirectRules.title = `Welcome ${data.name}`;
+								redirectRules.title = `Welcome ${data.name.split(" ")[0]}`;
 								redirectRules.description = `Redirecting you to desktop app...`;
 								redirectRules.message = `If the application does not open automatically,
 								please click below.`;
@@ -145,7 +143,14 @@
 								};
 							}, 5000);
 						} else {
-							notifications.error(response.message);
+							if (
+								response.message ===
+								'The account with the provided email currently exists. Please choose another one.'
+							) {
+								isDuplicateEmail = true;
+							} else {
+								notifications.error(response.message);
+							}
 						}
 					}
 				}}
@@ -157,27 +162,35 @@
 						<img src={starIcon} alt="" class="mb-3" style="width: 7px;" />
 					</div>
 					<input
-						class="form-control sparrow-fs-16 mt-1 border:{validationErrors?.email && isEmailTouched
+						class="form-control sparrow-fs-16 mt-1 border:{(validationErrors?.email &&
+							isEmailTouched) ||
+						isDuplicateEmail
 							? '3px'
-							: '1px'} solid {validationErrors?.email && isEmailTouched
+							: '1px'} solid {(validationErrors?.email && isEmailTouched) || isDuplicateEmail
 							? 'border-error'
 							: 'border-default'}"
 						type="email"
 						name="email"
 						id="email"
 						placeholder="Please enter your email id"
-						required
+						autocorrect="off"
+						autocapitalize="none"
+						autocomplete="off"
 						bind:value={userData.email}
-						on:blur={() => {
+						on:blur={async () => {
 							isEmailTouched = true;
+							validationErrors = await handleRegisterValidation(userData);
 						}}
 						on:input={async () => {
 							validationErrors = await handleRegisterValidation(userData);
+							isDuplicateEmail = false;
 						}}
 					/>
 
 					{#if validationErrors?.email && isEmailTouched}
 						<small class="text-dangerColor form-text">{validationErrors?.email}</small>
+					{:else if isDuplicateEmail}
+						<small class="text-dangerColor form-text">Email ID already exists.</small>
 					{/if}
 				</div>
 				<div class="form-group mb-3">
@@ -196,11 +209,14 @@
 						type="text"
 						name="name"
 						placeholder="Please enter your first name"
+						autocorrect="off"
+						autocapitalize="none"
+						autocomplete="off"
 						id="name"
-						required
 						bind:value={userData.firstName}
-						on:blur={() => {
+						on:blur={async () => {
 							isFirstNameTouched = true;
+							validationErrors = await handleRegisterValidation(userData);
 						}}
 						on:input={async () => {
 							validationErrors = await handleRegisterValidation(userData);
@@ -228,19 +244,22 @@
 						type="text"
 						name="lastname"
 						placeholder="Please enter your last name"
+						autocorrect="off"
+						autocapitalize="none"
+						autocomplete="off"
 						id="lastname"
-						required
 						bind:value={userData.lastName}
-						on:blur={()=>{
+						on:blur={async () => {
 							isLastNameTouched = true;
+							validationErrors = await handleRegisterValidation(userData);
 						}}
 						on:input={async () => {
 							validationErrors = await handleRegisterValidation(userData);
 						}}
 					/>
 					{#if validationErrors?.lastName && isLastNameTouched}
-							<small class="text-dangerColor form-text">{validationErrors?.lastName}</small>
-						{/if}
+						<small class="text-dangerColor form-text">{validationErrors?.lastName}</small>
+					{/if}
 				</div>
 
 				<div class="form-group">
@@ -260,10 +279,13 @@
 							name="password"
 							id="expamplePassword"
 							placeholder="Please enter your password"
-							required
+							autocorrect="off"
+							autocapitalize="none"
+							autocomplete="off"
 							bind:value={userData.password}
-							on:blur={() => {
+							on:blur={async () => {
 								isPasswordTouched = true;
+								validationErrors = await handleRegisterValidation(userData);
 							}}
 							on:input={async () => {
 								validationErrors = await handleRegisterValidation(userData);
@@ -345,11 +367,8 @@
 						class="form-check-input"
 						id="tnsCheckbox"
 						bind:checked={userData.tnsCheckbox}
-						on:blur={() => {
-							isCheckboxTouched = true;
-						}}
 						on:input={async () => {
-							validationErrors = await handleRegisterValidation(userData);
+							isCheckboxTouched = true;
 						}}
 					/>
 					<label data-tauri-drag-region class="form-check-label ms-2" for="tnsCheckbox"
@@ -359,7 +378,9 @@
 					>
 				</div>
 				{#if !userData.tnsCheckbox && isCheckboxTouched}
-					<small class="text-dangerColor form-text">You will need to agree to the terms of service to create a Sparrow account.</small>
+					<small class="text-dangerColor form-text"
+						>You will need to agree to the terms of service to create a Sparrow account.</small
+					>
 				{/if}
 
 				<div class="mb-3 mt-4">

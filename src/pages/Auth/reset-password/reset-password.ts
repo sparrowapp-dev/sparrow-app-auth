@@ -5,7 +5,7 @@ import { checkValidation, resetPasswordSchema } from '$lib/utils/validation';
 // import { navigate } from 'svelte-navigator';
 
 export const handleResetPassword = async (resetPasswordCredential: resetPasswordPostBody) => {
-	const response = await resetPassword(resetPasswordCredential);
+	return await resetPassword(resetPasswordCredential);
 	// if (response.isSuccessful) {
 	//   notifications.success("Password Updated");
 	//   navigate("/login");

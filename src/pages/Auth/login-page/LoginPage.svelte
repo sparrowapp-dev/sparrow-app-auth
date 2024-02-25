@@ -15,22 +15,9 @@
 	export let id;
 
 	let isEmailTouched = false;
+	let isPasswordTouched = false;
 	let isLogin = false;
-	let isEmailValid = false;
-	const validateEmail = () => {
-		const emailRegex =
-			/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		isEmailTouched = true;
-		isEmailValid = emailRegex.test(loginCredentials.email);
-		if (isEmailValid) {
-			validationErrors.email = '';
-		} else if (isEmailTouched) {
-			validationErrors.email = '';
-		}
-		if (loginCredentials.email === '') {
-			validationErrors.email = 'Please enter an email id';
-		}
-	};
+	let authenticationError = false;
 
 	//---------------- Login Validation --------------------//
 	let validationErrors: any = {};
@@ -40,21 +27,6 @@
 		email: id || '',
 		password: ''
 	};
-	let isLoadingPage: boolean;
-
-	let isPasswordtouched: boolean = false;
-
-	isLoading.subscribe((value) => {
-		isLoadingPage = value;
-	});
-
-	let isPasswordError: boolean;
-
-	isResponseError.subscribe((value) => {
-		isPasswordError = value;
-	});
-
-	let errorMessage: string = '';
 
 	let isPasswordVisible = false;
 
@@ -65,20 +37,6 @@
 		) as HTMLInputElement | null;
 		if (passwordInput) {
 			passwordInput.type = isPasswordVisible ? 'text' : 'password';
-		}
-	};
-
-	const handlePasswordChange = () => {
-		isPasswordtouched = true;
-		if (isPasswordtouched === true) {
-			validationErrors.password = '';
-		}
-	};
-
-	let isSignInPopup: boolean = false;
-	const handleSignInPopup = (flag: boolean) => {
-		if (validationErrors?.isSuccessful) {
-			isSignInPopup = flag;
 		}
 	};
 
@@ -112,8 +70,7 @@
 				<img src={sparrowicon} width="60px" alt="" class="" />
 			</div>
 			<p
-				class="container-header pt-4 pb-5 fs-28 text-whiteColor text-center ms-2 me-2 fw-bold"
-				style="font-size: 28px;"
+				class="container-header pt-4 pb-5 sparrow-fs-28 text-whiteColor text-center ms-2 me-2 fw-bold"
 			>
 				Welcome to Sparrow!
 			</p>
@@ -121,14 +78,9 @@
 				class="login-form w-100 text-whiteColor ps-1 pe-1 gap-16 mb-2"
 				novalidate
 				on:submit|preventDefault={async () => {
+					isPasswordTouched = true;
+					isEmailTouched = true;
 					validationErrors = await handleLoginValidation(loginCredentials);
-
-					if (validationErrors) {
-						errorMessage = 'Please enter an email id';
-					}
-					if (validationErrors?.isSuccessful) {
-						isSignInPopup = true;
-					}
 					if (!validationErrors?.email && !validationErrors?.password) {
 						const result = await handleLogin(loginCredentials);
 						if (result.isSuccessful) {
@@ -143,18 +95,24 @@
 								redirectRules.description = `Redirecting you to desktop app...`;
 								redirectRules.message = `If the application does not open automatically,
 								please click below.`;
-								
+
 								redirectRules.loadingMessage = '';
 								redirectRules.isSpinner = false;
 								navigate(sparrowRedirect);
-								redirectRules.buttonClick= ()=>{
-									navigate(sparrowRedirect);		
-								}
+								redirectRules.buttonClick = () => {
+									navigate(sparrowRedirect);
+								};
 							}, 1000);
-						}
-						else{
+						} else {
 							const response = result.message;
-							notifications.error(response);
+							if (
+								response === 'Could not authenticate. Please try again.' ||
+								response === 'password must be longer than or equal to 8 characters'
+							) {
+								authenticationError = true;
+							} else {
+								notifications.error(response);
+							}
 						}
 					}
 				}}
@@ -164,25 +122,31 @@
 					<label for="exampleInputEmail1" class="form-label text-red sparrow-fs-14">Email</label>
 					<input
 						type="email"
-						class="form-control sparrow-fs-16 border:{validationErrors?.email ||
-						isPasswordError === true
+						class="form-control sparrow-fs-16 border:{(validationErrors?.email && isEmailTouched) ||
+						authenticationError
 							? '3px'
-							: '1px'} solid {validationErrors?.email || isPasswordError === true
+							: '1px'} solid {(validationErrors?.email && isEmailTouched) || authenticationError
 							? 'border-error'
 							: 'border-default'}"
 						id="exampleInputEmail1"
 						aria-describedby="emailHelp"
 						placeholder="Please enter your registered email id"
+						autocomplete="off"
 						autocorrect="off"
 						autocapitalize="none"
 						bind:value={loginCredentials.email}
-						on:input={validateEmail}
+						on:blur={async () => {
+							isEmailTouched = true;
+							validationErrors = await handleLoginValidation(loginCredentials);
+						}}
+						on:input={async () => {
+							validationErrors = await handleLoginValidation(loginCredentials);
+							authenticationError = false;
+						}}
 					/>
 
-					{#if validationErrors?.email && loginCredentials.email.length > 0}
+					{#if validationErrors?.email && isEmailTouched}
 						<small class="form-text text-dangerColor"> {validationErrors?.email}</small>
-					{:else if loginCredentials.email.length === 0}
-						<small class="form-text text-dangerColor"> {errorMessage}</small>
 					{/if}
 				</div>
 
@@ -192,15 +156,27 @@
 						<input
 							type="password"
 							autocomplete="off"
-							on:click={handlePasswordChange}
 							id="exampleInputPassword1"
 							placeholder="Please enter your Password"
+							autocorrect="off"
+							autocapitalize="none"
 							bind:value={loginCredentials.password}
-							class="form-control sparrow-fs-16 pe-5 border:{isPasswordError === true
+							class="form-control sparrow-fs-16 pe-5 border:{(validationErrors?.password &&
+								isPasswordTouched) ||
+							authenticationError
 								? '3px'
-								: '1px'} solid {isPasswordError === true || validationErrors?.password
+								: '1px'} solid {(validationErrors?.password && isPasswordTouched) ||
+							authenticationError
 								? 'border-error'
 								: 'border-default'}"
+							on:blur={async () => {
+								isPasswordTouched = true;
+								validationErrors = await handleLoginValidation(loginCredentials);
+							}}
+							on:input={async () => {
+								validationErrors = await handleLoginValidation(loginCredentials);
+								authenticationError = false;
+							}}
 						/>
 						<button
 							type="button"
@@ -215,9 +191,9 @@
 						</button>
 					</div>
 
-					{#if validationErrors?.password || validationErrors?.password?.length === 0}
+					{#if validationErrors?.password && isPasswordTouched}
 						<small class="form-text text-dangerColor">{validationErrors?.password}</small>
-					{:else if isPasswordError === true || validationErrors?.password?.length > 0}
+					{:else if authenticationError}
 						<small class="form-text text-dangerColor"
 							>The email and password combination you entered appears to be incorrect. Please try
 							again.</small
@@ -231,24 +207,21 @@
 				</div>
 
 				<div class="mb-1">
-					<button
-						class="btn btn-primary w-100 text-whiteColor border-0"
-						on:click={() => {
-							handleSignInPopup(true);
-						}}>Sign In</button
+					<button class="btn btn-primary w-100 text-whiteColor border-0" on:click={() => {}}
+						>Sign In</button
 					>
 				</div>
 			</form>
-			<Oauth/>
-			<SupportHelp/>
+			<Oauth />
+			<SupportHelp />
 		</div>
 	</div>
 {/if}
 
 <style>
-	.eye-icon{
-		top:5px;
-		right:5px;
+	.eye-icon {
+		top: 5px;
+		right: 5px;
 		background-color: transparent;
 	}
 

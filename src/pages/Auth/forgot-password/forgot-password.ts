@@ -1,11 +1,9 @@
 import { forgotPassword } from '$lib/services/auth.service';
 import type { EmailPostBody } from '$lib/utils/dto';
 import { checkValidation, forgotPasswordSchema } from '$lib/utils/validation';
-import { navigate } from 'svelte-navigator';
 
 export const handleForgotPassword = async (forgotPasswordCredential: EmailPostBody) => {
-	await forgotPassword(forgotPasswordCredential);
-	navigate('/update/password');
+	return await forgotPassword(forgotPasswordCredential);
 };
 
 //------------------------- Handle Login Validation -----------------//
@@ -17,6 +15,5 @@ export const handleForgotPasswordValidation = async (forgotPasswordCredential: E
 	if (isError) {
 		return errorObject;
 	}
-	handleForgotPassword(forgotPasswordCredential);
-	return {};
+	return;
 };
