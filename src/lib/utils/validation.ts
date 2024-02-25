@@ -21,19 +21,16 @@ export const registrationSchema = yup.object().shape({
 	email: yup
 		.string()
 		.email()
-		.matches(/^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})$/, 'Must be a valid email address')
-		.required('Please enter an email'),
-	firstName: yup.string().required('Please enter your first name'),
+		.matches(emailRegex, 'Please enter a valid email ID.')
+		.required('Please enter an email Id.'),
+	firstName: yup.string().matches(/^[A-Za-z\s]+$/, "Your first name cannot have numbers or special characters.").required('Please enter your first name.'),
+	lastName: yup.string().matches(/^[a-zA-Z]*$/, "Your last name cannot have numbers or special characters."),
 	password: yup
 		.string()
 		.required()
-		.min(8, 'Password must be at least 8 characters')
-		.matches(/(?=.*[0-9])/, 'Password must contain a number')
-		.matches(/(?=.*[!@#$%^&*])/, 'Password must contain a special character'),
-	tnsCheckbox: yup
-		.boolean()
-		.required('Please accept the terms and conditions')
-		.oneOf([true], 'Please accept the terms and conditions')
+		.min(8, 'Password must be at least 8 characters.')
+		.matches(/(?=.*[0-9])/, 'Password must contain a number.')
+		.matches(/(?=.*[!@#$%^&*])/, 'Password must contain a special character.'),
 });
 
 //------------------- login Schema ---------------------------//
@@ -42,10 +39,10 @@ export const loginSchema = yup.object().shape({
 		.string()
 		.email()
 		.matches(
-			/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+			emailRegex,
 			'Please enter a valid email ID.'
 			)
-			.required('Please enter an email')
+			.required('Please enter an email Id.')
 		,
 	password: yup.string().required('Please enter a password')
 });
@@ -58,6 +55,7 @@ export const entrySchema = yup.object().shape({
 		.matches(
 			emailRegex,'Please enter a valid email ID.'
 			)
+			.required('Please enter an email Id.')
 		,
 });
 
@@ -67,9 +65,10 @@ export const forgotPasswordSchema = yup.object().shape({
 		.email()
 		.required('Please enter an email')
 		.matches(
-			/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+			emailRegex,
 			'Please enter a valid email ID.'
 		)
+		.required('Please enter an email Id.')
 });
 
 export const resetPasswordSchema = yup.object().shape({
