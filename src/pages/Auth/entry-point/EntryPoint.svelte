@@ -5,6 +5,7 @@
 	import Redirect from '../redirect/Redirect.svelte';
 	import constants from '$lib/utils/constants';
 	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
+	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 
 	let isEmailTouched = false;
 	//---------------- Login Validation --------------------//
@@ -60,26 +61,31 @@
 					validationErrors = await handleEntryValidation(entryCredentials);
 					if (!validationErrors?.email) {
 						const response = await handleEntry(entryCredentials);
-						if (response?.authProvider) {
-							// Registered with google auth
-							isEntry = true;
-							redirectRules.title = `Redirecting you to sign in with google account...`;
-							redirectRules.description = `${entryCredentials?.email} is already registered using google account.`;
-							redirectRules.loadingMessage = `Please wait while we are redirecting you to your google account....`;
-							setTimeout(() => {
-								navigate(constants.SPARROW_OAUTH);
-							}, 1000);
-						} else if (response?.email) {
-							// registered with email
-							isEntry = true;
-							redirectRules.title= `Redirecting to your account...`;
-							redirectRules.description = `${entryCredentials?.email} has been previously used to login via email account.`;
-							redirectRules.loadingMessage = `Please wait while we are redirecting you to your email account....`;
-							setTimeout(() => {
-								navigate(`/login/${entryCredentials?.email}`);
-							}, 1000);
-						} else {
-							navigate(`/register/${entryCredentials?.email}`);
+						if(response.isSuccessful){
+							if (response?.data?.registeredWith === "google") {
+								// Registered with google auth
+								isEntry = true;
+								redirectRules.title = `Redirecting you to sign in with google account...`;
+								redirectRules.description = `${entryCredentials?.email} is already registered using google account.`;
+								redirectRules.loadingMessage = `Please wait while we are redirecting you to your google account....`;
+								setTimeout(() => {
+									navigate(constants.SPARROW_OAUTH);
+								}, 1000);
+							} else if (response?.data?.registeredWith === "email") {
+								// registered with email
+								isEntry = true;
+								redirectRules.title= `Redirecting to your account...`;
+								redirectRules.description = `${entryCredentials?.email} has been previously used to login via email account.`;
+								redirectRules.loadingMessage = `Please wait while we are redirecting you to your email account....`;
+								setTimeout(() => {
+									navigate(`/login/${entryCredentials?.email}`);
+								}, 1000);
+							} else {
+								navigate(`/register/${entryCredentials?.email}`);
+							}
+						}
+						else{
+							notifications.error(response?.message);
 						}
 					}
 				}}
