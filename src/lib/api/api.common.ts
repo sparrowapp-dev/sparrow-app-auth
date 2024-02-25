@@ -8,26 +8,23 @@ interface MakeRequestResponse {
 	isSuccessful: boolean;
 	message: string;
 	data: any;
-	tabId: string;
 }
 
-const error = (error: string, data?: any, tabId: string = ''): MakeRequestResponse => {
+const error = (data: any, message: string = ''): MakeRequestResponse => {
 	return {
 		status: 'error',
 		isSuccessful: false,
-		message: error,
-		data,
-		tabId
+		message,
+		data
 	};
 };
 
-const success = (data: any, tabId: string): MakeRequestResponse => {
+const success = (data: any, message: string = ""): MakeRequestResponse => {
 	return {
 		status: 'success',
 		isSuccessful: true,
-		message: '',
+		message,
 		data,
-		tabId
 	};
 };
 
@@ -40,17 +37,12 @@ const makeRequest = async (method: Method, url: string, requestData?: RequestDat
 			data: requestData?.body,
 			headers: requestData?.headers
 		});
-
-		if (response.status === 201 || response.status === 200) {
-			return success(response.data, '');
-		} else {
-			return error(response.data.message);
-		}
+		return success(response.data?.data, response.data?.message);
 	} catch (e: any) {
-		if (e.response.data) {
-			return error(e.response.data.message);
+		if (e.response) {
+			return error(e.response.data?.data, e.response.data?.message);
 		}
-		return error(e);
+		return error(e, "Internal server error");
 	} finally {
 		isLoading.set(false);
 	}

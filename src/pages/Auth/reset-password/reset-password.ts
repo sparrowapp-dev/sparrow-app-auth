@@ -6,7 +6,6 @@ import { checkValidation, resetPasswordSchema } from '$lib/utils/validation';
 
 export const handleResetPassword = async (resetPasswordCredential: resetPasswordPostBody) => {
 	const response = await resetPassword(resetPasswordCredential);
-	console.log(response);
 	// if (response.isSuccessful) {
 	//   notifications.success("Password Updated");
 	//   navigate("/login");

@@ -9,20 +9,8 @@ export const navigateToRegister = () => {
 };
 
 //---------------- Handle Login ------------------//
-const handleLogin = async (loginCredentials: loginUserPostBody) => {
-	const response = await loginUser(loginCredentials);
-	if (response.isSuccessful) {
-		const accessToken = response?.data?.data?.accessToken.token;
-		const refreshToken = response?.data?.data?.refreshToken.token;
-		navigate('/success');
-		navigate(
-			`sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}`
-		);
-	} else {
-		navigate('/');
-		throw 'error login user: ' + response.message;
-	}
-	return;
+export const handleLogin = async (loginCredentials: loginUserPostBody) => {
+	return await loginUser(loginCredentials);
 };
 
 //------------------------- Handle Login Validation -----------------//
@@ -32,5 +20,5 @@ export const handleLoginValidation = async (loginCredentials: loginUserPostBody)
 		return errorObject;
 	}
 
-	return handleLogin(loginCredentials);
+	return;
 };
