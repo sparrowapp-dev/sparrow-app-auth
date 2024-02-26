@@ -7,11 +7,11 @@ on:
   workflow_dispatch:
 
 env:	
-  VITE_API_URL: ${{ secrets.VITE_API_URL }}
-  VITE_SPARROW_SUPPORT_EMAIL: ${{ secrets.VITE_SPARROW_SUPPORT_EMAIL }}
-  VITE_SPARROW_OAUTH: ${{ secrets.VITE_SPARROW_OAUTH }}
-  VITE_ENABLE_MIX_PANEL: ${{ secrets.VITE_ENABLE_MIX_PANEL }}
-  VITE_MIX_PANEL_TOKEN: ${{ secrets.VITE_MIX_PANEL_TOKEN }}
+  VITE_API_URL: ${{ secrets.VITE_API_URL_DEV }}
+  VITE_SPARROW_SUPPORT_EMAIL: ${{ secrets.VITE_SPARROW_SUPPORT_EMAIL_DEV }}
+  VITE_SPARROW_OAUTH: ${{ secrets.VITE_SPARROW_OAUTH_DEV }}
+  VITE_ENABLE_MIX_PANEL: ${{ secrets.VITE_ENABLE_MIX_PANEL_DEV }}
+  VITE_MIX_PANEL_TOKEN: ${{ secrets.VITE_MIX_PANEL_TOKEN_DEV }}
 
 jobs:
   build-and-deploy:
@@ -35,7 +35,6 @@ jobs:
       uses: Azure/static-web-apps-deploy@v1
       with:
         azure_static_web_apps_api_token: ${{ secrets.MANAGE_DEVELOPMENT_TOKEN }}
-        #repo_token: ${{ secrets.MY_GITHUB_TOKEN }}
         action: "upload"
         app_location: "./dist"
         api_location: ""
