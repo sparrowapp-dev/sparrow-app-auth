@@ -1,11 +1,11 @@
 <script lang="ts">
-	import angleLeft from '$lib/assets/angleLeft.svg';
 	import starIcon from '$lib/assets/starIcon.svg';
 
-	import { handleForgotPasswordValidation } from './forgot-password';
-	import { isLoading, username } from '$lib/store/auth.store';
-	// import PageLoader from "$lib/components/Transition/PageLoader.svelte";
-	import { Link } from 'svelte-navigator';
+	import { handleForgotPassword, handleForgotPasswordValidation } from './forgot-password';
+	import sparrowicon from '$lib/assets/sparrow-icon-bg.svg';
+
+	import {  navigate } from 'svelte-navigator';
+	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 
 	let validationErrors: any = {};
 
@@ -14,58 +14,38 @@
 	};
 
 	let isEmailTouched = false;
-
-	let isEmailValid = false;
-	const validateEmail = () => {
-		username.set(forgotPasswordCredential.email);
-		isEmailTouched = true;
-		const emailRegex =
-			/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		isEmailValid = emailRegex.test(forgotPasswordCredential.email);
-
-		if (!isEmailValid) {
-			validationErrors.email = 'Please enter a valid email ID.';
-		} else if (isEmailTouched) {
-			validationErrors.email = '';
-		}
-
-		if (forgotPasswordCredential.email === '') {
-			validationErrors.email = 'Email cannot be empty. Please provide your registered email ID.';
-		}
-	};
-
-	let isLoadingPage: boolean;
-	isLoading.subscribe((value) => {
-		isLoadingPage = value;
-	});
 </script>
 
-<div
-	class="card-body d-flex flex-column bg-black text-white mx-auto rounded overflow-hidden"
-	style="height: 100vh;"
->
-	{#if isLoadingPage}
-		<!-- <PageLoader /> -->
-	{:else}
-		<div class="d-flex mb-5 flex-column align-items-center justify-content-center">
-			<p
-				class="text-whiteColor mt-5 ms-2 me-2 mb-5"
-				style="font-size: 40px; width:408px; height:48px;font-weight:500;"
-			>
-				Welcome to Sparrow!
-			</p>
-
+<div class="parent d-flex align-items-center justify-content-center text-white rounded">
+	<div
+		class="auth-content rounded container d-flex flex-column align-items-center justify-content-center w-100"
+	>
+		<div class="text-white d-flex justify-content-center align-items-center">
+			<img src={sparrowicon} width="60px" alt="" class="" />
+		</div>
+		<p
+			class="container-header pt-4 pb-5 sparrow-fs-28 text-whiteColor text-center ms-2 me-2 fw-bold"
+		>
+			Welcome to Sparrow!
+		</p>
 			<form
 				class="login-form text-whiteColor ps-1 pe-1 gap-16"
-				style="width:408px; height:214px"
 				on:submit|preventDefault={async () => {
+					isEmailTouched = true;
 					validationErrors = await handleForgotPasswordValidation(forgotPasswordCredential);
+					if(!validationErrors?.email){
+						const response  = await handleForgotPassword(forgotPasswordCredential);
+						if (response?.isSuccessful) {
+							navigate(`/update/password/${forgotPasswordCredential.email}`);
+						} else {
+							notifications.error(response?.message);
+						}
+					}
 				}}
 			>
 				<div class="d-flex flex-column align-items-left justify-content-center mb-2">
 					<div class="d-flex align-items-center justify-content-start mb-3 gap-3">
-						<Link to="/"><img src={angleLeft} alt="" class="mb-0" /></Link>
-						<p class="text-whiteColor fs-5 mb-0">Change Password</p>
+						<p class="text-whiteColor sparrow-fs-20  mb-0">Change Password</p>
 					</div>
 					<p class="text-lightGray">
 						Please enter your Email ID so that we can send you a verification code to process your
@@ -73,30 +53,53 @@
 					</p>
 				</div>
 				<div class="mb-3">
-					<label for="exampleInputEmail1" class="form-label text-red">Email</label>
+					<label for="exampleInputEmail1" class="form-label text-red sparrow-fs-14">Email</label>
 					<img src={starIcon} alt="" class="mb-3" />
 					<input
 						type="email"
-						class="form-control bg-black border:{validationErrors.email
+						class="form-control sparrow-fs-16 border:{validationErrors?.email && isEmailTouched
 							? '3px'
-							: '1px'} solid {validationErrors.email ? 'border-error' : 'border-default'}"
+							: '1px'} solid {validationErrors?.email && isEmailTouched ? 'border-error' : 'border-default'}"
 						id="exampleInputEmail1"
 						aria-describedby="emailHelp"
-						required
 						placeholder="Please enter your registered email id"
 						autocorrect="off"
 						autocapitalize="none"
+						autocomplete="off"
 						bind:value={forgotPasswordCredential.email}
-						on:input={validateEmail}
+						on:blur={async()=>{
+							isEmailTouched = true;
+							validationErrors = await handleForgotPasswordValidation(forgotPasswordCredential);
+						}}
+						on:input={async()=>{
+							validationErrors = await handleForgotPasswordValidation(forgotPasswordCredential);
+						}}
 					/>
-					{#if validationErrors.email}
-						<small class="form-text text-dangerColor"> {validationErrors.email}</small>
+					{#if validationErrors?.email && isEmailTouched}
+						<small class="form-text text-dangerColor"> {validationErrors?.email}</small>
 					{/if}
 				</div>
 				<div class="sendButton">
-					<button class="btn btn-primaryColor text-whiteColor w-100">Send Request</button>
+					<button class="btn btn-primary text-whiteColor w-100">Send Request</button>
 				</div>
 			</form>
 		</div>
-	{/if}
 </div>
+<style>
+	.btn-primary {
+		background: linear-gradient(270deg, #6147ff -1.72%, #1193f0 100%);
+	}
+	.parent {
+		min-height: 100vh;
+		overflow: auto;
+	}
+	.auth-content {
+		margin: 30px !important;
+		background: linear-gradient(to bottom, rgba(51, 51, 51, 0.16), rgba(42, 42, 51, 1));
+		max-width: 504px;
+		padding: 48px 48px 64px 48px !important;
+	}
+	input {
+		background-color: transparent;
+	}
+</style>
