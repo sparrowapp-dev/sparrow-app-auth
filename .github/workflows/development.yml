@@ -3,7 +3,7 @@ name: Development
 on:
   push:
     branches:
-      - development.yml
+      - development
   workflow_dispatch:
 
 env:	
