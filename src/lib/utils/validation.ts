@@ -1,5 +1,7 @@
 import * as yup from 'yup';
 const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+)$/;
+const firstNameRegex = /^[A-Za-z\s]+$/;
+const lastNameRegex = /^[a-zA-Z]*$/;
 
 //----------------------------- Check Validation ---------------------//
 export const checkValidation = async (validationSchema, val) => {
@@ -23,8 +25,8 @@ export const registrationSchema = yup.object().shape({
 		.email()
 		.matches(emailRegex, 'Please enter a valid email ID.')
 		.required('Please enter an email Id.'),
-	firstName: yup.string().matches(/^[A-Za-z\s]+$/, "Your first name cannot have numbers or special characters.").required('Please enter your first name.'),
-	lastName: yup.string().matches(/^[a-zA-Z]*$/, "Your last name cannot have numbers or special characters."),
+	firstName: yup.string().matches(firstNameRegex, "Your first name cannot have numbers or special characters.").required('Please enter your first name.'),
+	lastName: yup.string().matches(lastNameRegex, "Your last name cannot have numbers or special characters."),
 	password: yup
 		.string()
 		.required()
