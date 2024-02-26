@@ -22,8 +22,8 @@
 	<Route path="/init" component={EntryPoint} />
 	<Route path="/register/:id" component={RegisterPage} />
 	<Route path="/register" component={RegisterPage} />
-	<Route path="/update/password" component={UpdatePassword} />
-	<Route path="/reset/password" component={ResetPassword} />
+	<Route path="/update/password/:id" component={UpdatePassword} />
+	<Route path="/reset/password/:id" component={ResetPassword} />
 	<Route path="/redirect" component={OauthRedirect} />
 	<!-- <Route path="/success" component={AuthSuccess} /> -->
 	<Route path="/*"><Navigate to="/init" /></Route>
