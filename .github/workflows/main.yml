@@ -1,4 +1,4 @@
-name: Azure Static Web App Deployment
+name: Production
 
 on:
   push:
