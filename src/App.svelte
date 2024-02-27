@@ -11,7 +11,7 @@
 	import OauthRedirect from './pages/Auth/oauth-redirect/OauthRedirect.svelte';
 	import AuthSuccess from './pages/Auth/auth-success/AuthSuccess.svelte';
 	import EntryPoint from './pages/Auth/entry-point/EntryPoint.svelte';
-	import bg from "$lib/assets/body-gradient.svg";
+	import bg from "$lib/assets/body-gradient.png";
 	export let url = '/';
 </script>
 
@@ -29,8 +29,8 @@
 	<Route path="/*"><Navigate to="/init" /></Route>
 </Router>
 <Toast/>
-<!-- <div style="height:300px; position:fixed; bottom:0; left:0;
-right:0;" class="w-100">
+<div style="height:300px; bottom:0; left:0;
+right:0; z-index:-1 !important" class="w-100 position-fixed">
 	<img src={bg} alt="" style="height:100%; width:100%;">
-</div> -->
+</div>
 
