@@ -9,7 +9,8 @@ const constants = {
   WORKSPACE_LIMIT: 5,
   API_LIMIT: 5,
   SPARROW_OAUTH:import.meta.env.VITE_SPARROW_OAUTH,
-  SPARROW_SUPPORT_EMAIL:import.meta.env.VITE_SPARROW_SUPPORT_EMAIL
+  SPARROW_SUPPORT_EMAIL:import.meta.env.VITE_SPARROW_SUPPORT_EMAIL,
+  SPARROW_TERMS_OF_SERVICE: import.meta.env.VITE_TERMS_OF_SERVICE
 };
 
 export default constants;
