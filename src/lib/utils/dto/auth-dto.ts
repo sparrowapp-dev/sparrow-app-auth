@@ -24,4 +24,11 @@ export interface resetPasswordPostBody {
   email: string;
   newPassword: string;
 }
+
+export interface RegisterUser {
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+}
 //i will create different interface here
