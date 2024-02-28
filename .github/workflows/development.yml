@@ -12,6 +12,7 @@ env:
   VITE_SPARROW_OAUTH: ${{ secrets.VITE_SPARROW_OAUTH_DEV }}
   VITE_ENABLE_MIX_PANEL: ${{ secrets.VITE_ENABLE_MIX_PANEL_DEV }}
   VITE_MIX_PANEL_TOKEN: ${{ secrets.VITE_MIX_PANEL_TOKEN_DEV }}
+  VITE_TERMS_OF_SERVICE: ${{ secrets.VITE_TERMS_OF_SERVICE_DEV }}
 
 jobs:
   build-and-deploy:
