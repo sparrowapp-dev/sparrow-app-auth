@@ -81,7 +81,8 @@
 				if (isPasswordValid1 && isPasswordValid1 && isPasswordValid1) {
 					const response = await handleResetPassword(resetPasswordCredential);
 					if (response.isSuccessful) {
-					  navigate("/login");
+						notifications.success("Password changed successfully");
+					  	navigate("/login");
 					} else {
 					  if (response.message === "Unauthorized Access") {
 					    notifications.error("Old Password and New Password cannot be same");
@@ -199,7 +200,7 @@
 			</div>
 
 			<div class="mt-4">
-				<button class="btn btn-primary w-100 text-whiteColor border-0">Sign In</button>
+				<button class="btn btn-primary w-100 text-whiteColor border-0">Submit</button>
 			</div>
 		</form>
 

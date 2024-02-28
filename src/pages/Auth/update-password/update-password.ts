@@ -1,3 +1,4 @@
+import { notifications } from "$lib/components/toast-notification/ToastNotification";
 import { verifyEmail } from "$lib/services/auth.service";
 import { errorMessageText } from "$lib/store/auth.store";
 import type { verifyPostbody } from "$lib/utils/dto";
@@ -20,7 +21,7 @@ export const handleVerifyEmail = async (
       errorMessageText.set("Please enter the 6-digit verification code.");
     }
 
-    if (response.message === "unauthorized") {
+    if (response.message === "Unauthorized Access") {
       errorMessageText.set(
         "You have entered wrong code, please check your email.",
       );

@@ -7,7 +7,10 @@
 	import { writable } from 'svelte/store';
 	import { onDestroy } from 'svelte';
 	import { Link, navigate } from 'svelte-navigator';
-  export let id;
+	import { notifications } from '$lib/components/toast-notification/ToastNotification';
+	import { forgotPassword } from '$lib/services/auth.service';
+	import Spinner from '$lib/components/transition/Spinner.svelte';
+  export let id: string;
 
 	const seconds = writable(59);
 	const verifyString = writable('');
@@ -73,6 +76,26 @@
 			errorMessage = value;
 		}
 	});
+	let resentCodeLoader = false;
+	const handleResend = async() =>{
+		resentCodeLoader = true;
+		const response =  await forgotPassword({email : id});
+		if (response.isSuccessful) {
+						notifications.success("Verification code sent successfully");
+			
+					} else {
+						notifications.error(response.message);
+					  
+		}
+		resentCodeLoader = false;
+	}
+	const onCodeInput = () => {
+		errorMessageText.set("");
+		isSuccessfulResponse.set(false);
+	}
+	onDestroy(()=>{
+		onCodeInput();
+	});
 </script>
 
 <div class="parent d-flex align-items-center justify-content-center text-white rounded">
@@ -128,6 +151,7 @@
 										} else if (verificationCode1.length > 1) {
 											verificationCode1 = verificationCode1.charAt(0);
 										}
+										onCodeInput();
 									}}
 								/>
 								<img src={lineIcon} alt="" />
@@ -151,6 +175,7 @@
 										} else if (verificationCode2.length > 1) {
 											verificationCode2 = verificationCode2.charAt(0);
 										}
+										onCodeInput();
 									}}
 								/>
 								<img src={lineIcon} alt="" />
@@ -174,6 +199,7 @@
 										} else if (verificationCode3.length > 1) {
 											verificationCode3 = verificationCode3.charAt(0);
 										}
+										onCodeInput();
 									}}
 								/>
 								<img src={lineIcon} alt="" />
@@ -197,6 +223,7 @@
 										} else if (verificationCode4.length > 1) {
 											verificationCode4 = verificationCode4.charAt(0);
 										}
+										onCodeInput();
 									}}
 								/>
 								<img src={lineIcon} alt="" />
@@ -220,6 +247,7 @@
 										} else if (verificationCode5.length > 1) {
 											verificationCode5 = verificationCode5.charAt(0);
 										}
+										onCodeInput();
 									}}
 								/>
 								<img src={lineIcon} alt="" />
@@ -243,6 +271,7 @@
 										} else if (verificationCode6.length > 1) {
 											verificationCode6 = verificationCode6.charAt(0);
 										}
+										onCodeInput();
 									}}
 									on:input={handleVerificationCode}
 								/>
@@ -292,15 +321,18 @@
 			</div>
 
 			{#if $seconds > 0}
-				<div class="d-flex gap-3">
-					<p style="font-size: 13px;">No email in your inbox or spam folder?</p>
-
-					<Link
-						to="/forgot/password"
+				<div class="d-flex gap-3 align-items-center">
+					<p style="font-size: 13px;" class="mb-0">No email in your inbox or spam folder?</p>
+					{#if !resentCodeLoader}
+					<span on:click={handleResend}
 						style="font-size: 13px;"
-						class="text-decoration-none text-primaryColor fw-bold"
+						class="cursor-pointer text-decoration-none text-primaryColor fw-bold"
 						>Resend
-					</Link>
+				</span>
+{:else}
+
+<Spinner size={'12px'} />
+					{/if}
 				</div>
 			{/if}
 		</div>
@@ -324,4 +356,8 @@
 	input {
 		background-color: transparent;
 	}
+	.cursor-pointer{
+		cursor: pointer;
+	}
 </style>
+ 
