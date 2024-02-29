@@ -5,7 +5,7 @@
 	import { handleVerifyEmail, isSuccessfulResponse } from './update-password';
 	import sparrowicon from '$lib/assets/sparrow-icon-bg.svg';
 	import { writable } from 'svelte/store';
-	import { onDestroy } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { Link, navigate } from 'svelte-navigator';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 	import { forgotPassword } from '$lib/services/auth.service';
@@ -16,12 +16,20 @@
 	const verifyString = writable('');
 	let verifyLength: string = '';
 
-	const timerInterval = setInterval(() => {
-		$seconds--;
-		if ($seconds === 0) clearInterval(timerInterval);
-	}, 1000);
+	let timer: number;
+	const startTimer = ()=>{
+		clearInterval(timer);
+		seconds.set(59);
+		timer = setInterval(() => {
+			$seconds--;
+			if ($seconds === 0) clearInterval(timer);
+		}, 1000);
+	}
 
-	onDestroy(() => clearInterval(timerInterval));
+	onMount(()=>{
+		startTimer();
+	});
+	onDestroy(() => clearInterval(timer));
 
 	let verifyCodeCredential = {
 		email: id || '',
@@ -81,7 +89,9 @@
 		resentCodeLoader = true;
 		const response =  await forgotPassword({email : id});
 		if (response.isSuccessful) {
+			
 						notifications.success("Verification code sent successfully");
+						startTimer();
 			
 					} else {
 						notifications.error(response.message);
@@ -297,7 +307,7 @@
 					{#if $seconds > 0}
 						<p>
 							If your email ID is registered with us then you would have received an email in your
-							inbox with verification link
+							inbox with verification code.
 						</p>
 					{:else}
 						<p>Please try again to reset your password.</p>
