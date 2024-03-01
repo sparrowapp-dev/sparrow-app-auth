@@ -6,6 +6,7 @@
 	import constants from '$lib/utils/constants';
 	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
+	import starIcon from '$lib/assets/starIcon.svg';
 
 	let isEmailTouched = false;
 	//---------------- Login Validation --------------------//
@@ -91,6 +92,7 @@
 				<p class="card-subtitle sparrow-fs-20 mb-3">Sign In or Create an Account</p>
 				<div class="mb-3">
 					<label for="exampleInputEmail1" class="form-label text-red sparrow-fs-14">Email</label>
+					<img src={starIcon} alt="" class="mb-3" style="width: 7px;" />
 					<input
 						type="email"
 						class="form-control sparrow-fs-16 border:{validationErrors?.email && isEmailTouched

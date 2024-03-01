@@ -12,6 +12,7 @@
 	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
 	import Oauth from '$lib/components/o-auth/Oauth.svelte';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
+	import constants from '$lib/utils/constants';
 	export let id;
 	let isRegistered = false;
 	let redirectRules = {
@@ -372,7 +373,7 @@
 						}}
 					/>
 					<label data-tauri-drag-region class="form-check-label ms-2" for="tnsCheckbox"
-						>I agree to the <a href="/register" class="text-decoration-none text-primaryColor"
+						>I agree to the <a href={constants.SPARROW_TERMS_OF_SERVICE} target="_blank" class="text-decoration-none text-primaryColor"
 							>Terms of Service</a
 						></label
 					>

@@ -12,7 +12,7 @@
 	let forgotPasswordCredential = {
 		email: ''
 	};
-
+	let responseError = "";
 	let isEmailTouched = false;
 </script>
 
@@ -38,7 +38,12 @@
 						if (response?.isSuccessful) {
 							navigate(`/update/password/${forgotPasswordCredential.email}`);
 						} else {
-							notifications.error(response?.message);
+							if(response.message === "Bad Request"){
+								responseError= "Email Id is not registered."
+							}
+							else{
+								notifications.error(response?.message);
+							}
 						}
 					}
 				}}
@@ -73,10 +78,14 @@
 						}}
 						on:input={async()=>{
 							validationErrors = await handleForgotPasswordValidation(forgotPasswordCredential);
+							responseError = "";
 						}}
 					/>
 					{#if validationErrors?.email && isEmailTouched}
 						<small class="form-text text-dangerColor"> {validationErrors?.email}</small>
+						{:else if responseError}
+						<small class="form-text text-dangerColor"> {responseError}</small>
+						
 					{/if}
 				</div>
 				<div class="sendButton">
