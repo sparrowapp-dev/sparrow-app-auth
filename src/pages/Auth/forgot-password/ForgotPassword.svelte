@@ -36,6 +36,7 @@
 					if(!validationErrors?.email){
 						const response  = await handleForgotPassword(forgotPasswordCredential);
 						if (response?.isSuccessful) {
+							localStorage.setItem(`timer-${forgotPasswordCredential.email}`, new Date().getTime());
 							navigate(`/update/password/${forgotPasswordCredential.email}`);
 						} else {
 							if(response.message === "Bad Request"){
