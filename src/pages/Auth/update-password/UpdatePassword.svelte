@@ -10,6 +10,7 @@
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 	import { forgotPassword } from '$lib/services/auth.service';
 	import Spinner from '$lib/components/transition/Spinner.svelte';
+	import Button from '$lib/components/button/Button.svelte';
   	export let id: string;
 
 	let seconds = 0;
@@ -116,6 +117,7 @@
 		errorMessageText.set("");
 		isSuccessfulResponse.set(false);
 	}
+	let verifyCodeLoader = false;
 	onDestroy(()=>{
 		onCodeInput();
 	});
@@ -327,19 +329,27 @@
 					{/if}
 				</div>
 				{#if seconds > 0}
-					<button
-						class="btn btn-primary bg-labelColor border-0 mb-2"
-						on:click|preventDefault={async () => {
+					<Button
+						disable={verifyCodeLoader}
+						title={"Verify"}
+						buttonClassProp={"w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16"}
+						type={"primary-gradient"}
+						loader={verifyCodeLoader}
+						onClick = {async()=>{
+							verifyCodeLoader = true;
 							validationErrors = await handleVerifyEmail(verifyCodeCredential);
-						}}>Verify</button
-					>
+							verifyCodeLoader = false;
+						}}
+				  	/>
 				{:else}
-					<button
-						class="btn btn-primary bg-labelColor border-0 mb-2"
-						on:click|preventDefault={() => {
+					<Button
+						onClick={()=>{
 							navigate('/forgot/password');
-						}}>Go Back</button
-					>
+						}}
+						title={"Go Back"}
+						buttonClassProp={"w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16"}
+						type={"primary-gradient"}
+				  	/>
 				{/if}
 			</div>
 

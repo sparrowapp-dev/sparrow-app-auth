@@ -13,6 +13,7 @@
 	import Oauth from '$lib/components/o-auth/Oauth.svelte';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 	import constants from '$lib/utils/constants';
+	import Button from '$lib/components/button/Button.svelte';
 	export let id;
 	let isRegistered = false;
 	let redirectRules = {
@@ -81,6 +82,7 @@
 			passwordInput.type = isPasswordVisible ? 'text' : 'password';
 		}
 	};
+	let registerLoader = false;
 </script>
 
 {#if isRegistered}
@@ -124,6 +126,7 @@
 						!validationErrors?.password &&
 						userData?.tnsCheckbox
 					) {
+						registerLoader = true;
 						const response = await handleRegister(userData);
 						if (response.isSuccessful) {
 							isRegistered = true;
@@ -153,6 +156,7 @@
 								notifications.error(response.message);
 							}
 						}
+						registerLoader = false;
 					}
 				}}
 			>
@@ -385,7 +389,13 @@
 				{/if}
 
 				<div class="mb-3 mt-4">
-					<button class="btn btn-primary w-100 text-whiteColor border-0">Sign Up</button>
+					<Button
+						disable={registerLoader}
+						title={"Sign Up"}
+						buttonClassProp={"w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16"}
+						type={"primary-gradient"}
+						loader={registerLoader}
+				  	/>
 				</div>
 			</form>
 			<Oauth />
@@ -395,9 +405,6 @@
 {/if}
 
 <style>
-	.btn-primary {
-		background: linear-gradient(270deg, #6147ff -1.72%, #1193f0 100%);
-	}
 	.eye-icon {
 		top: 10px;
 		right: 5px;

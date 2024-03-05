@@ -7,6 +7,7 @@
 	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 	import starIcon from '$lib/assets/starIcon.svg';
+	import Button from '$lib/components/button/Button.svelte';
 
 	let isEmailTouched = false;
 	//---------------- Login Validation --------------------//
@@ -28,6 +29,7 @@
 		buttonClick: () => {},
 		loadingMessage: 'Please wait while we are redirecting you to your email account....'
 	};
+	let entryLoader = false;
 </script>
 
 {#if isEntry}
@@ -60,6 +62,7 @@
 					isEmailTouched = true;
 					validationErrors = await handleEntryValidation(entryCredentials);
 					if (!validationErrors?.email) {
+						entryLoader = true;
 						const response = await handleEntry(entryCredentials);
 						if (response.isSuccessful) {
 							if (response?.data?.registeredWith === 'google') {
@@ -86,6 +89,7 @@
 						} else {
 							notifications.error(response?.message);
 						}
+						entryLoader = false;
 					}
 				}}
 			>
@@ -122,7 +126,13 @@
 				</div>
 
 				<div class="mb-1">
-					<button class="btn btn-primary w-100 text-whiteColor border-0">Continue</button>
+					<Button
+						disable={entryLoader}
+						title={"Continue"}
+						buttonClassProp={"w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16"}
+						type={"primary-gradient"}
+						loader={entryLoader}
+				  	/>
 				</div>
 			</form>
 			<SupportHelp />
@@ -131,9 +141,6 @@
 {/if}
 
 <style>
-	.btn-primary {
-		background: linear-gradient(270deg, #6147ff -1.72%, #1193f0 100%);
-	}
 	.parent {
 		min-height: 100vh;
 		overflow: auto;

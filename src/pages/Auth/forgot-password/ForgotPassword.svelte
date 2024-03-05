@@ -6,6 +6,7 @@
 
 	import {  navigate } from 'svelte-navigator';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
+	import Button from '$lib/components/button/Button.svelte';
 
 	let validationErrors: any = {};
 
@@ -14,6 +15,7 @@
 	};
 	let responseError = "";
 	let isEmailTouched = false;
+	let forgotPasswordLoader = false;
 </script>
 
 <div class="parent d-flex align-items-center justify-content-center text-white rounded">
@@ -34,6 +36,7 @@
 					isEmailTouched = true;
 					validationErrors = await handleForgotPasswordValidation(forgotPasswordCredential);
 					if(!validationErrors?.email){
+						forgotPasswordLoader = true;
 						const response  = await handleForgotPassword(forgotPasswordCredential);
 						if (response?.isSuccessful) {
 							localStorage.setItem(`timer-${forgotPasswordCredential.email}`, new Date().getTime());
@@ -46,6 +49,7 @@
 								notifications.error(response?.message);
 							}
 						}
+						forgotPasswordLoader = false;
 					}
 				}}
 			>
@@ -90,15 +94,18 @@
 					{/if}
 				</div>
 				<div class="sendButton">
-					<button class="btn btn-primary text-whiteColor w-100">Send Request</button>
+					<Button
+						disable={forgotPasswordLoader}
+						title={"Send Request"}
+						buttonClassProp={"w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16"}
+						type={"primary-gradient"}
+						loader={forgotPasswordLoader}
+				  	/>
 				</div>
 			</form>
 		</div>
 </div>
 <style>
-	.btn-primary {
-		background: linear-gradient(270deg, #6147ff -1.72%, #1193f0 100%);
-	}
 	.parent {
 		min-height: 100vh;
 		overflow: auto;

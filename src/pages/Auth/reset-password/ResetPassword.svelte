@@ -9,6 +9,7 @@
 	import sparrowicon from '$lib/assets/sparrow-icon-bg.svg';
 	import { navigate } from 'svelte-navigator';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
+	import Button from '$lib/components/button/Button.svelte';
 	export let id = "";
 	export let code = "";
 
@@ -60,6 +61,7 @@
 			passwordInput.type = isPasswordVisible ? 'text' : 'password';
 		}
 	};
+	let resetPasswordLoader = false;
 </script>
 
 <div class="parent d-flex align-items-center justify-content-center text-white rounded">
@@ -82,6 +84,7 @@
 				isPasswordTouched = true;
 				validatePassword();
 				if (isPasswordValid1 && isPasswordValid1 && isPasswordValid1) {
+					resetPasswordLoader = true;
 					if(resetPasswordCredential?.verificationCode?.length < 6){
 						notifications.error(sessionExpiredMessage);
 					}
@@ -99,6 +102,7 @@
 							}
 						}
 					}
+					resetPasswordLoader = false;
 				}
 			}}
 		>
@@ -208,7 +212,13 @@
 			</div>
 
 			<div class="mt-4">
-				<button class="btn btn-primary w-100 text-whiteColor border-0">Submit</button>
+				<Button
+						disable={resetPasswordLoader}
+						title={"Submit"}
+						buttonClassProp={"w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16"}
+						type={"primary-gradient"}
+						loader={resetPasswordLoader}
+				  	/>
 			</div>
 		</form>
 
