@@ -14,7 +14,7 @@ export const handleVerifyEmail = async (
   const response = await verifyEmail(verifyCodeCredential);
   if (response.isSuccessful) {
 		// notifications.success("Email Verified Successfully");
-		navigate(`/reset/password/${verifyCodeCredential.email}`);
+		navigate(`/reset/password/${verifyCodeCredential.email}/${verifyCodeCredential.verificationCode}`);
 	} else {
     isSuccessfulResponse.set(true);
     if (response.message === "verificationCode should not be empty") {

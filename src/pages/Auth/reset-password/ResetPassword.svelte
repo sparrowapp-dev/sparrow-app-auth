@@ -9,11 +9,13 @@
 	import sparrowicon from '$lib/assets/sparrow-icon-bg.svg';
 	import { navigate } from 'svelte-navigator';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
-	export let id;
+	export let id = "";
+	export let code = "";
 
 	let resetPasswordCredential = {
 		email: id || '',
-		newPassword: ''
+		newPassword: '',
+		verificationCode: code || ''
 	};
 
 	let isPasswordValid1 = false;
@@ -76,20 +78,26 @@
 			class="register-form text-whiteColor w-100 ps-1 pe-1 gap-16"
 			novalidate
 			on:submit|preventDefault={async () => {
+				const sessionExpiredMessage = "Session has timed out";
 				isPasswordTouched = true;
 				validatePassword();
 				if (isPasswordValid1 && isPasswordValid1 && isPasswordValid1) {
-					const response = await handleResetPassword(resetPasswordCredential);
-					if (response.isSuccessful) {
-						notifications.success("Password changed successfully");
-					  	navigate("/login");
-					} else {
-					  if (response.message === "Unauthorized Access") {
-					    notifications.error("Old Password and New Password cannot be same");
-					  }
-					  else{
-						notifications.error(response.message);
-					  }
+					if(resetPasswordCredential?.verificationCode?.length < 6){
+						notifications.error(sessionExpiredMessage);
+					}
+					else{
+						const response = await handleResetPassword(resetPasswordCredential);
+						if (response.isSuccessful) {
+							notifications.success("Password changed successfully");
+							navigate("/login");
+						} else {
+							if(response.message === "Verification Code Expired" || response.message === "Unauthorized Access"){
+								notifications.error(sessionExpiredMessage);
+							}
+							else{
+								notifications.error(response.message);
+							}
+						}
 					}
 				}
 			}}
