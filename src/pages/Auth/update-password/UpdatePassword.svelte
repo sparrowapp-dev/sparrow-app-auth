@@ -10,23 +10,36 @@
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 	import { forgotPassword } from '$lib/services/auth.service';
 	import Spinner from '$lib/components/transition/Spinner.svelte';
-  export let id: string;
+	import Button from '$lib/components/button/Button.svelte';
+  	export let id: string;
 
-	const seconds = writable(59);
+	let seconds = 0;
 	const verifyString = writable('');
 	let verifyLength: string = '';
 
 	let timer: number;
+	const calculateRemainingTime = () => {
+		const currentTime = new Date().getTime();
+		const storedTime = parseInt(localStorage.getItem(`timer-${id}`));
+		if(storedTime){
+			const elapsedTime = storedTime ? Math.floor((currentTime - storedTime) / 1000) : 0;
+			const remainingTime = Math.max(60 - elapsedTime, 0);
+			return remainingTime;
+		}
+		else{
+			return 0;
+		}
+	}
 	const startTimer = ()=>{
 		clearInterval(timer);
-		seconds.set(59);
 		timer = setInterval(() => {
-			$seconds--;
-			if ($seconds === 0) clearInterval(timer);
+			seconds = calculateRemainingTime();
+			if (seconds === 0) clearInterval(timer);
 		}, 1000);
 	}
 
 	onMount(()=>{
+		seconds = calculateRemainingTime();
 		startTimer();
 	});
 	onDestroy(() => clearInterval(timer));
@@ -91,6 +104,7 @@
 		if (response.isSuccessful) {
 			
 						notifications.success("Verification code sent successfully");
+						localStorage.setItem(`timer-${id}`, new Date().getTime());
 						startTimer();
 			
 					} else {
@@ -103,6 +117,7 @@
 		errorMessageText.set("");
 		isSuccessfulResponse.set(false);
 	}
+	let verifyCodeLoader = false;
 	onDestroy(()=>{
 		onCodeInput();
 	});
@@ -132,7 +147,7 @@
 
 						<span class="fw-bold text-whiteColor cursor-pointer">{emailText}</span>
 					</p>
-					{#if $seconds > 0}
+					{#if seconds > 0}
 						<div class="d-flex flex-column">
 							<div class="d-flex align-items-center">
 								<p class="mb-1 sparrow-fs-14">Verification Code</p>
@@ -295,16 +310,16 @@
 						</div>
 					{/if}
 
-					{#if $seconds > 0}
+					{#if seconds > 0}
 						<p>
 							The verification code will expire in <span class="fw-bold text-dangerColor"
-								>{$seconds} seconds</span
+								>{seconds} seconds</span
 							>
 						</p>
 					{:else}
 						<p class="fw-bold text-dangerColor">Verification code expired</p>
 					{/if}
-					{#if $seconds > 0}
+					{#if seconds > 0}
 						<p>
 							If your email ID is registered with us then you would have received an email in your
 							inbox with verification code.
@@ -313,24 +328,32 @@
 						<p>Please try again to reset your password.</p>
 					{/if}
 				</div>
-				{#if $seconds > 0}
-					<button
-						class="btn btn-primary bg-labelColor border-0 mb-2"
-						on:click|preventDefault={async () => {
+				{#if seconds > 0}
+					<Button
+						disable={verifyCodeLoader}
+						title={"Verify"}
+						buttonClassProp={"w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16"}
+						type={"primary-gradient"}
+						loader={verifyCodeLoader}
+						onClick = {async()=>{
+							verifyCodeLoader = true;
 							validationErrors = await handleVerifyEmail(verifyCodeCredential);
-						}}>Verify</button
-					>
+							verifyCodeLoader = false;
+						}}
+				  	/>
 				{:else}
-					<button
-						class="btn btn-primary bg-labelColor border-0 mb-2"
-						on:click|preventDefault={() => {
+					<Button
+						onClick={()=>{
 							navigate('/forgot/password');
-						}}>Go Back</button
-					>
+						}}
+						title={"Go Back"}
+						buttonClassProp={"w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16"}
+						type={"primary-gradient"}
+				  	/>
 				{/if}
 			</div>
 
-			{#if $seconds > 0}
+			{#if seconds > 0}
 				<div class="d-flex gap-3 align-items-center">
 					<p style="font-size: 13px;" class="mb-0">No email in your inbox or spam folder?</p>
 					{#if !resentCodeLoader}

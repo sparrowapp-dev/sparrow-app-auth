@@ -9,11 +9,14 @@
 	import sparrowicon from '$lib/assets/sparrow-icon-bg.svg';
 	import { navigate } from 'svelte-navigator';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
-	export let id;
+	import Button from '$lib/components/button/Button.svelte';
+	export let id = "";
+	export let code = "";
 
 	let resetPasswordCredential = {
 		email: id || '',
-		newPassword: ''
+		newPassword: '',
+		verificationCode: code || ''
 	};
 
 	let isPasswordValid1 = false;
@@ -58,6 +61,7 @@
 			passwordInput.type = isPasswordVisible ? 'text' : 'password';
 		}
 	};
+	let resetPasswordLoader = false;
 </script>
 
 <div class="parent d-flex align-items-center justify-content-center text-white rounded">
@@ -76,21 +80,29 @@
 			class="register-form text-whiteColor w-100 ps-1 pe-1 gap-16"
 			novalidate
 			on:submit|preventDefault={async () => {
+				const sessionExpiredMessage = "Session has timed out";
 				isPasswordTouched = true;
 				validatePassword();
 				if (isPasswordValid1 && isPasswordValid1 && isPasswordValid1) {
-					const response = await handleResetPassword(resetPasswordCredential);
-					if (response.isSuccessful) {
-						notifications.success("Password changed successfully");
-					  	navigate("/login");
-					} else {
-					  if (response.message === "Unauthorized Access") {
-					    notifications.error("Old Password and New Password cannot be same");
-					  }
-					  else{
-						notifications.error(response.message);
-					  }
+					resetPasswordLoader = true;
+					if(resetPasswordCredential?.verificationCode?.length < 6){
+						notifications.error(sessionExpiredMessage);
 					}
+					else{
+						const response = await handleResetPassword(resetPasswordCredential);
+						if (response.isSuccessful) {
+							notifications.success("Password changed successfully");
+							navigate("/login");
+						} else {
+							if(response.message === "Verification Code Expired" || response.message === "Unauthorized Access"){
+								notifications.error(sessionExpiredMessage);
+							}
+							else{
+								notifications.error(response.message);
+							}
+						}
+					}
+					resetPasswordLoader = false;
 				}
 			}}
 		>
@@ -200,7 +212,13 @@
 			</div>
 
 			<div class="mt-4">
-				<button class="btn btn-primary w-100 text-whiteColor border-0">Submit</button>
+				<Button
+						disable={resetPasswordLoader}
+						title={"Submit"}
+						buttonClassProp={"w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16"}
+						type={"primary-gradient"}
+						loader={resetPasswordLoader}
+				  	/>
 			</div>
 		</form>
 

@@ -13,6 +13,7 @@
 	import Oauth from '$lib/components/o-auth/Oauth.svelte';
 	import starIcon from '$lib/assets/starIcon.svg';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
+	import Button from '$lib/components/button/Button.svelte';
 	export let id;
 
 	let isEmailTouched = false;
@@ -50,6 +51,7 @@
 		buttonClick: () => {},
 		loadingMessage: 'Please wait while we sign you in....'
 	};
+	let loginLoader = false;
 </script>
 
 {#if isLogin}
@@ -83,6 +85,7 @@
 					isEmailTouched = true;
 					validationErrors = await handleLoginValidation(loginCredentials);
 					if (!validationErrors?.email && !validationErrors?.password) {
+						loginLoader = true;
 						const result = await handleLogin(loginCredentials);
 						if (result.isSuccessful) {
 							const response = result.data;
@@ -115,6 +118,7 @@
 								notifications.error(response);
 							}
 						}
+						loginLoader = false;
 					}
 				}}
 			>
@@ -210,9 +214,13 @@
 				</div>
 
 				<div class="mb-1">
-					<button class="btn btn-primary w-100 text-whiteColor border-0" on:click={() => {}}
-						>Sign In</button
-					>
+					<Button
+						disable={loginLoader}
+						title={"Sign In"}
+						buttonClassProp={"w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16"}
+						type={"primary-gradient"}
+						loader={loginLoader}
+				  	/>
 				</div>
 			</form>
 			<Oauth />
@@ -227,11 +235,7 @@
 		right: 5px;
 		background-color: transparent;
 	}
-
-	.btn-primary {
-		background: linear-gradient(270deg, #6147ff -1.72%, #1193f0 100%);
-	}
-
+	
 	.parent {
 		min-height: 100vh;
 		overflow: auto;
