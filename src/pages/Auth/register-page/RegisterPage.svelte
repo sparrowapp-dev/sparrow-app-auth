@@ -177,6 +177,7 @@
 						autocorrect="off"
 						autocapitalize="none"
 						autocomplete="off"
+						disabled="true"
 						bind:value={userData.email}
 						on:blur={async () => {
 							isEmailTouched = true;
