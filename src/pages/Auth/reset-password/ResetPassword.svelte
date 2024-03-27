@@ -92,7 +92,7 @@
 						const response = await handleResetPassword(resetPasswordCredential);
 						if (response.isSuccessful) {
 							notifications.success("Password changed successfully");
-							navigate("/login");
+							navigate(`/login/${id}`);
 						} else {
 							if(response.message === "Verification Code Expired" || response.message === "Unauthorized Access"){
 								notifications.error(sessionExpiredMessage);
