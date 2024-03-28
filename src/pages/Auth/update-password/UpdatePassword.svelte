@@ -11,7 +11,7 @@
 	import { forgotPassword } from '$lib/services/auth.service';
 	import Spinner from '$lib/components/transition/Spinner.svelte';
 	import Button from '$lib/components/button/Button.svelte';
-  	export let id: string;
+	export let id: string;
 
 	let seconds = 0;
 	const verifyString = writable('');
@@ -21,24 +21,23 @@
 	const calculateRemainingTime = () => {
 		const currentTime = new Date().getTime();
 		const storedTime = parseInt(localStorage.getItem(`timer-${id}`));
-		if(storedTime){
+		if (storedTime) {
 			const elapsedTime = storedTime ? Math.floor((currentTime - storedTime) / 1000) : 0;
 			const remainingTime = Math.max(60 - elapsedTime, 0);
 			return remainingTime;
-		}
-		else{
+		} else {
 			return 0;
 		}
-	}
-	const startTimer = ()=>{
+	};
+	const startTimer = () => {
 		clearInterval(timer);
 		timer = setInterval(() => {
 			seconds = calculateRemainingTime();
 			if (seconds === 0) clearInterval(timer);
 		}, 1000);
-	}
+	};
 
-	onMount(()=>{
+	onMount(() => {
 		seconds = calculateRemainingTime();
 		startTimer();
 	});
@@ -100,29 +99,93 @@
 		}
 	});
 	let resentCodeLoader = false;
-	const handleResend = async() =>{
+	const handleResend = async () => {
 		resentCodeLoader = true;
-		const response =  await forgotPassword({email : id});
+		const response = await forgotPassword({ email: id });
 		if (response.isSuccessful) {
-			
-						notifications.success("Verification code sent successfully");
-						localStorage.setItem(`timer-${id}`, new Date().getTime());
-						startTimer();
-			
-					} else {
-						notifications.error(response.message);
-					  
+			notifications.success('Verification code sent successfully');
+			localStorage.setItem(`timer-${id}`, new Date().getTime());
+			startTimer();
+		} else {
+			notifications.error(response.message);
 		}
 		resentCodeLoader = false;
-	}
+	};
 	const onCodeInput = () => {
-		errorMessageText.set("");
+		errorMessageText.set('');
 		isSuccessfulResponse.set(false);
-	}
+	};
 	let verifyCodeLoader = false;
-	onDestroy(()=>{
+	onDestroy(() => {
 		onCodeInput();
 	});
+
+	function handlePaste(event) {
+		event.preventDefault();
+		const clipboardData = event?.clipboardData || window?.clipboardData;
+		const pastedText = clipboardData.getData('text').trim().slice(0, 6); // Considering you have 6 input fields
+		verificationCode1 = '';
+		verificationCode2 = '';
+		verificationCode3 = '';
+		verificationCode4 = '';
+		verificationCode5 = '';
+		verificationCode6 = '';
+		// Update the values in the array
+		const otpInputs = pastedText.split('');
+
+		// Update the input fields
+		if (otpInputs[0]) {
+			verificationCode1 = otpInputs[0];
+		} else {
+			document.getElementById('verificationCode1')?.focus();
+			onCodeInput();
+			handleVerificationCode();
+			return;
+		}
+		if (otpInputs[1]) {
+			verificationCode2 = otpInputs[1];
+		} else {
+			document.getElementById('verificationCode2')?.focus();
+			onCodeInput();
+			handleVerificationCode();
+			return;
+		}
+		if (otpInputs[2]) {
+			verificationCode3 = otpInputs[2];
+		} else {
+			document.getElementById('verificationCode3')?.focus();
+			onCodeInput();
+			handleVerificationCode();
+			return;
+		}
+		if (otpInputs[3]) {
+			verificationCode4 = otpInputs[3];
+		} else {
+			document.getElementById('verificationCode4')?.focus();
+			onCodeInput();
+			handleVerificationCode();
+			return;
+		}
+		if (otpInputs[4]) {
+			verificationCode5 = otpInputs[4];
+		} else {
+			document.getElementById('verificationCode5')?.focus();
+			onCodeInput();
+			handleVerificationCode();
+			return;
+		}
+		if (otpInputs[5]) {
+			verificationCode6 = otpInputs[5];
+		} else {
+			document.getElementById('verificationCode6')?.focus();
+			onCodeInput();
+			handleVerificationCode();
+			return;
+		}
+		document.getElementById('verificationCode6')?.focus();
+		onCodeInput();
+		handleVerificationCode();
+	}
 </script>
 
 <div class="parent d-flex align-items-center justify-content-center text-white rounded">
@@ -173,17 +236,22 @@
 										: 'border-default'}"
 									style="width:48px;height:36px;border-none"
 									bind:value={verificationCode1}
+									on:click={(e) => {
+										e.target.select();
+									}}
 									on:input={(e) => {
 										if (verificationCode1.length === 1) {
 											document.getElementById('verificationCode2')?.focus();
+											document.getElementById('verificationCode2')?.select();
 										} else if (e.inputType === 'insertText' && verificationCode1.length > 1) {
-											verificationCode1 = verificationCode1.charAt(0);
-											verificationCode2 = e.data;
+											verificationCode1 = verificationCode1.charAt(1);
 											document.getElementById('verificationCode2')?.focus();
+											document.getElementById('verificationCode2')?.select();
 										}
 										onCodeInput();
 									}}
 									on:input={handleVerificationCode}
+									on:paste={handlePaste}
 								/>
 								<img src={lineIcon} alt="" />
 								<input
@@ -200,24 +268,27 @@
 										? 'border-error'
 										: 'border-default'}"
 									bind:value={verificationCode2}
+									on:click={(e) => {
+										e.target.select();
+									}}
 									on:input={(e) => {
-										if (e.inputType === 'deleteContentBackward' && verificationCode2.length === 0) {
-											document.getElementById('verificationCode1')?.focus();
-										} else if (verificationCode2.length === 1) {
+										if (verificationCode2.length === 1) {
 											document.getElementById('verificationCode3')?.focus();
+											document.getElementById('verificationCode3')?.select();
 										} else if (e.inputType === 'insertText' && verificationCode2.length > 1) {
-											verificationCode2 = verificationCode2.charAt(0);
-											verificationCode3 = e.data;
+											verificationCode2 = verificationCode2.charAt(1);
 											document.getElementById('verificationCode3')?.focus();
+											document.getElementById('verificationCode3')?.select();
 										}
 										onCodeInput();
 									}}
 									on:keydown={(e) => {
-										if (e.key === "Backspace" && verificationCode2.length === 0) {
+										if (e.key === 'Backspace' && verificationCode2.length === 0) {
 											document.getElementById('verificationCode1')?.focus();
 										}
 									}}
 									on:input={handleVerificationCode}
+									on:paste={handlePaste}
 								/>
 								<img src={lineIcon} alt="" />
 								<input
@@ -234,24 +305,28 @@
 										? 'border-error'
 										: 'border-default'}"
 									bind:value={verificationCode3}
+									on:click={(e) => {
+										e.target.select();
+									}}
 									on:input={(e) => {
-										if (e.inputType === 'deleteContentBackward' && verificationCode3.length === 0) {
-											document.getElementById('verificationCode2')?.focus();
-										} else if (verificationCode3.length === 1) {
+										if (verificationCode3.length === 1) {
 											document.getElementById('verificationCode4')?.focus();
+											document.getElementById('verificationCode4')?.select();
 										} else if (e.inputType === 'insertText' && verificationCode3.length > 1) {
-											verificationCode3 = verificationCode3.charAt(0);
-											verificationCode4 = e.data;
+											verificationCode3 = verificationCode3.charAt(1);
+
 											document.getElementById('verificationCode4')?.focus();
+											document.getElementById('verificationCode4')?.select();
 										}
 										onCodeInput();
 									}}
 									on:keydown={(e) => {
-										if (e.key === "Backspace" && verificationCode3.length === 0) {
+										if (e.key === 'Backspace' && verificationCode3.length === 0) {
 											document.getElementById('verificationCode2')?.focus();
 										}
 									}}
 									on:input={handleVerificationCode}
+									on:paste={handlePaste}
 								/>
 								<img src={lineIcon} alt="" />
 								<input
@@ -268,24 +343,28 @@
 										? 'border-error'
 										: 'border-default'}"
 									bind:value={verificationCode4}
+									on:click={(e) => {
+										e.target.select();
+									}}
 									on:input={(e) => {
-										if (e.inputType === 'deleteContentBackward' && verificationCode4.length === 0) {
-											document.getElementById('verificationCode3')?.focus();
-										} else if (verificationCode4.length === 1) {
+										if (verificationCode4.length === 1) {
 											document.getElementById('verificationCode5')?.focus();
+											document.getElementById('verificationCode5')?.select();
 										} else if (e.inputType === 'insertText' && verificationCode4.length > 1) {
-											verificationCode4 = verificationCode4.charAt(0);
-											verificationCode5 = e.data;
+											verificationCode4 = verificationCode4.charAt(1);
+
 											document.getElementById('verificationCode5')?.focus();
+											document.getElementById('verificationCode5')?.select();
 										}
 										onCodeInput();
 									}}
 									on:keydown={(e) => {
-										if (e.key === "Backspace" && verificationCode4.length === 0) {
+										if (e.key === 'Backspace' && verificationCode4.length === 0) {
 											document.getElementById('verificationCode3')?.focus();
 										}
 									}}
 									on:input={handleVerificationCode}
+									on:paste={handlePaste}
 								/>
 								<img src={lineIcon} alt="" />
 								<input
@@ -302,24 +381,27 @@
 										? 'border-error'
 										: 'border-default'}"
 									bind:value={verificationCode5}
+									on:click={(e) => {
+										e.target.select();
+									}}
 									on:input={(e) => {
-										if (e.inputType === 'deleteContentBackward' && verificationCode5.length === 0) {
-											document.getElementById('verificationCode4')?.focus();
-										} else if (verificationCode5.length === 1) {
+										if (verificationCode5.length === 1) {
 											document.getElementById('verificationCode6')?.focus();
+											document.getElementById('verificationCode6')?.select();
 										} else if (e.inputType === 'insertText' && verificationCode5.length > 1) {
-											verificationCode5 = verificationCode5.charAt(0);
-											verificationCode6 = e.data;
+											verificationCode5 = verificationCode5.charAt(1);
 											document.getElementById('verificationCode6')?.focus();
+											document.getElementById('verificationCode6')?.select();
 										}
 										onCodeInput();
 									}}
 									on:keydown={(e) => {
-										if (e.key === "Backspace" && verificationCode5.length === 0) {
+										if (e.key === 'Backspace' && verificationCode5.length === 0) {
 											document.getElementById('verificationCode4')?.focus();
 										}
 									}}
 									on:input={handleVerificationCode}
+									on:paste={handlePaste}
 								/>
 								<img src={lineIcon} alt="" />
 								<input
@@ -336,22 +418,22 @@
 										? 'border-error'
 										: 'border-default'}"
 									bind:value={verificationCode6}
+									on:click={(e) => {
+										e.target.select();
+									}}
 									on:input={(e) => {
-										if (e.inputType === 'deleteContentBackward' && verificationCode6.length === 0) {
-											document.getElementById('verificationCode5')?.focus();
-										} else if (verificationCode6.length === 1) {
-											document.getElementById('verificationCode7')?.focus();
-										} else if (verificationCode6.length > 1) {
-											verificationCode6 = verificationCode6.charAt(0);
+										if (verificationCode6.length > 1) {
+											verificationCode6 = verificationCode6.charAt(1);
 										}
 										onCodeInput();
 									}}
 									on:keydown={(e) => {
-										if (e.key === "Backspace" && verificationCode6.length === 0) {
+										if (e.key === 'Backspace' && verificationCode6.length === 0) {
 											document.getElementById('verificationCode5')?.focus();
 										}
 									}}
 									on:input={handleVerificationCode}
+									on:paste={handlePaste}
 								/>
 							</div>
 							{#if verificationCodeError === true}<small class="form-text text-dangerColor"
@@ -384,25 +466,25 @@
 				{#if seconds > 0}
 					<Button
 						disable={verifyCodeLoader}
-						title={"Verify"}
-						buttonClassProp={"w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16"}
-						type={"primary-gradient"}
+						title={'Verify'}
+						buttonClassProp={'w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16'}
+						type={'primary-gradient'}
 						loader={verifyCodeLoader}
-						onClick = {async()=>{
+						onClick={async () => {
 							verifyCodeLoader = true;
 							validationErrors = await handleVerifyEmail(verifyCodeCredential);
 							verifyCodeLoader = false;
 						}}
-				  	/>
+					/>
 				{:else}
 					<Button
-						onClick={()=>{
+						onClick={() => {
 							navigate('/forgot/password');
 						}}
-						title={"Go Back"}
-						buttonClassProp={"w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16"}
-						type={"primary-gradient"}
-				  	/>
+						title={'Go Back'}
+						buttonClassProp={'w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16'}
+						type={'primary-gradient'}
+					/>
 				{/if}
 			</div>
 
@@ -410,14 +492,14 @@
 				<div class="d-flex gap-3 align-items-center">
 					<p style="font-size: 13px;" class="mb-0">No email in your inbox or spam folder?</p>
 					{#if !resentCodeLoader}
-					<span on:click={handleResend}
-						style="font-size: 13px;"
-						class="cursor-pointer text-decoration-none text-primaryColor fw-bold"
-						>Resend
-				</span>
-{:else}
-
-<Spinner size={'12px'} />
+						<span
+							on:click={handleResend}
+							style="font-size: 13px;"
+							class="cursor-pointer text-decoration-none text-primaryColor fw-bold"
+							>Resend
+						</span>
+					{:else}
+						<Spinner size={'12px'} />
 					{/if}
 				</div>
 			{/if}
@@ -442,8 +524,7 @@
 	input {
 		background-color: transparent;
 	}
-	.cursor-pointer{
+	.cursor-pointer {
 		cursor: pointer;
 	}
 </style>
- 
