@@ -212,7 +212,7 @@
 
 						<span class="fw-bold text-whiteColor cursor-pointer">{emailText}</span>
 					</p>
-					{#if true}
+					{#if seconds > 0}
 						<div class="d-flex flex-column">
 							<div class="d-flex align-items-center">
 								<p class="mb-1 sparrow-fs-14">Verification Code</p>
