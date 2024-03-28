@@ -124,56 +124,62 @@
 		event.preventDefault();
 		const clipboardData = event?.clipboardData || window?.clipboardData;
 		const pastedText = clipboardData.getData('text').trim().slice(0, 6); // Considering you have 6 input fields
-		verificationCode1 = "";
-		verificationCode2 = "";
-		verificationCode3 = "";
-		verificationCode4 = "";
-		verificationCode5 = "";
-		verificationCode6 = "";
+		verificationCode1 = '';
+		verificationCode2 = '';
+		verificationCode3 = '';
+		verificationCode4 = '';
+		verificationCode5 = '';
+		verificationCode6 = '';
 		// Update the values in the array
 		const otpInputs = pastedText.split('');
 
 		// Update the input fields
 		if (otpInputs[0]) {
 			verificationCode1 = otpInputs[0];
-		}
-		else{
+		} else {
 			document.getElementById('verificationCode1')?.focus();
+			onCodeInput();
+			handleVerificationCode();
 			return;
 		}
 		if (otpInputs[1]) {
 			verificationCode2 = otpInputs[1];
-		}
-		else{
+		} else {
 			document.getElementById('verificationCode2')?.focus();
+			onCodeInput();
+			handleVerificationCode();
 			return;
 		}
 		if (otpInputs[2]) {
 			verificationCode3 = otpInputs[2];
-		}
-		else{
+		} else {
 			document.getElementById('verificationCode3')?.focus();
+			onCodeInput();
+			handleVerificationCode();
 			return;
 		}
 		if (otpInputs[3]) {
 			verificationCode4 = otpInputs[3];
-		}
-		else{
+		} else {
 			document.getElementById('verificationCode4')?.focus();
+			onCodeInput();
+			handleVerificationCode();
 			return;
 		}
 		if (otpInputs[4]) {
 			verificationCode5 = otpInputs[4];
-		}
-		else{
+		} else {
 			document.getElementById('verificationCode5')?.focus();
+			onCodeInput();
+			handleVerificationCode();
 			return;
 		}
 		if (otpInputs[5]) {
 			verificationCode6 = otpInputs[5];
-		}
-		else{
+		} else {
 			document.getElementById('verificationCode6')?.focus();
+			onCodeInput();
+			handleVerificationCode();
 			return;
 		}
 		document.getElementById('verificationCode6')?.focus();
@@ -230,7 +236,9 @@
 										: 'border-default'}"
 									style="width:48px;height:36px;border-none"
 									bind:value={verificationCode1}
-									on:click={(e)=>{e.target.select()}}
+									on:click={(e) => {
+										e.target.select();
+									}}
 									on:input={(e) => {
 										if (verificationCode1.length === 1) {
 											document.getElementById('verificationCode2')?.focus();
@@ -260,9 +268,11 @@
 										? 'border-error'
 										: 'border-default'}"
 									bind:value={verificationCode2}
-									on:click={(e)=>{e.target.select()}}
+									on:click={(e) => {
+										e.target.select();
+									}}
 									on:input={(e) => {
-									if (verificationCode2.length === 1) {
+										if (verificationCode2.length === 1) {
 											document.getElementById('verificationCode3')?.focus();
 											document.getElementById('verificationCode3')?.select();
 										} else if (e.inputType === 'insertText' && verificationCode2.length > 1) {
@@ -295,14 +305,16 @@
 										? 'border-error'
 										: 'border-default'}"
 									bind:value={verificationCode3}
-									on:click={(e)=>{e.target.select()}}
+									on:click={(e) => {
+										e.target.select();
+									}}
 									on:input={(e) => {
 										if (verificationCode3.length === 1) {
 											document.getElementById('verificationCode4')?.focus();
 											document.getElementById('verificationCode4')?.select();
 										} else if (e.inputType === 'insertText' && verificationCode3.length > 1) {
 											verificationCode3 = verificationCode3.charAt(1);
-											
+
 											document.getElementById('verificationCode4')?.focus();
 											document.getElementById('verificationCode4')?.select();
 										}
@@ -331,14 +343,16 @@
 										? 'border-error'
 										: 'border-default'}"
 									bind:value={verificationCode4}
-									on:click={(e)=>{e.target.select()}}
+									on:click={(e) => {
+										e.target.select();
+									}}
 									on:input={(e) => {
-										 if (verificationCode4.length === 1) {
+										if (verificationCode4.length === 1) {
 											document.getElementById('verificationCode5')?.focus();
 											document.getElementById('verificationCode5')?.select();
 										} else if (e.inputType === 'insertText' && verificationCode4.length > 1) {
 											verificationCode4 = verificationCode4.charAt(1);
-										
+
 											document.getElementById('verificationCode5')?.focus();
 											document.getElementById('verificationCode5')?.select();
 										}
@@ -367,9 +381,11 @@
 										? 'border-error'
 										: 'border-default'}"
 									bind:value={verificationCode5}
-									on:click={(e)=>{e.target.select()}}
+									on:click={(e) => {
+										e.target.select();
+									}}
 									on:input={(e) => {
-										 if (verificationCode5.length === 1) {
+										if (verificationCode5.length === 1) {
 											document.getElementById('verificationCode6')?.focus();
 											document.getElementById('verificationCode6')?.select();
 										} else if (e.inputType === 'insertText' && verificationCode5.length > 1) {
@@ -402,7 +418,9 @@
 										? 'border-error'
 										: 'border-default'}"
 									bind:value={verificationCode6}
-									on:click={(e)=>{e.target.select()}}
+									on:click={(e) => {
+										e.target.select();
+									}}
 									on:input={(e) => {
 										if (verificationCode6.length === 1) {
 											document.getElementById('verificationCode7')?.focus();
