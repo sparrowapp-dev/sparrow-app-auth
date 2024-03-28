@@ -422,10 +422,8 @@
 										e.target.select();
 									}}
 									on:input={(e) => {
-										if (verificationCode6.length === 1) {
-											document.getElementById('verificationCode7')?.focus();
-										} else if (verificationCode6.length > 1) {
-											verificationCode6 = verificationCode6.charAt(0);
+										if (verificationCode6.length > 1) {
+											verificationCode6 = verificationCode6.charAt(1);
 										}
 										onCodeInput();
 									}}
