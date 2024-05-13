@@ -6,8 +6,8 @@
 		navigate(constants.SPARROW_OAUTH);
 	};
 </script>
-<div class="d-flex flex-column align-items-center pb-3 justify-content-center">
-    <p>or continue with</p>
+<div class="d-flex flex-column align-items-center py-3 justify-content-center">
+    <p class="sparrow-fs-12 mb-2">or continue with</p>
     <div class="d-flex gap-4">
         <button
             on:click={handleSignInWithGoogle}

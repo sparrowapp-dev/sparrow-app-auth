@@ -3,7 +3,7 @@
 	import starIcon from '$lib/assets/starIcon.svg';
 	import { errorMessageText, isLoading, username } from '$lib/store/auth.store';
 	import { handleVerifyEmail, isSuccessfulResponse } from './update-password';
-	import sparrowicon from '$lib/assets/sparrow-icon-bg.svg';
+	import sparrowicon from '$lib/assets/logoSparrowSquare.svg';
 	import { writable } from 'svelte/store';
 	import { onDestroy, onMount } from 'svelte';
 	import { Link, navigate } from 'svelte-navigator';
@@ -112,13 +112,39 @@
 
 <div class="parent d-flex align-items-center justify-content-center text-white rounded">
 	<div
-		class="auth-content rounded container d-flex flex-column align-items-center justify-content-center w-100"
+		class="position-relative overflow-hidden auth-content rounded-4 container d-flex flex-column align-items-center justify-content-center w-100"
 	>
-		<div class="text-white d-flex justify-content-center align-items-center">
-			<img src={sparrowicon} width="60px" alt="" class="" />
+		<div style="position: absolute; top: 0; left: 0; height: 100%; width: 100%; background: var(--bg-container);
+			backdrop-filter: blur( 50px );
+			-webkit-backdrop-filter: blur( 50px );border: 1px solid var(--bg-container-border);
+			border-radius: 10px; z-index: 0;">
+		</div>
+		<div style="width: 39px;
+			height: 104px;
+			opacity: 0.256;background: var(--bg-container-one);
+			border-radius: 100%; position: absolute; top: calc(250px - 72px); left: -20px;
+			z-index: -1;
+		"></div>
+		<div style="width: 305px;
+			height: 77px;background: var(--bg-container-two);
+			opacity: 0.26;
+			border-radius: 100%; position: absolute; top: 0; left: calc(250px - 152px); z-index: -1;
+		"></div>
+		<div style="width: 131px;
+			height: 85px;
+			opacity: 0.256;background: var(--bg-container-three);
+			border-radius: 100%; position: absolute; top: calc(250px - 60px); right: 0px; z-index: -1;
+		"></div>
+		<div style="width: 305px;
+			height: 77px;
+			opacity: 0.26;background: var(--bg-container-four);
+			border-radius: 100%; position: absolute; bottom: -35px; left: calc(250px - 150px); z-index: -1;
+		"></div>
+		<div class=" d-flex flex-column align-items-center justify-content-center w-100" style="z-index: 100;">
+		<div class="text-white d-flex justify-content-center align-items-center bg-sparrowPrimaryColor" style="height: 60px; width: 60px; border-radius: 6px;">
+			<img src={sparrowicon} alt="" class="" />
 		</div>
 		<p
-			class="container-header pt-4 pb-5 sparrow-fs-28 text-whiteColor text-center ms-2 me-2 fw-bold"
 		>
 			Welcome to Sparrow!
 		</p>
@@ -399,6 +425,7 @@
 				</div>
 			{/if}
 		</div>
+		</div>
 	</div>
 </div>
 
@@ -412,9 +439,8 @@
 	}
 	.auth-content {
 		margin: 30px !important;
-		background: linear-gradient(to bottom, rgba(51, 51, 51, 0.16), rgba(42, 42, 51, 1));
 		max-width: 504px;
-		padding: 48px 48px 64px 48px !important;
+		padding: 48px !important;
 	}
 	input {
 		background-color: transparent;
