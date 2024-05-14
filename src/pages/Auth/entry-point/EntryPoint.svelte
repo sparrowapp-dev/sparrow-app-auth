@@ -8,6 +8,7 @@
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 	import Oauth from '$lib/components/o-auth/Oauth.svelte';
 	import starIcon from '$lib/assets/starIcon.svg';
+	import Button from '$lib/components/button/Button.svelte';
 
 	let isEmailTouched = false;
 	//---------------- Login Validation --------------------//
@@ -29,6 +30,7 @@
 		buttonClick: () => {},
 		loadingMessage: 'Please wait while we are redirecting you to your email account....'
 	};
+	let entryLoader = false;
 </script>
 
 {#if isEntry}
@@ -172,11 +174,8 @@
 		margin: 30px !important;
 		/* background: linear-gradient(to bottom, rgba(51, 51, 51, 0.16), rgba(42, 42, 51, 1)); */
 		max-width: 504px;
-		padding: 48px !important;
 		border-radius: 30px;
 		border: 1px solid #FFFFFF17;
 	}
-	input {
-		background-color: transparent;
 	}
 </style>

@@ -23,6 +23,7 @@ export interface verifyPostbody {
 export interface resetPasswordPostBody {
   email: string;
   newPassword: string;
+  verificationCode: string;
 }
 
 export interface RegisterUser {

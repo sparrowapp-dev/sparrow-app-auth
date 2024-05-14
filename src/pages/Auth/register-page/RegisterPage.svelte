@@ -13,6 +13,7 @@
 	import Oauth from '$lib/components/o-auth/Oauth.svelte';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 	import constants from '$lib/utils/constants';
+	import Button from '$lib/components/button/Button.svelte';
 	export let id;
 	let isRegistered = false;
 	let redirectRules = {
@@ -81,6 +82,7 @@
 			passwordInput.type = isPasswordVisible ? 'text' : 'password';
 		}
 	};
+	let registerLoader = false;
 </script>
 
 {#if isRegistered}
@@ -421,9 +423,6 @@
 {/if}
 
 <style>
-	.btn-primary {
-		background: linear-gradient(270deg, #6147ff -1.72%, #1193f0 100%);
-	}
 	.eye-icon {
 		top: 10px;
 		right: 5px;

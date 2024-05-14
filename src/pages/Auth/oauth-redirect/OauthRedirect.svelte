@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { navigate } from 'svelte-navigator';
 	import Redirect from '../redirect/Redirect.svelte';
+	import constants from '$lib/utils/constants';
 
 	onMount(() => {
 		const urlParams = new URLSearchParams(window.location.search);
@@ -23,7 +24,7 @@
 				redirectRules.buttonClick = () => {
 					navigate(sparrowRedirect);
 				};
-			}, 5000);
+			}, constants.API_REDIRECT_TIMEOUT);
 		}
 	});
 	let redirectRules = {

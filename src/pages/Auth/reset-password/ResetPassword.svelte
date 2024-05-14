@@ -9,11 +9,14 @@
 	import sparrowicon from '$lib/assets/logoSparrowSquare.svg';
 	import { navigate } from 'svelte-navigator';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
-	export let id;
+	import Button from '$lib/components/button/Button.svelte';
+	export let id = "";
+	export let code = "";
 
 	let resetPasswordCredential = {
 		email: id || '',
-		newPassword: ''
+		newPassword: '',
+		verificationCode: code || ''
 	};
 
 	let isPasswordValid1 = false;
@@ -58,6 +61,7 @@
 			passwordInput.type = isPasswordVisible ? 'text' : 'password';
 		}
 	};
+	let resetPasswordLoader = false;
 </script>
 
 <div class="parent d-flex align-items-center justify-content-center text-white rounded">

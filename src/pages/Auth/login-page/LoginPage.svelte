@@ -13,6 +13,7 @@
 	import Oauth from '$lib/components/o-auth/Oauth.svelte';
 	import starIcon from '$lib/assets/starIcon.svg';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
+	import Button from '$lib/components/button/Button.svelte';
 	export let id;
 
 	let isEmailTouched = false;
@@ -50,6 +51,7 @@
 		buttonClick: () => {},
 		loadingMessage: 'Please wait while we sign you in....'
 	};
+	let loginLoader = false;
 </script>
 
 {#if isLogin}

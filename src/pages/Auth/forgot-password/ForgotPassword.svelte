@@ -6,6 +6,7 @@
 
 	import {  navigate } from 'svelte-navigator';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
+	import Button from '$lib/components/button/Button.svelte';
 
 	let validationErrors: any = {};
 
@@ -14,6 +15,7 @@
 	};
 	let responseError = "";
 	let isEmailTouched = false;
+	let forgotPasswordLoader = false;
 </script>
 
 <div class="parent d-flex align-items-center justify-content-center text-white rounded">
@@ -123,9 +125,6 @@
 		</div>
 </div>
 <style>
-	.btn-primary {
-		background: linear-gradient(270deg, #6147ff -1.72%, #1193f0 100%);
-	}
 	.parent {
 		min-height: 100vh;
 		overflow: auto;
