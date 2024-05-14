@@ -176,6 +176,6 @@
 		max-width: 504px;
 		border-radius: 30px;
 		border: 1px solid #FFFFFF17;
-	}
+		padding: 48px !important;
 	}
 </style>
