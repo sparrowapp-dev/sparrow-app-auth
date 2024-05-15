@@ -10,6 +10,8 @@
 	import { navigate } from 'svelte-navigator';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 	import Button from '$lib/components/button/Button.svelte';
+	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
+	import AngleUp from '$lib/assets/angle-up.svelte';
 	export let id = "";
 	export let code = "";
 
@@ -64,177 +66,146 @@
 	let resetPasswordLoader = false;
 </script>
 
-<div class="parent d-flex align-items-center justify-content-center text-white rounded">
-	<div
-		class="auth-content position-relative overflow-hidden rounded-4 container d-flex flex-column align-items-center justify-content-center w-100"
+<BgContainer>
+	<p
+		class="container-header pb-3 sparrow-fs-36 text-whiteColor ms-2 me-2 sparrow-fw-500 w-100 text-left"
+		style="letter-spacing: 0.05em;"
 	>
-		<div style="position: absolute; top: 0; left: 0; height: 100%; width: 100%; background: var(--bg-container);
-			backdrop-filter: blur( 50px );
-			-webkit-backdrop-filter: blur( 50px );border: 1px solid var(--bg-container-border);
-			border-radius: 10px; z-index: 0;">
+		Welcome to Sparrow!
+	</p>
+	<div class="d-flex align-items-center justify-content-start self-left mb-3 me-auto gap-2">
+		<button class="border-0 bg-transparent font-monospace" style="transform: rotate(-90deg);">
+			<AngleUp color="var(--sparrow-text-color)" height={20} width={20} />
+		</button>
+		<p class="text-whiteColor sparrow-fs-14 sparrow-fw-500 mb-0">Reset Password & Sign In</p>
+	</div>
+	<form
+		class="register-form text-whiteColor w-100 ps-1 pe-1 gap-16"
+		novalidate
+		on:submit|preventDefault={async () => {
+			isPasswordTouched = true;
+			validatePassword();
+			if (isPasswordValid1 && isPasswordValid1 && isPasswordValid1) {
+				const response = await handleResetPassword(resetPasswordCredential);
+				if (response.isSuccessful) {
+					notifications.success("Password changed successfully");
+					navigate("/login");
+				} else {
+				if (response.message === "Unauthorized Access") {
+					notifications.error("Old Password and New Password cannot be same");
+				}
+				else{
+					notifications.error(response.message);
+				}
+				}
+			}
+		}}
+	>
+		<div class="text-lightGray gap-0 line-height-1">
+			<p>{resetPasswordCredential.email}</p>
 		</div>
-		<div style="width: 39px;
-			height: 104px;
-			opacity: 0.256;background: var(--bg-container-one);
-			border-radius: 100%; position: absolute; top: calc(250px - 72px); left: -20px;
-			z-index: -1;
-		"></div>
-		<div style="width: 305px;
-			height: 77px;background: var(--bg-container-two);
-			opacity: 0.26;
-			border-radius: 100%; position: absolute; top: 0; left: calc(250px - 152px); z-index: -1;
-		"></div>
-		<div style="width: 131px;
-			height: 85px;
-			opacity: 0.256;background: var(--bg-container-three);
-			border-radius: 100%; position: absolute; top: calc(250px - 60px); right: 0px; z-index: -1;
-		"></div>
-		<div style="width: 305px;
-			height: 77px;
-			opacity: 0.26;background: var(--bg-container-four);
-			border-radius: 100%; position: absolute; bottom: -35px; left: calc(250px - 150px); z-index: -1;
-		"></div>
-		<div class=" d-flex flex-column align-items-center justify-content-center w-100" style="z-index: 100;">
-			<div class="text-white d-flex justify-content-center align-items-center bg-sparrowPrimaryColor" style="height: 60px; width: 60px; border-radius: 6px;">
-				<img src={sparrowicon} alt="" class="" />
+
+		<div class="form-group mb-1 text-lightGray">
+			<div>
+				<label for="password" class="sparrow-fs-16">New Password</label>
 			</div>
-			<p
-				class="container-header pt-4 pb-4 sparrow-fs-28 text-whiteColor text-center ms-2 me-2 fw-bold"
-			>
-				Welcome to Sparrow!
-			</p>
-			<form
-				class="register-form text-whiteColor w-100 ps-1 pe-1 gap-16"
-				novalidate
-				on:submit|preventDefault={async () => {
-					isPasswordTouched = true;
-					validatePassword();
-					if (isPasswordValid1 && isPasswordValid1 && isPasswordValid1) {
-						const response = await handleResetPassword(resetPasswordCredential);
-						if (response.isSuccessful) {
-							notifications.success("Password changed successfully");
-							navigate("/login");
-						} else {
-						if (response.message === "Unauthorized Access") {
-							notifications.error("Old Password and New Password cannot be same");
-						}
-						else{
-							notifications.error(response.message);
-						}
-						}
-					}
-				}}
-			>
-				<div class="d-flex align-items-center gap-2 mb-2">
-					<p class="card-subtitle sparrow-fs-20">Reset Password & Sign In</p>
-				</div>
-
-				<div class="text-lightGray gap-0 line-height-1">
-					<p>{resetPasswordCredential.email}</p>
-				</div>
-
-				<div class="form-group mb-1 text-lightGray">
-					<div>
-						<label for="password" class="sparrow-fs-16">New Password</label>
-						<img src={starIcon} alt="" class="mb-3" style="width: 7px;" />
-					</div>
-					<div class="d-flex position-relative">
-						<input
-							class="form-control mt-1 sparrow-fs-16 pe-5 border:{(!isPasswordValid1 || !isPasswordValid2 || !isPasswordValid3) &&
-								isPasswordTouched
-								? '3px'
-								: '1px'} solid {(!isPasswordValid1 || !isPasswordValid2 || !isPasswordValid3) &&
-								isPasswordTouched
-								? 'border-error'
-									: 'border-default'}"
-							type="password"
-							autocorrect="off"
-							autocapitalize="none"
-							autocomplete="off"
-							name="password"
-							id="newpassword"
-							placeholder="Please enter your new password"
-							bind:value={resetPasswordCredential.newPassword}
-							on:blur={() => {
-								isPasswordTouched = true;
-								validatePassword();
-							}}
-							on:input={validatePassword}
-						/>
-						<button
-							type="button"
-							on:click={togglePasswordVisibility}
-							class=" border-0 position-absolute eye-icon d-flex align-items-center"
-						>
-							{#if isPasswordVisible}
-								<img src={eyeShow} alt="eye-show" />
-							{:else}
-								<img src={eyeHide} alt="eye-hie" />
-							{/if}
-						</button>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-12 col-md-12 col-lg-12">
-						<div class="d-flex flex-column align-items-start mt-1 text-sm" style="font-size: 13px;">
-							<div class="d-flex align-items-center mb-0 gap-2">
-								<img
-								src={isPasswordValid1 ? vector2 : isPasswordTouched ? vector3 : vector1}
-									alt=""
-									class="mr-2"
-								/>
-								<p
-								class="mb-0 {isPasswordValid1
-									? 'text-successColor'
-									: isPasswordTouched
-										? 'text-dangerColor'
-										: 'text-textColor'}"
-								>
-									Min 8 characters
-								</p>
-							</div>
-							<div class="d-flex align-items-center mb-0 gap-2">
-								<img
-									src={isPasswordValid2 ? vector2 : isPasswordTouched ? vector3 : vector1}
-									alt=""
-									class="mr-2"
-								/>
-								<p
-									class="mb-0 {isPasswordValid2
-										? 'text-successColor'
-										: isPasswordTouched
-											? 'text-dangerColor'
-											: 'text-textColor'}"
-								>
-									Has at least one number
-								</p>
-							</div>
-							<div class="d-flex align-items-center gap-2">
-								<img
-									src={isPasswordValid3 ? vector2 : isPasswordTouched ? vector3 : vector1}
-									alt=""
-									class="mr-2"
-								/>
-								<p
-									class="mb-0 {isPasswordValid3
-										? 'text-successColor'
-										: isPasswordTouched
-											? 'text-dangerColor'
-											: 'text-textColor'}"
-								>
-									Has at least one special character
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="mt-4">
-					<button class="btn btn-primary w-100 text-whiteColor border-0">Submit</button>
-				</div>
-			</form>
+			<div class="d-flex position-relative">
+				<input
+					class="form-control mt-1 sparrow-fs-16 pe-5 border:{(!isPasswordValid1 || !isPasswordValid2 || !isPasswordValid3) &&
+						isPasswordTouched
+						? '3px'
+						: '1px'} solid {(!isPasswordValid1 || !isPasswordValid2 || !isPasswordValid3) &&
+						isPasswordTouched
+						? 'border-error'
+							: 'border-default'}"
+					type="password"
+					autocorrect="off"
+					autocapitalize="none"
+					autocomplete="off"
+					name="password"
+					id="newpassword"
+					placeholder="Please enter your new password"
+					bind:value={resetPasswordCredential.newPassword}
+					on:blur={() => {
+						isPasswordTouched = true;
+						validatePassword();
+					}}
+					on:input={validatePassword}
+				/>
+				<button
+					type="button"
+					on:click={togglePasswordVisibility}
+					class=" border-0 position-absolute eye-icon d-flex align-items-center"
+				>
+					{#if isPasswordVisible}
+						<img src={eyeShow} alt="eye-show" />
+					{:else}
+						<img src={eyeHide} alt="eye-hie" />
+					{/if}
+				</button>
+			</div>
 		</div>
+
+		<div class="row">
+			<div class="col-12 col-md-12 col-lg-12">
+				<div class="d-flex flex-column align-items-start mt-1 text-sm" style="font-size: 13px;">
+					<div class="d-flex align-items-center mb-0 gap-2">
+						<img
+						src={isPasswordValid1 ? vector2 : isPasswordTouched ? vector3 : vector1}
+							alt=""
+							class="mr-2"
+						/>
+						<p
+						class="mb-0 {isPasswordValid1
+							? 'text-successColor'
+							: isPasswordTouched
+								? 'text-dangerColor'
+								: 'text-textColor'}"
+						>
+							Min 8 characters
+						</p>
+					</div>
+					<div class="d-flex align-items-center mb-0 gap-2">
+						<img
+							src={isPasswordValid2 ? vector2 : isPasswordTouched ? vector3 : vector1}
+							alt=""
+							class="mr-2"
+						/>
+						<p
+							class="mb-0 {isPasswordValid2
+								? 'text-successColor'
+								: isPasswordTouched
+									? 'text-dangerColor'
+									: 'text-textColor'}"
+						>
+							Has at least one number
+						</p>
+					</div>
+					<div class="d-flex align-items-center gap-2">
+						<img
+							src={isPasswordValid3 ? vector2 : isPasswordTouched ? vector3 : vector1}
+							alt=""
+							class="mr-2"
+						/>
+						<p
+							class="mb-0 {isPasswordValid3
+								? 'text-successColor'
+								: isPasswordTouched
+									? 'text-dangerColor'
+									: 'text-textColor'}"
+						>
+							Has at least one special character
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="mt-4">
+			<button class="btn btn-primary w-100 text-whiteColor border-0">Submit</button>
+		</div>
+	</form>
+</BgContainer>
 
 		<!-- {#if showModal}
       <div
@@ -280,26 +251,15 @@
       </div>
       <div class="modal-backdrop fade show" />
     {/if} -->
-	</div>
-</div>
 
 <style>
 	.btn-primary {
-		background: linear-gradient(270deg, #6147ff -1.72%, #1193f0 100%);
+		background: var(--primary-color);
 	}
 	.eye-icon {
 		top: 10px;
 		right: 5px;
 		background-color: transparent;
-	}
-	.parent {
-		min-height: 100vh;
-		overflow: auto;
-	}
-	.auth-content {
-		margin: 30px !important;
-		max-width: 504px;
-		padding: 48px !important;
 	}
 	input {
 		background-color: transparent;

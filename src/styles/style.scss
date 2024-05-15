@@ -1,5 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100&family=Roboto:wght@100&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100&display=swap");
+// @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/variables-dark";
@@ -64,7 +65,7 @@ $sparrow-container-border: #FFFFFF17;
 $sparrow-small-text-size: 0.75rem;
 $sparrow-base-text-size: 0.875rem;
 $sparrow-bg-container: #8989890D;
-$sparrow-bg-container-border: #FFFFFF17;
+$sparrow-bg-container-border: #313233;
 $sparrow-bg-container-one: #1392F0;
 $sparrow-bg-container-two: #4165F9;
 $sparrow-bg-container-three: #5652FD;
@@ -200,6 +201,7 @@ $sparrow-font-sizes: (
   19: 1.1875rem, // 19px in rem
   20: 1.25rem, // 20px in rem
   28: 1.75rem,
+  32: 2rem, // 32rem
   36: 2.25rem // 36px in rem
 );
 
@@ -214,7 +216,7 @@ $sparrow-font-sizes: (
 $sparrow-font-weights: (
   300: 300,
   400: 400,
-  500: 500,
+  500: 600,
   600: 600,
   700: 700,
   900: 900
@@ -292,4 +294,10 @@ body {
     color: #FE8C98;
     background-color: #230408;
   }
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 0 transparent inset !important;
 }
