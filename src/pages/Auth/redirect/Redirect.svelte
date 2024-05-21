@@ -1,17 +1,17 @@
 <script lang="ts">
-	import sparrowIcon from '$lib/assets/sparrow-icon-bg.svg';
+	import sparrowicon from '$lib/assets/logoSparrowSquare.svg';
 	import Spinner from '$lib/components/transition/Spinner.svelte';
 	import { fly, fade } from 'svelte/transition';
 	
 
 
-  export let title="Title";
-  export let description= "Description";
-  export let message="Detailed Message";
-  export let isSpinner= true;
-  export let buttonText="Button";
-  export let buttonClick = () =>{} ;
-  export let loadingMessage = "";
+	export let title="Title";
+	export let description= "Description";
+	export let message="Detailed Message";
+	export let isSpinner= true;
+	export let buttonText="Button";
+	export let buttonClick = () =>{} ;
+	export let loadingMessage = "";
 </script>
 
 <!-- <Header /> -->
@@ -22,32 +22,48 @@
 		on:introstart
 		on:outroend
 	>
-		<div class="text-white d-flex justify-content-center align-items-center">
-			<img src={sparrowIcon} width="60px" alt="" class="" />
+		<div class="text-white d-flex justify-content-center align-items-center bg-sparrowPrimaryColor" style="height: 60px; width: 60px; border-radius: 6px;">
+			<img src={sparrowicon} alt="" class="" />
 		</div>
 		<p
-			class="container-header pt-4 pb-0 fs-28 text-whiteColor text-center ms-2 me-2 fw-bold"
-			style="font-size: 28px;"
+			class="container-header mb-2 pt-4 pb-0 sparrow-fs-28 sparrow-fw-600 text-transparent text-center ms-2 me-2"
+			style="font-size: 28px; background: linear-gradient(270deg, #584FFD -9.44%, #A1D8FF 46.24%, #1193F0 96.79%); background-clip: text;"
 		>
 			{title}
 		</p>
 
-		<div style="font-size: 14px;text-align:center" class="text-lightGray">
-			<p>{description}</p>
-		</div>
+		{#if isSpinner}
+			<div class="sparrow-fw-300 sparrow-fs-14">
+				<div style="text-align:center" class="text-lightGray">
+					<p>{description}</p>
+				</div>
 
-		<div style="font-size: 14px;text-align:center" class="text-lightGray mt-2">
-			<p>
-				{message}
-			</p>
-		</div>
+				<div style="text-align:center; max-width: 370px;" class="text-lightGray mt-4 sparrow-fw-300 sparrow-fs-14">
+					<p>
+						{message}
+					</p>
+				</div>
+			</div>
+		{:else}
+			<div class="sparrow-fw-400 sparrow-fs-16">
+				<div style="text-align:center" class="text-lightGray">
+					<p>{description}</p>
+				</div>
+
+				<div style="text-align:center; max-width: 370px;" class="text-lightGray mt-4 sparrow-fw-300 sparrow-fs-14">
+					<p>
+						{message}
+					</p>
+				</div>
+			</div>
+		{/if}
 
 		{#if isSpinner}
 			<div
 				style="font-size: 14px;text-align:center"
-				class="text-lightGray d-flex align-items-center justify-content-center mt-3"
+				class="text-lightGray d-flex align-items-center justify-content-center mt-4"
 			>
-				<Spinner size={'80px'} />
+				<Spinner size={'45px'} />
 			</div>
 		{:else}
 			<div
@@ -55,7 +71,7 @@
 				class="text-lightGray d-flex align-items-center justify-content-center mt-3"
 			>
 				<button
-					class="buttons d-flex justify-content-center align-items-center gap-1"
+					class="buttons sparrow-fs-16 px-3 py-2 d-flex justify-content-center align-items-center gap-1"
 					on:click={buttonClick}
 				>
 					{buttonText}
@@ -64,7 +80,7 @@
 		{/if}
 
 		{#if loadingMessage}
-			<div class="welcome-spinner text-lightGray mt-4">
+			<div class="welcome-spinner text-lightGray mt-4 sparrow-fw-300 sparrow-fs-14">
 				<p>{loadingMessage}</p>
 			</div>
 		{/if}
@@ -90,11 +106,8 @@
 	}
 
 	.buttons {
-		width: 180px;
-		height: 32px;
-		padding: 4px, 12px, 4px, 4px;
 		border-radius: 4px;
-		background: linear-gradient(270deg, #6147ff -1.72%, #1193f0 100%);
+		background: var(--primary-color);
 		border: none;
 	}
 

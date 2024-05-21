@@ -92,11 +92,11 @@
       background-color: var(--blackColor);
     }
     .custom-btn-primary {
-      background-color: var(--primary-btn-color);
+      background-color: var(--primary-color);
       color: var(--white-color);
     }
     .custom-btn-primary-gradient{
-        background: linear-gradient(270deg, #6147ff -1.72%, #1193f0 100%);;
+        // background: linear-gradient(270deg, #6147ff -1.72%, #1193f0 100%);
         color: white;
     }
     .custom-btn-dark {
