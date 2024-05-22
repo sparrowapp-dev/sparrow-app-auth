@@ -1,5 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100&family=Roboto:wght@100&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100&display=swap");
+// @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/variables-dark";
@@ -60,8 +61,16 @@ $sparrow-editor-angle-bracket-color: #636566;
 $sparrow-editor-tag-color: #246BB8;
 $sparrow-editor-string-color: #CE9178;
 $sparrow-email-invite-bg-color:#1E1E1E;
+$sparrow-container-border: #FFFFFF17;
 $sparrow-small-text-size: 0.75rem;
 $sparrow-base-text-size: 0.875rem;
+$sparrow-bg-container: #8989890D;
+$sparrow-bg-container-border: #313233;
+$sparrow-bg-container-one: #1392F0;
+$sparrow-bg-container-two: #4165F9;
+$sparrow-bg-container-three: #5652FD;
+$sparrow-bg-container-four: #376FF7;
+$sparrow-primary-color: #3670F7;
 
 :root {
   --blackColor: #{$sparrow-black};
@@ -113,8 +122,16 @@ $sparrow-base-text-size: 0.875rem;
   --editor-angle-bracket:#{$sparrow-editor-angle-bracket-color};
   --editor-tag-color: #{$sparrow-editor-tag-color};
   --editor-string-color: #{$sparrow-editor-string-color};
+  --sparrow-container-border: #{$sparrow-container-border};
   --base-text: #{$sparrow-base-text-size};
   --small-text: #{$sparrow-small-text-size};
+  --primary-color: #{$sparrow-primary-color};
+  --bg-conatiner: #{$sparrow-bg-container};
+  --bg-container-border: #{$sparrow-bg-container-border};
+  --bg-container-one: #{$sparrow-bg-container-one};
+  --bg-container-two: #{$sparrow-bg-container-two};
+  --bg-container-three: #{$sparrow-bg-container-three};
+  --bg-container-four: #{$sparrow-bg-container-four};
 }
 
 // $button-color: linear-gradient(270deg, #6147ff -1.72%, #1193f0 100%);
@@ -155,7 +172,16 @@ $theme-colors: map-merge(
     "keyValuePairColor": $sparrow-key-value-pair,
     "dullBackground": $sparrow-dull-background,
     "sparrowBottomBorder": $sparrow-bottom-border,
-    "emailInviteBackgroundColor":$sparrow-email-invite-bg-color
+    "emailInviteBackgroundColor": $sparrow-email-invite-bg-color,
+    "containerBorder": $sparrow-container-border,
+    "editorAngleBracket": $sparrow-editor-bracket-color,
+    "sparrowPrimaryColor": $sparrow-primary-color,
+    "sparrowBgContainer": $sparrow-bg-container,
+    "sparrowBgContainerBorder": $sparrow-bg-container-border,
+    "sparrowBgContainerOne": $sparrow-bg-container-one,
+    "sparrowBgContainerTwo": $sparrow-bg-container-two,
+    "sparrowBgContainerThree": $sparrow-bg-container-three,
+    "sparrowBgContainerFour": $sparrow-bg-container-four
   )
 );
 
@@ -175,6 +201,7 @@ $sparrow-font-sizes: (
   19: 1.1875rem, // 19px in rem
   20: 1.25rem, // 20px in rem
   28: 1.75rem,
+  32: 2rem, // 32rem
   36: 2.25rem // 36px in rem
 );
 
@@ -182,6 +209,23 @@ $sparrow-font-sizes: (
   @each $size, $value in $sparrow-font-sizes {
     .sparrow-fs-#{$size} {
       font-size: $value;
+    }
+  }
+
+// Define a map for font weights in pixels
+$sparrow-font-weights: (
+  300: 300,
+  400: 400,
+  500: 600,
+  600: 600,
+  700: 700,
+  900: 900
+);
+  
+// Generate utility classes for font sizes
+  @each $size, $value in $sparrow-font-weights {
+    .sparrow-fw-#{$size} {
+      font-weight: $value;
     }
   }
 
@@ -250,4 +294,10 @@ body {
     color: #FE8C98;
     background-color: #230408;
   }
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 0 transparent inset !important;
 }
