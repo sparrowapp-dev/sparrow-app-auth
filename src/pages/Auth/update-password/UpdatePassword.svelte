@@ -15,7 +15,7 @@
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
 	export let id: string;
 
-	let seconds = 0;
+	let seconds = 60;
 	const verifyString = writable('');
 	let verifyLength: string = '';
 
@@ -200,9 +200,13 @@
 	<div class="login-form text-lightGray ps-1 pe-1 gap-16">
 		<div class="d-flex flex-column align-items-left mb-2">
 			<div class="d-flex align-items-center justify-content-start mb-3 gap-2">
-				<button class="border-0 bg-transparent font-monospace" style="transform: rotate(-90deg);">
+				<a 
+					class="border-0 bg-transparent font-monospace" 
+					style="transform: rotate(-90deg);"
+					href="/forgot/password"
+				>
 					<AngleUp color="var(--sparrow-text-color)" height={20} width={20} />
-				</button>
+				</a>
 				<p class="text-whiteColor sparrow-fs-14 sparrow-fw-500 mb-0">Change Password</p>
 			</div>
 

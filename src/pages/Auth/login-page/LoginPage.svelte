@@ -121,7 +121,7 @@
 	>
 		<p class="card-subtitle sparrow-fs-20 sparrow-fw-500 mb-3">Sign In</p>
 		<div class="mb-3">
-			<label for="exampleInputEmail1" class="form-label text-lightGray sparrow-fs-14">Email</label>
+			<label for="exampleInputEmail1" class="form-label text-lightGray sparrow-fs-14 d-flex">Email<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label>
 			<!-- <img src={starIcon} alt="" class="mb-3" style="width: 7px;" /> -->
 			<input
 				type="email"
@@ -155,7 +155,7 @@
 		</div>
 
 		<div class="mb-4">
-			<label for="exampleInputPassword1" class="form-label text-lightGray sparrow-fs-14">Password</label>
+			<label for="exampleInputPassword1" class="form-label text-lightGray sparrow-fs-14">Password<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label>
 			<!-- <img src={starIcon} alt="" class="mb-3" style="width: 7px;" /> -->
 			<div class="d-flex position-relative">
 				<input
