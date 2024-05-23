@@ -74,9 +74,13 @@
 		Welcome to Sparrow!
 	</p>
 	<div class="d-flex align-items-center justify-content-start self-left mb-3 me-auto gap-2">
-		<button class="border-0 bg-transparent font-monospace" style="transform: rotate(-90deg);">
+		<a 
+			class="border-0 bg-transparent font-monospace" 
+			style="transform: rotate(-90deg);"
+			href="/forgot/password"
+		>
 			<AngleUp color="var(--sparrow-text-color)" height={20} width={20} />
-		</button>
+		</a>
 		<p class="text-whiteColor sparrow-fs-14 sparrow-fw-500 mb-0">Reset Password & Sign In</p>
 	</div>
 	<form

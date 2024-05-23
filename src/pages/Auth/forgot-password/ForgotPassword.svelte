@@ -34,6 +34,7 @@
 			if(!validationErrors?.email){
 				const response  = await handleForgotPassword(forgotPasswordCredential);
 				if (response?.isSuccessful) {
+					localStorage.setItem(`timer-${forgotPasswordCredential.email}`, new Date().getTime());
 					navigate(`/update/password/${forgotPasswordCredential.email}`);
 				} else {
 					if(response.message === "Bad Request"){
@@ -48,9 +49,12 @@
 	>
 		<div class="d-flex flex-column align-items-left justify-content-center mb-2">
 			<div class="d-flex align-items-center justify-content-start mb-3 gap-2">
-				<button class="border-0 bg-transparent font-monospace" style="transform: rotate(-90deg);">
+				<a 
+					class="border-0 bg-transparent font-monospace" style="transform: rotate(-90deg);" 
+					href={`/init`}
+				>
 					<AngleUp color="var(--sparrow-text-color)" height={20} width={20} />
-				</button>
+				</a>
 				<p class="text-whiteColor sparrow-fs-14 sparrow-fw-500 mb-0">Change Password</p>
 			</div>
 			<p class="text-lightGray sparrow-fs-14">
