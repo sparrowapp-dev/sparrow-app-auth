@@ -11,4 +11,7 @@
         text-decoration: none;
         color: var(--editor-angle-bracket);
     }
+    a:hover {
+    color: var( --primary-btn-color);
+}
 </style>

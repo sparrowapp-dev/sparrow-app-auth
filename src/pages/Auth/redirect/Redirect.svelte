@@ -110,6 +110,15 @@
 		background: var(--primary-color);
 		border: none;
 	}
+	.buttons:hover{
+		background: var(--primary-btn-color-hover)
+	}
+    .buttons:active{
+	background:var(--button-pressed)
+    }
+
+
+
 
 	.welcome-spinner {
 		font-size: 14px;

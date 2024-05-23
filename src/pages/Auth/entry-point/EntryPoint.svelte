@@ -104,7 +104,7 @@
 					: 'border-default'}"
 				id="exampleInputEmail1"
 				aria-describedby="emailHelp"
-				placeholder="Please enter your registered email id"
+				placeholder="Please enter your Email"
 				autocorrect="off"
 				autocapitalize="none"
 				autocomplete="off"
@@ -135,5 +135,14 @@
 <style>
 	.btn-primary {
 		background: var(--primary-color);
+	}
+	.btn-primary:hover{
+		background: var( --primary-btn-color-hover)
+	}
+    .btn-primary:active{
+	background:var(--button-pressed)
+    }
+	input {
+		background-color: transparent !important;
 	}
 </style>
