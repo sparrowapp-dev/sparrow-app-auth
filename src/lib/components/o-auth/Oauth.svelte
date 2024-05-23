@@ -12,9 +12,20 @@
         <button
             on:click={handleSignInWithGoogle}
             style="width: 32px; height:32px"
-            class="bg-backgroundDark border-0 rounded"
+            class="custom-button  border-0 rounded"
         >
             <img src={googleLogo} alt="Google Logo" class="w-100 h-100 p-1" />
         </button>
     </div>
 </div>
+
+<style>
+    .custom-button {
+    background-color:#1C1D2B; 
+}
+
+.custom-button:hover{
+    background-color:#2A2C3C
+;
+}
+</style>
