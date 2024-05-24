@@ -140,7 +140,7 @@
 		background: var( --primary-btn-color-hover)
 	}
     .btn-primary:active{
-	background:var(--button-pressed)
+	    background:var(--button-pressed)
     }
 	input {
 		background-color: transparent !important;

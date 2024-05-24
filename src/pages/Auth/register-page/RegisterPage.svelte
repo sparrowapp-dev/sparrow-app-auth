@@ -408,4 +408,8 @@
 		width: 12px;
 		border-radius: 2px;
 	}
+	.btn-primary:active{
+	background:var(--button-pressed)
+    }
+	
 </style>
