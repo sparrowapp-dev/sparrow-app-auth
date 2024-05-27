@@ -137,7 +137,7 @@
 				autocomplete="off"
 				autocorrect="off"
 				autocapitalize="none"
-				disabled="true"
+				disabled={id? true: false}
 				bind:value={loginCredentials.email}
 				on:blur={async () => {
 					isEmailTouched = true;

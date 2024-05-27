@@ -93,7 +93,7 @@
 				const response = await handleResetPassword(resetPasswordCredential);
 				if (response.isSuccessful) {
 					notifications.success("Password changed successfully");
-					navigate("/login");
+					navigate(`/login/${id}`);
 				} else {
 				if (response.message === "Unauthorized Access") {
 					notifications.error("Old Password and New Password cannot be same");

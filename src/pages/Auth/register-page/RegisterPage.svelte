@@ -177,7 +177,7 @@
 				autocorrect="off"
 				autocapitalize="none"
 				autocomplete="off"
-				disabled="true"
+				disabled={id? true: false}
 				bind:value={userData.email}
 				on:blur={async () => {
 					isEmailTouched = true;
@@ -400,7 +400,7 @@
 		background-color: transparent;
 	}
 	input {
-		background-color: transparent;
+		background-color: transparent !important;
 	}
 
 	.form-check-input {
