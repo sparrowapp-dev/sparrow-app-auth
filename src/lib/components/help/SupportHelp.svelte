@@ -13,5 +13,6 @@
     }
     a:hover {
     color: var( --primary-btn-color);
+    text-decoration: underline;
 }
 </style>

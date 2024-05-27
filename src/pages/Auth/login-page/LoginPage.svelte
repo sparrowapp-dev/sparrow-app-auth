@@ -229,14 +229,14 @@
 		background-color: transparent;
 	}
 
-	.btn-primary {
+	.btn-primary{
 		background: var(--primary-color);
 	}
 	.btn-primary:hover{
 		background: var( --primary-btn-color-hover)
 	}
 	.btn-primary:active{
-	background:var(--button-pressed)
+	   background:var(--button-pressed)
     }
 	input {
 		background-color: transparent !important;
