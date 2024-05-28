@@ -90,6 +90,7 @@
 			isPasswordTouched = true;
 			validatePassword();
 			if (isPasswordValid1 && isPasswordValid1 && isPasswordValid1) {
+				resetPasswordLoader = true;
 				const response = await handleResetPassword(resetPasswordCredential);
 				if (response.isSuccessful) {
 					notifications.success("Password changed successfully");
@@ -102,6 +103,7 @@
 					notifications.error(response.message);
 				}
 				}
+				resetPasswordLoader = false;
 			}
 		}}
 	>
@@ -206,7 +208,13 @@
 		</div>
 
 		<div class="mt-4">
-			<button class="btn btn-primary w-100 text-whiteColor border-0">Submit</button>
+			<Button
+						disable={resetPasswordLoader}
+						title={"Submit"}
+						buttonClassProp={"w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16"}
+						type={"primary-gradient"}
+						loader={resetPasswordLoader}
+				  	/>
 		</div>
 	</form>
 </BgContainer>

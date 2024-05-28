@@ -32,6 +32,7 @@
 			isEmailTouched = true;
 			validationErrors = await handleForgotPasswordValidation(forgotPasswordCredential);
 			if(!validationErrors?.email){
+				forgotPasswordLoader = true;
 				const response  = await handleForgotPassword(forgotPasswordCredential);
 				if (response?.isSuccessful) {
 					localStorage.setItem(`timer-${forgotPasswordCredential.email}`, new Date().getTime());
@@ -44,6 +45,7 @@
 						notifications.error(response?.message);
 					}
 				}
+				forgotPasswordLoader = false;
 			}
 		}}
 	>
@@ -94,7 +96,13 @@
 			{/if}
 		</div>
 		<div class="sendButton">
-			<button class="btn btn-primary text-whiteColor w-100">Send Request</button>
+			<Button
+						disable={forgotPasswordLoader}
+						title={"Send Request"}
+						buttonClassProp={"w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16"}
+						type={"primary-gradient"}
+						loader={forgotPasswordLoader}
+				  	/>
 		</div>
 	</form>
 </BgContainer>

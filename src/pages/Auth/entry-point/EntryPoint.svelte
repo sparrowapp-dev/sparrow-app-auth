@@ -62,6 +62,7 @@
 			isEmailTouched = true;
 			validationErrors = await handleEntryValidation(entryCredentials);
 			if (!validationErrors?.email) {
+				entryLoader = true;
 				const response = await handleEntry(entryCredentials);
 				if (response.isSuccessful) {
 					if (response?.data?.registeredWith === 'google') {
@@ -88,6 +89,7 @@
 				} else {
 					notifications.error(response?.message);
 				}
+				entryLoader = false;
 			}
 		}}
 	>
@@ -104,7 +106,7 @@
 					: 'border-default'}"
 				id="exampleInputEmail1"
 				aria-describedby="emailHelp"
-				placeholder="Please enter your Email"
+				placeholder="Please enter your Email Id"
 				autocorrect="off"
 				autocapitalize="none"
 				autocomplete="off"
@@ -123,8 +125,14 @@
 			{/if}
 		</div>
 
-		<div class="mb-1">
-			<button class="btn btn-primary w-100 text-whiteColor border-0">Continue</button>
+		<div class="mb-1 ">
+			<Button
+						disable={entryLoader}
+						title={"Continue"}
+						buttonClassProp={"w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16"}
+						type={"primary-gradient"}
+						loader={entryLoader}
+				  	/>
 		</div>
 	</form>
 	<Oauth />
