@@ -84,8 +84,10 @@
 			isEmailTouched = true;
 			validationErrors = await handleLoginValidation(loginCredentials);
 			if (!validationErrors?.email && !validationErrors?.password) {
+				loginLoader = true;
 				const result = await handleLogin(loginCredentials);
 				if (result.isSuccessful) {
+					
 					const response = result.data;
 					isLogin = true;
 					const accessToken = response?.accessToken?.token;
@@ -97,7 +99,6 @@
 						redirectRules.description = `Redirecting you to desktop app...`;
 						redirectRules.message = `If the application does not open automatically,
 						please click below.`;
-
 						redirectRules.loadingMessage = '';
 						redirectRules.isSpinner = false;
 						navigate(sparrowRedirect);
@@ -116,6 +117,7 @@
 						notifications.error(response);
 					}
 				}
+				loginLoader = false;
 			}
 		}}
 	>
@@ -212,9 +214,13 @@
 		</div>
 
 		<div class="mb-1">
-			<button class="btn btn-primary w-100 text-whiteColor border-0 py-2" on:click={() => {}}
-				>Sign In</button
-			>
+			<Button
+						disable={loginLoader}
+						title={"Sign In"}
+						buttonClassProp={"w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16"}
+						type={"primary-gradient"}
+						loader={loginLoader}
+				  	/>
 		</div>
 	</form>
 	<Oauth />
