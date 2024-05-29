@@ -173,7 +173,7 @@
 				type="email"
 				name="email"
 				id="email"
-				placeholder="Please enter your email id"
+				placeholder="Please enter your Email ID"
 				autocorrect="off"
 				autocapitalize="none"
 				autocomplete="off"
