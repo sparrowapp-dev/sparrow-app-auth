@@ -130,7 +130,7 @@
 					isRegistered = true;
 					const accessToken = response?.data.accessToken?.token;
 					const refreshToken = response?.data.refreshToken?.token;
-					const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}`;
+					const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=register`;
 					setTimeout(() => {
 						let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
 						redirectRules.title = `Welcome ${data.name.split(" ")[0]}`;

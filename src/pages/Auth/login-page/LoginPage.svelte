@@ -92,7 +92,7 @@
 					isLogin = true;
 					const accessToken = response?.accessToken?.token;
 					const refreshToken = response?.refreshToken?.token;
-					const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}`;
+					const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login`;
 					setTimeout(() => {
 						let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
 						redirectRules.title = `Welcome back ${data.name}`;
