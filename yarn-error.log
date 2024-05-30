@@ -3,44 +3,6 @@ Arguments:
 
 PATH: 
   C:\Program Files\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;F:\Git\cmd;C:\Program Files\Redis\;C:\Program Files\Git\cmd;C:\ProgramData\chocolatey\bin;C:\Program Files (x86)\Yarn\bin\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Users\Administrator\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\Docker\Docker\resources\bin;C:\Users\Administrator\.cargo\bin;C:\Users\Administrator\AppData\Local\Programs\Python\Python311\Scripts\;C:\Users\Administrator\AppData\Local\Programs\Python\Python311\;C:\Users\Administrator\AppData\Local\Microsoft\WindowsApps;F:\Microsoft VS Code\bin;C:\Users\Administrator\AppData\Roaming\npm;C:\Users\Administrator\AppData\Local\Yarn\bin;C:\Users\Administrator\AppData\Roaming\nvm;C:\Program Files\nodejs
-
-Yarn version: 
-  1.22.19
-
-Node version: 
-  20.13.1
-
-Platform: 
-  win32 x64
-
-Trace: 
-  Error: ENOENT: no such file or directory, copyfile 'C:\Users\Administrator\AppData\Local\Yarn\Cache\v6\npm-glob-parent-6.0.2-6d237d99083950c79290f24c7642a3de9a28f9e3-integrity\node_modules\glob-parent\README.md' -> 'E:\Sparrow New\sparrow-app-auth\node_modules\eslint\node_modules\glob-parent\README.md'
-
-npm manifest: 
-  {
-  	"name": "sparrow-auth",
-  	"version": "0.0.1",
-  	"scripts": {
-  		"dev": "vite dev",
-  		"build": "vite build",
-  		"preview": "vite preview",
-  		"check": "svelte-check --tsconfig ./tsconfig.json",
-  		"test": "vitest",
-  		"lint": "prettier --check . && eslint .",
-  		"format": "prettier --write ."
-  	},
-  	"devDependencies": {
-  		"@fontsource/fira-mono": "^4.5.10",
-  		"@neoconfetti/svelte": "^1.0.0",
-  		"@sveltejs/adapter-auto": "^3.0.0",
-  		"@sveltejs/vite-plugin-svelte": "^3.0.0",
-  		"@tsconfig/svelte": "^5.0.2",
-  		"@types/eslint": "8.56.0",
-  		"@typescript-eslint/eslint-plugin": "^6.0.0",
-  		"@typescript-eslint/parser": "^6.0.0",
-  		"eslint": "^8.56.0",
-  		"eslint-config-prettier": "^9.1.0",
-  		"eslint-plugin-svelte": "^2.35.1",
   		"prettier": "^3.1.1",
   		"prettier-plugin-svelte": "^3.1.2",
   		"sass": "^1.70.0",

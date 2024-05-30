@@ -2,33 +2,6 @@ lockfileVersion: '9.0'
 
 settings:
   autoInstallPeers: true
-  excludeLinksFromLockfile: false
-
-importers:
-
-  .:
-    dependencies:
-      axios:
-        specifier: ^1.5.1
-        version: 1.7.2
-      bootstrap:
-        specifier: ^5.3.2
-        version: 5.3.3(@popperjs/core@2.11.8)
-      btoa:
-        specifier: ^1.2.1
-        version: 1.2.1
-      font-awesome:
-        specifier: ^4.7.0
-        version: 4.7.0
-      path:
-        specifier: ^0.12.7
-        version: 0.12.7
-      svelte-navigator:
-        specifier: ^3.2.2
-        version: 3.2.2(svelte@4.2.17)(typescript@5.4.5)
-      svelte-toasts:
-        specifier: ^1.1.2
-        version: 1.1.2
       uuid:
         specifier: ^9.0.1
         version: 9.0.1
