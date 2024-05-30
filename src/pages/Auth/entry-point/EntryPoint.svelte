@@ -106,7 +106,7 @@
 					: 'border-default'}"
 				id="exampleInputEmail1"
 				aria-describedby="emailHelp"
-				placeholder="Please enter your Email Id"
+				placeholder="Please enter your Email ID"
 				autocorrect="off"
 				autocapitalize="none"
 				autocomplete="off"
