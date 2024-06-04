@@ -85,7 +85,7 @@
 			passwordInput.type = isPasswordVisible ? 'text' : 'password';
 		}
 	};
-	let registerLoader = true;
+	let registerLoader = false;
 </script>
 
 {#if isRegistered}
