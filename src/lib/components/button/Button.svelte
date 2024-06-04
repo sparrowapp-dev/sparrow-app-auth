@@ -3,7 +3,7 @@
   
     export let title = "Submit";
     export let onClick: (e) => void = ()=>{};
-    export let loaderSize = 16;
+    export let loaderSize = 22;
     export let disable = false;
     export let loader = false;
     export let buttonStyleProp = "";
