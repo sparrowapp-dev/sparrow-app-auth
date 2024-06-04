@@ -26,8 +26,8 @@
 			<img src={sparrowicon} alt="" class="" />
 		</div>
 		<p
-			class="container-header mb-2 pt-4 pb-0 sparrow-fs-28 sparrow-fw-600 text-transparent text-center ms-2 me-2"
-			style="font-size: 28px; background: linear-gradient(270deg, #584FFD -9.44%, #A1D8FF 46.24%, #1193F0 96.79%); background-clip: text;"
+			class="container-header mb-2 pt-4 pb-0 sparrow-fs-28 sparrow-fw-600 text-transparent text-center ms-2 me-2 ellipsis "
+			style=" max-width:500px; font-size: 28px; background: linear-gradient(270deg, #584FFD -9.44%, #A1D8FF 46.24%, #1193F0 96.79%); background-clip: text;"
 		>
 			{title}
 		</p>
