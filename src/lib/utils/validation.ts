@@ -23,7 +23,7 @@ export const registrationSchema = yup.object().shape({
 	email: yup
 		.string()
 		.email()
-		.matches(emailRegex, 'Please enter a valid Email ID.')
+		.matches(emailRegex, 'Please enter a valid Email ID')
 		.required('Please enter a valid Email ID'),
 	firstName: yup.string().matches(firstNameRegex, "Your first name cannot have numbers or special characters.").required('Please enter your first name.'),
 	lastName: yup.string().matches(lastNameRegex, "Your last name cannot have numbers or special characters."),
@@ -42,7 +42,7 @@ export const loginSchema = yup.object().shape({
 		.email()
 		.matches(
 			emailRegex,
-			'Please enter a valid Email ID.'
+			'Please enter a valid Email ID'
 			)
 			.required('Please enter a valid Email ID')
 		,
@@ -55,7 +55,7 @@ export const entrySchema = yup.object().shape({
 		.string()
 		.email()
 		.matches(
-			emailRegex,'Please enter a valid Email ID.'
+			emailRegex,'Please enter a valid Email ID'
 			)
 			.required('Please enter a valid Email ID')
 		,
@@ -68,7 +68,7 @@ export const forgotPasswordSchema = yup.object().shape({
 		.required('Please enter an Email')
 		.matches(
 			emailRegex,
-			'Please enter a valid Email ID.'
+			'Please enter a valid Email ID'
 		)
 		.required('Please enter a valid Email ID')
 });
