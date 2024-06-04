@@ -65,7 +65,7 @@ export const forgotPasswordSchema = yup.object().shape({
 	email: yup
 		.string()
 		.email()
-		.required('Please enter an Email')
+		.required('Please enter an Email ID')
 		.matches(
 			emailRegex,
 			'Please enter a valid Email ID'
