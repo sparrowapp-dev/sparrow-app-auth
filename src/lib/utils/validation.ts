@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+)$/;
 const firstNameRegex = /^[A-Za-z\s]+$/;
-const lastNameRegex = /^[a-zA-Z]*$/;
+const lastNameRegex = /^[A-Za-z\s]*$/;
 
 //----------------------------- Check Validation ---------------------//
 export const checkValidation = async (validationSchema, val) => {
