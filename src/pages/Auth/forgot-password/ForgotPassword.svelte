@@ -39,7 +39,7 @@
 					navigate(`/update/password/${forgotPasswordCredential.email}`);
 				} else {
 					if(response.message === "Bad Request"){
-						responseError= "Email Id is not registered."
+						responseError= "Email ID is not registered."
 					}
 					else{
 						notifications.error(response?.message);
@@ -74,7 +74,7 @@
 					: '1px'} solid {validationErrors?.email && isEmailTouched ? 'border-error' : 'border-default'}"
 				id="exampleInputEmail1"
 				aria-describedby="emailHelp"
-				placeholder="Please enter your registered email id"
+				placeholder="Please enter your registered Email ID"
 				autocorrect="off"
 				autocapitalize="none"
 				autocomplete="off"
