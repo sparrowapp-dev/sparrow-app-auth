@@ -1,24 +1,24 @@
 <script>
-	import { onMount } from "svelte";
+	import { onMount } from 'svelte';
 
-    /**
-     * external link to redirect
-     */
-    export let to = "";
+	/**
+	 * external link to redirect
+	 */
+	export let to = '';
 
-    onMount(() => {
+	onMount(() => {
 		window.location.href = to;
 	});
-  </script>
+</script>
 
 <div class="redirect d-flex align-items-center justify-content-center p-5">
-
-    <p class="sparrow-fs-18">If the email client doesn't open automatically, please click <a href={to}>here</a> to email support.</p>
+	<p class="sparrow-fs-18">
+		If the email client doesn't open automatically, please click <a href={to}>here</a> to email support.
+	</p>
 </div>
 
 <style>
-    .redirect{
-        height: 100vh;
-    }
+	.redirect {
+		height: 100vh;
+	}
 </style>
-  
