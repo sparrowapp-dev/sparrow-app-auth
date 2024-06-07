@@ -3,7 +3,7 @@
   
     export let title = "Submit";
     export let onClick: (e) => void = ()=>{};
-    export let loaderSize = 16;
+    export let loaderSize = 22;
     export let disable = false;
     export let loader = false;
     export let buttonStyleProp = "";
@@ -92,12 +92,19 @@
       background-color: var(--blackColor);
     }
     .custom-btn-primary {
-      background-color: var(--primary-btn-color);
+      background: var(--primary-btn-color);
       color: var(--white-color);
     }
     .custom-btn-primary-gradient{
-        background: linear-gradient(270deg, #6147ff -1.72%, #1193f0 100%);;
+        // background: linear-gradient(270deg, #6147ff -1.72%, #1193f0 100%);
+        background: var(--primary-color);
         color: white;
+    }
+    .custom-btn-primary-gradient:hover{
+         background: var( --primary-btn-color-hover)
+    }
+    .custom-btn-primary-gradient:active{
+      background: var(--button-pressed);
     }
     .custom-btn-dark {
       background-color: var(--border-color);

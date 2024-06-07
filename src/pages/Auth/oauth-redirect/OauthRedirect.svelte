@@ -2,12 +2,13 @@
 	import { onMount } from 'svelte';
 	import { navigate } from 'svelte-navigator';
 	import Redirect from '../redirect/Redirect.svelte';
+	import constants from '$lib/utils/constants';
 
 	onMount(() => {
 		const urlParams = new URLSearchParams(window.location.search);
 		const accessToken = urlParams.get('accessToken');
 		const refreshToken = urlParams.get('refreshToken');
-		const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}`;
+		const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&event=login`;
 
 		if (accessToken && refreshToken) {
 			setTimeout(() => {
@@ -23,7 +24,7 @@
 				redirectRules.buttonClick = () => {
 					navigate(sparrowRedirect);
 				};
-			}, 5000);
+			}, constants.API_REDIRECT_TIMEOUT);
 		}
 	});
 	let redirectRules = {

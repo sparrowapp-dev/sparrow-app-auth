@@ -11,7 +11,10 @@
 	import OauthRedirect from './pages/Auth/oauth-redirect/OauthRedirect.svelte';
 	import AuthSuccess from './pages/Auth/auth-success/AuthSuccess.svelte';
 	import EntryPoint from './pages/Auth/entry-point/EntryPoint.svelte';
-	import bg from "$lib/assets/body-gradient.png";
+	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
+	import bg from '$lib/assets/sparrowLogoBackground.svg';
+	import ExternalNavigation from './routing/ExternalNavigation.svelte';
+	import constants from '$lib/utils/constants';
 	export let url = '/';
 </script>
 
@@ -25,12 +28,15 @@
 	<Route path="/update/password/:id" component={UpdatePassword} />
 	<Route path="/reset/password/:id/:code" component={ResetPassword} />
 	<Route path="/redirect" component={OauthRedirect} />
+	<Route path="/support">
+		<ExternalNavigation to={`mailto:${constants.SPARROW_SUPPORT_EMAIL}`}/>
+	</Route>
 	<!-- <Route path="/success" component={AuthSuccess} /> -->
 	<Route path="/*"><Navigate to="/init" /></Route>
 </Router>
 <Toast/>
-<div style="height:300px; bottom:0; left:0;
-right:0; z-index:-1 !important" class="w-100 position-fixed">
-	<img src={bg} alt="" style="height:100%; width:100%;">
-</div>
 
+<div style="height: 100vh; top:0; left:0;
+right:0; z-index:-100 !important" class="w-100 position-fixed">
+	<img src={bg} alt="" style="height:100%; width:100%; opacity: 0.7">
+</div>
