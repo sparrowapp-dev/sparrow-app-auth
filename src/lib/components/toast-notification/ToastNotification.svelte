@@ -1,5 +1,12 @@
 <script>
   import { ToastContainer } from "svelte-toasts";
+  import {
+    SuccessIcon,
+    ErrorIcon,
+    InfoIcon,
+    WarningIcon,
+    CloseIcon,
+  } from "./icons"
 </script>
 
 <ToastContainer let:data>
