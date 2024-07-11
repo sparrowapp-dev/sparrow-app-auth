@@ -224,6 +224,7 @@
 					autocapitalize="none"
 					autocomplete="off"
 					id="name"
+					maxlength="50"
 					bind:value={userData.firstName}
 					on:blur={async () => {
 						isFirstNameTouched = true;
@@ -259,6 +260,7 @@
 					autocapitalize="none"
 					autocomplete="off"
 					id="lastname"
+					maxlength="50"
 					bind:value={userData.lastName}
 					on:blur={async () => {
 						isLastNameTouched = true;
@@ -295,6 +297,7 @@
 						autocorrect="off"
 						autocapitalize="none"
 						autocomplete="off"
+						maxlength="30"
 						bind:value={userData.password}
 						on:blur={async () => {
 							isPasswordTouched = true;
