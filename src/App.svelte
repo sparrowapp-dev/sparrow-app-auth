@@ -13,6 +13,8 @@
 	import EntryPoint from './pages/Auth/entry-point/EntryPoint.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
 	import bg from '$lib/assets/sparrowLogoBackground.svg';
+	import ExternalNavigation from './routing/ExternalNavigation.svelte';
+	import constants from '$lib/utils/constants';
 	export let url = '/';
 </script>
 
@@ -26,6 +28,9 @@
 	<Route path="/update/password/:id" component={UpdatePassword} />
 	<Route path="/reset/password/:id/:code" component={ResetPassword} />
 	<Route path="/redirect" component={OauthRedirect} />
+	<Route path="/support">
+		<ExternalNavigation to={`mailto:${constants.SPARROW_SUPPORT_EMAIL}`}/>
+	</Route>
 	<!-- <Route path="/success" component={AuthSuccess} /> -->
 	<Route path="/*"><Navigate to="/init" /></Route>
 </Router>
