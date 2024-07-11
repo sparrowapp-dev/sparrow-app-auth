@@ -297,7 +297,6 @@
 						autocorrect="off"
 						autocapitalize="none"
 						autocomplete="off"
-						maxlength="30"
 						bind:value={userData.password}
 						on:blur={async () => {
 							isPasswordTouched = true;
