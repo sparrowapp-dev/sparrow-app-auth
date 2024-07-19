@@ -37,6 +37,7 @@
 				if (response?.isSuccessful) {
 					localStorage.setItem(`timer-${forgotPasswordCredential.email}`, new Date().getTime());
 					navigate(`/update/password/${forgotPasswordCredential.email}`);
+					notifications.success("Verification code has been sent to your registered Email ID")
 				} else {
 					if(response.message === "Bad Request"){
 						responseError= "Email ID is not registered."
