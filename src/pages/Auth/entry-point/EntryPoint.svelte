@@ -65,16 +65,8 @@
 				entryLoader = true;
 				const response = await handleEntry(entryCredentials);
 				if (response.isSuccessful) {
-					if (response?.data?.registeredWith === 'google') {
-						// Registered with google auth
-						isEntry = true;
-						redirectRules.title = `Redirecting you to sign in with google account...`;
-						redirectRules.description = `${entryCredentials?.email} is already registered using google account.`;
-						redirectRules.loadingMessage = `Please wait while we are redirecting you to your google account....`;
-						setTimeout(() => {
-							navigate(constants.SPARROW_OAUTH);
-						}, 1000);
-					} else if (response?.data?.registeredWith === 'email') {
+		
+					 if (response?.data?.registeredWith === 'email' || response?.data?.registeredWith === 'google') {
 						// registered with email
 						isEntry = true;
 						redirectRules.title = `Redirecting to your account...`;
