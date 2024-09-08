@@ -15,6 +15,7 @@
 	import bg from '$lib/assets/sparrowLogoBackground.svg';
 	import ExternalNavigation from './routing/ExternalNavigation.svelte';
 	import constants from '$lib/utils/constants';
+	import VerifyEmail from './pages/Auth/verify-email/VerifyEmail.svelte';
 	export let url = '/';
 </script>
 
@@ -27,6 +28,7 @@
 	<Route path="/register" component={RegisterPage} />
 	<Route path="/update/password/:id" component={UpdatePassword} />
 	<Route path="/reset/password/:id/:code" component={ResetPassword} />
+	<Route path="/verify/email/:id" component={VerifyEmail} />
 	<Route path="/redirect" component={OauthRedirect} />
 	<Route path="/support">
 		<ExternalNavigation to={`mailto:${constants.SPARROW_SUPPORT_EMAIL}`}/>

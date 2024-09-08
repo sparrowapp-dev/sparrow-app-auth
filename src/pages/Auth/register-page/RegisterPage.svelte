@@ -132,22 +132,9 @@
 					const response = await handleRegister(userData);
 					if (response.isSuccessful) {
 						isRegistered = true;
-						const accessToken = response?.data.accessToken?.token;
-						const refreshToken = response?.data.refreshToken?.token;
-						const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=register`;
-						setTimeout(() => {
-							let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
-							redirectRules.title = `Welcome ${data.name.split(' ')[0]}`;
-							redirectRules.description = `Redirecting you to desktop app...`;
-							redirectRules.message = `If the application does not open automatically,
-						please click below.`;
-							redirectRules.loadingMessage = '';
-							redirectRules.isSpinner = false;
-							navigate(sparrowRedirect);
-							redirectRules.buttonClick = () => {
-								navigate(sparrowRedirect);
-							};
-						}, 5000);
+						localStorage.setItem(`timer-verify-${userData.email}`, new Date().getTime());
+						notifications.success("Verification code has been sent to your registered Email ID.");
+						navigate(`/verify/email/${userData.email}`);
 					} else {
 						if (
 							response.message ===
