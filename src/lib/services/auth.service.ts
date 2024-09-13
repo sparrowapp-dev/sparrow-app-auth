@@ -58,4 +58,18 @@ const resetPassword = async (changePasswordBody: resetPasswordPostBody) => {
 	return response;
 };
 
-export { registerUser, loginUser, forgotPassword, loginWithGoogle, verifyEmail, resetPassword, getUser };
+const sendUserEmailVerification = async (emailInfo: EmailPostBody) => {
+	const response = await makeRequest('POST', `${apiUrl}/api/user/send-user-verification-email`, {
+		body: emailInfo
+	});
+	return response;
+};
+
+const verifyUserEmail = async (verifyInfo: verifyPostbody) => {
+	const response = await makeRequest('POST', `${apiUrl}/api/user/verify-user-email`, {
+		body: verifyInfo
+	});
+	return response;
+};
+
+export { registerUser, loginUser, forgotPassword, loginWithGoogle, verifyEmail, resetPassword, getUser, sendUserEmailVerification, verifyUserEmail };
