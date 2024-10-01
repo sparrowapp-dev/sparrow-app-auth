@@ -17,7 +17,6 @@
 	import constants from '$lib/utils/constants';
 	import VerifyEmail from './pages/Auth/verify-email/VerifyEmail.svelte';
 	import { onMount } from 'svelte';
-	import { isUserFromDesktop } from './store/store';
 	export let url = '/';
 
 
@@ -26,23 +25,12 @@
 		// Check the query parameters in the URL
 		const urlParams = new URLSearchParams(window.location.search);
 		const source = urlParams.get('source'); // Get 'source' from query param
-
-		// If a source is found in the query parameters, save it in localStorage
 		if (source === 'web') {
-			localStorage.setItem('isUserFromDesktop', 'false'); // Save to localStorage
-			isUserFromDesktop.set(false); // Update Svelte store
-		} else if (source === 'desktop') {
-			localStorage.setItem('isUserFromDesktop', 'true'); // Save to localStorage
-			isUserFromDesktop.set(true); // Update Svelte store
-		} else {
-			// If no source in URL, try to get it from localStorage
-			const storedSource = localStorage.getItem('isUserFromDesktop');
-			if (storedSource === 'true') {
-				isUserFromDesktop.set(true);
-			} else {
-				isUserFromDesktop.set(false);
-			}
-		}
+			localStorage.setItem('isUserFromDesktop', 'false'); 
+			
+		} else  {
+			localStorage.setItem('isUserFromDesktop', 'true'); 
+		} 
 	});
 
 </script>

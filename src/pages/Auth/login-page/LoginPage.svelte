@@ -15,7 +15,7 @@
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 	import Button from '$lib/components/button/Button.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
-	import { isUserFromDesktop } from '../../../store/store';
+
 
 	export let id;
 
@@ -56,16 +56,9 @@
 	};
 	let loginLoader = false;
 	
-	let userFromDesktop
+	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
 
-
-
-	// Subscribe to the store
-	isUserFromDesktop.subscribe(value => {
-		userFromDesktop = value; // Update local variable when the store value changes
-		console.log("IS user from desktop ", isUserFromDesktop)
-	});
-
+	console.log("is user form desk ",userFromDesktop)
 
 </script>
 
@@ -111,7 +104,7 @@
 							const refreshToken = response?.refreshToken?.token;
 							const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login`;
 							
-							if(userFromDesktop){
+							if(userFromDesktop === "true"){
 								setTimeout(() => {
 									let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
 									redirectRules.title = `Welcome back ${data.name}`;
