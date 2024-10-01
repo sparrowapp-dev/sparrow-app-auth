@@ -58,8 +58,6 @@
 	
 	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
 
-	console.log("is user form desk ",userFromDesktop)
-
 </script>
 
 {#if isLogin }
