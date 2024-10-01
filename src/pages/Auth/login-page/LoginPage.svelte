@@ -66,6 +66,7 @@
 		loadingMessage={redirectRules.loadingMessage}
 	/>
 {:else}
+<<<<<<< Updated upstream
 <BgContainer>
 	<div class="text-white d-flex justify-content-center align-items-center bg-sparrowPrimaryColor" style="height: 60px; width: 60px; border-radius: 6px;">
 		<img src={sparrowicon} alt="" class="" />
@@ -113,6 +114,63 @@
 						response === 'password must be longer than or equal to 8 characters'
 					) {
 						authenticationError = true;
+=======
+	<BgContainer>
+		<div
+			class="text-white d-flex justify-content-center align-items-center bg-sparrowPrimaryColor"
+			style="height: 60px; width: 60px; border-radius: 6px;"
+		>
+			<img src={sparrowicon} alt="" class="" />
+		</div>
+		<p
+			class="container-header pt-4 pb-4 sparrow-fs-28 sparrow-fw-600 text-whiteColor text-center ms-2 me-2"
+			style="letter-spacing: 0.05rem;"
+		>
+			Welcome to Sparrow!
+		</p>
+		<form
+			class="login-form w-100 text-whiteColor ps-1 pe-1 gap-16 mb-2"
+			novalidate
+			on:submit|preventDefault={async () => {
+				isPasswordTouched = true;
+				isEmailTouched = true;
+				validationErrors = await handleLoginValidation(loginCredentials);
+				if (!validationErrors?.email && !validationErrors?.password) {
+					loginLoader = true;
+					const result = await handleLogin(loginCredentials);
+					if (result.isSuccessful) {
+						const response = result.data;
+						if (response?.isEmailVerified) {
+							isLogin = true;
+							const accessToken = response?.accessToken?.token;
+							const refreshToken = response?.refreshToken?.token;
+							const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login`;
+							const sparrowWebRedirect = constants.SPARROW_WEB_URL +`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login`;
+							if(userFromDesktop === "true"){
+								setTimeout(() => {
+									let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
+									redirectRules.title = `Welcome back ${data.name}`;
+									redirectRules.description = `Redirecting you to desktop app...`;
+									redirectRules.message = `If the application does not open automatically,
+							please click below.`;
+									redirectRules.loadingMessage = '';
+									redirectRules.isSpinner = false;
+									navigate(sparrowRedirect);
+									redirectRules.buttonClick = () => {
+										navigate(sparrowRedirect);
+									};
+								}, 1000);
+
+							}
+							else{
+								navigate(sparrowWebRedirect);
+							}
+						} else {
+							localStorage.setItem(`timer-verify-${loginCredentials.email}`, new Date().getTime());
+							notifications.success('Verification code has been sent to your registered Email ID.');
+							navigate(`/verify/email/${loginCredentials.email}`);
+						}
+>>>>>>> Stashed changes
 					} else {
 						notifications.error(response);
 					}

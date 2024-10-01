@@ -16,6 +16,27 @@
 	import ExternalNavigation from './routing/ExternalNavigation.svelte';
 	import constants from '$lib/utils/constants';
 	export let url = '/';
+<<<<<<< Updated upstream
+=======
+
+
+
+	onMount(() => {
+		// Check the query parameters in the URL
+		const urlParams = new URLSearchParams(window.location.search);
+		const source = urlParams.get('source'); // Get 'source' from query param
+		if(!source){
+			return;
+		}
+		if (source === 'web') {
+			localStorage.setItem('isUserFromDesktop', 'false'); 
+			
+		} else  {
+			localStorage.setItem('isUserFromDesktop', 'true'); 
+		} 
+	});
+
+>>>>>>> Stashed changes
 </script>
 
 <Router {url}>
