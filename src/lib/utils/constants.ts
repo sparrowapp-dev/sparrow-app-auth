@@ -11,7 +11,8 @@ const constants = {
   API_REDIRECT_TIMEOUT: 7000,
   SPARROW_OAUTH:import.meta.env.VITE_SPARROW_OAUTH,
   SPARROW_SUPPORT_EMAIL:import.meta.env.VITE_SPARROW_SUPPORT_EMAIL,
-  SPARROW_TERMS_OF_SERVICE: import.meta.env.VITE_TERMS_OF_SERVICE
+  SPARROW_TERMS_OF_SERVICE: import.meta.env.VITE_TERMS_OF_SERVICE,
+  SPARROW_WEB_URL: import.meta.env.VITE_SPARROW_WEB_URL
 };
 
 export default constants;

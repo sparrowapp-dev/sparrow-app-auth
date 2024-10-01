@@ -16,7 +16,23 @@
 	import ExternalNavigation from './routing/ExternalNavigation.svelte';
 	import constants from '$lib/utils/constants';
 	import VerifyEmail from './pages/Auth/verify-email/VerifyEmail.svelte';
+	import { onMount } from 'svelte';
 	export let url = '/';
+
+
+
+	onMount(() => {
+		// Check the query parameters in the URL
+		const urlParams = new URLSearchParams(window.location.search);
+		const source = urlParams.get('source'); // Get 'source' from query param
+		if (source === 'web') {
+			localStorage.setItem('isUserFromDesktop', 'false'); 
+			
+		} else  {
+			localStorage.setItem('isUserFromDesktop', 'true'); 
+		} 
+	});
+
 </script>
 
 <Router {url}>
