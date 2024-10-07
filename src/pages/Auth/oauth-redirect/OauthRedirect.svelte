@@ -8,7 +8,8 @@
 		const urlParams = new URLSearchParams(window.location.search);
 		const accessToken = urlParams.get('accessToken');
 		const refreshToken = urlParams.get('refreshToken');
-		const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&event=login`;
+		const source = urlParams.get('source');
+		const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}`;
 
 		if (accessToken && refreshToken) {
 			setTimeout(() => {
