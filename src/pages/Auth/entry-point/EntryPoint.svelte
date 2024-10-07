@@ -10,6 +10,7 @@
 	import starIcon from '$lib/assets/starIcon.svg';
 	import Button from '$lib/components/button/Button.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
+	import { onMount } from 'svelte';
 
 	let isEmailTouched = false;
 	//---------------- Login Validation --------------------//
@@ -32,6 +33,18 @@
 		loadingMessage: 'Please wait while we are redirecting you to your email account....'
 	};
 	let entryLoader = false;
+
+	onMount(() => {
+		// Check the query parameters in the URL
+		const urlParams = new URLSearchParams(window.location.search);
+		const source = urlParams.get('source'); // Get 'source' from query param
+		if (source === 'web') {
+			localStorage.setItem('isUserFromDesktop', 'false'); 
+			
+		} else  {
+			localStorage.setItem('isUserFromDesktop', 'true'); 
+		} 
+	});
 </script>
 
 {#if isEntry}

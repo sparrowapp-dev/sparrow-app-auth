@@ -16,7 +16,10 @@
 	import ExternalNavigation from './routing/ExternalNavigation.svelte';
 	import constants from '$lib/utils/constants';
 	import VerifyEmail from './pages/Auth/verify-email/VerifyEmail.svelte';
+	import { onMount } from 'svelte';
 	export let url = '/';
+
+
 </script>
 
 <Router {url}>
