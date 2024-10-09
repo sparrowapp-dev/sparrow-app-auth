@@ -154,8 +154,8 @@
 			<div class="form-group gap-0 mb-3">
 				<div>
 					<label for="email" class="form-label sparrow-fs-14 text-lightGray d-flex"
-						>Email
-						<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label
+						>Email ID
+ 						<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label
 					>
 				</div>
 				<input
