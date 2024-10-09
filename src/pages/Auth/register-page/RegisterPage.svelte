@@ -15,6 +15,7 @@
 	import constants from '$lib/utils/constants';
 	import Button from '$lib/components/button/Button.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
+	import PrivacyPolicy from '$lib/components/privacy-policy/PrivacyPolicy.svelte';
 	export let id;
 	let isRegistered = false;
 	let redirectRules = {
@@ -398,6 +399,7 @@
 			</div>
 		</form>
 		<Oauth />
+		<PrivacyPolicy/>
 		<SupportHelp />
 	</BgContainer>
 {/if}
