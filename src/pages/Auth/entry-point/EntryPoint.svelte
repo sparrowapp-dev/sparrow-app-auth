@@ -11,6 +11,7 @@
 	import Button from '$lib/components/button/Button.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
 	import { onMount } from 'svelte';
+	import PrivacyPolicy from '$lib/components/privacy-policy/PrivacyPolicy.svelte';
 
 	let isEmailTouched = false;
 	//---------------- Login Validation --------------------//
@@ -149,6 +150,7 @@
 			</div>
 		</form>
 		<Oauth />
+		<PrivacyPolicy/>
 		<SupportHelp />
 	</BgContainer>
 {/if}
