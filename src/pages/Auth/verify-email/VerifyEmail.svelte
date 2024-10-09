@@ -112,6 +112,7 @@
 		}
 	});
 	let resentCodeLoader = false;
+	let isLimitReached = false;
 	const handleResend = async () => {
 		resentCodeLoader = true;
 		const response = await sendUserEmailVerification({ email: id });
@@ -119,6 +120,10 @@
 			notifications.success('Verification code sent successfully');
 			localStorage.setItem(`timer-verify-${id}`, new Date().getTime());
 			startTimer();
+		} else if(response.message === "Maximum code limit reached") {
+			verificationCodeError = true; 
+			isLimitReached = true;
+			errorMessage = "You have reached the maximum limit of verification code requests."
 		} else {
 			notifications.error(response.message);
 		}

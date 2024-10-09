@@ -8,7 +8,7 @@ import { writable } from 'svelte/store';
 export const handleVerifyUserEmail = async (verifyCodeCredential: verifyPostbody) => {
 	const response = await verifyUserEmail(verifyCodeCredential);
 	if (response.isSuccessful) {
-        errorMessageText.set("");
+        errorMessageText.set("");    
 	} else {
 		isSuccessfulResponse.set(true);
 		if (response.message === 'verificationCode should not be empty') {
