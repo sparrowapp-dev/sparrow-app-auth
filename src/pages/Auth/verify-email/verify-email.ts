@@ -5,7 +5,7 @@ export const isSuccessfulResponse = writable(false);
 
 import { writable } from 'svelte/store';
 
-export const handleVerifyEmail = async (verifyCodeCredential: verifyPostbody) => {
+export const handleVerifyUserEmail = async (verifyCodeCredential: verifyPostbody) => {
 	const response = await verifyUserEmail(verifyCodeCredential);
 	if (response.isSuccessful) {
         errorMessageText.set("");
