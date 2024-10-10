@@ -107,7 +107,7 @@
 			<p class="card-subtitle sparrow-fs-20 sparrow-fw-500 mb-3">Sign In or Create an Account</p>
 			<div class="mb-3">
 				<label for="exampleInputEmail1" class="form-label text-lightGray sparrow-fs-14 d-flex"
-					>Email
+					>Email ID
 					<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label
 				>
 				<!-- <img src={starIcon} alt="" class="mb-3" style="width: 7px;" /> -->
