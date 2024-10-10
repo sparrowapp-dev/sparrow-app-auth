@@ -14,7 +14,7 @@
 		if (accessToken && refreshToken) {
 			setTimeout(() => {
 				let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
-				redirectRules.title = `Welcome back ${data.name}`;
+				redirectRules.title = `Welcome ${data.name}`;
 				redirectRules.description = `Redirecting you to desktop app...`;
 				redirectRules.message = `If the application does not open automatically,
 				please click below.`;
