@@ -10,6 +10,8 @@
 	import starIcon from '$lib/assets/starIcon.svg';
 	import Button from '$lib/components/button/Button.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
+	import { onMount } from 'svelte';
+	import PrivacyPolicy from '$lib/components/privacy-policy/PrivacyPolicy.svelte';
 
 	let isEmailTouched = false;
 	//---------------- Login Validation --------------------//
@@ -32,6 +34,18 @@
 		loadingMessage: 'Please wait while we are redirecting you to your email account....'
 	};
 	let entryLoader = false;
+
+	onMount(() => {
+		// Check the query parameters in the URL
+		const urlParams = new URLSearchParams(window.location.search);
+		const source = urlParams.get('source'); // Get 'source' from query param
+		if (source === 'web') {
+			localStorage.setItem('isUserFromDesktop', 'false'); 
+			
+		} else  {
+			localStorage.setItem('isUserFromDesktop', 'true'); 
+		} 
+	});
 </script>
 
 {#if isEntry}
@@ -93,7 +107,7 @@
 			<p class="card-subtitle sparrow-fs-20 sparrow-fw-500 mb-3">Sign In or Create an Account</p>
 			<div class="mb-3">
 				<label for="exampleInputEmail1" class="form-label text-lightGray sparrow-fs-14 d-flex"
-					>Email
+					>Email ID
 					<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label
 				>
 				<!-- <img src={starIcon} alt="" class="mb-3" style="width: 7px;" /> -->
@@ -136,6 +150,7 @@
 			</div>
 		</form>
 		<Oauth />
+		<PrivacyPolicy/>
 		<SupportHelp />
 	</BgContainer>
 {/if}

@@ -15,6 +15,7 @@
 	import constants from '$lib/utils/constants';
 	import Button from '$lib/components/button/Button.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
+	import PrivacyPolicy from '$lib/components/privacy-policy/PrivacyPolicy.svelte';
 	export let id;
 	let isRegistered = false;
 	let redirectRules = {
@@ -153,8 +154,8 @@
 			<div class="form-group gap-0 mb-3">
 				<div>
 					<label for="email" class="form-label sparrow-fs-14 text-lightGray d-flex"
-						>Email
-						<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label
+						>Email ID
+ 						<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label
 					>
 				</div>
 				<input
@@ -398,6 +399,7 @@
 			</div>
 		</form>
 		<Oauth />
+		<PrivacyPolicy/>
 		<SupportHelp />
 	</BgContainer>
 {/if}

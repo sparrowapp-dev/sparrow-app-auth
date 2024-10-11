@@ -8,12 +8,13 @@
 		const urlParams = new URLSearchParams(window.location.search);
 		const accessToken = urlParams.get('accessToken');
 		const refreshToken = urlParams.get('refreshToken');
-		const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&event=login`;
+		const source = urlParams.get('source');
+		const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
 
 		if (accessToken && refreshToken) {
 			setTimeout(() => {
 				let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
-				redirectRules.title = `Welcome back ${data.name}`;
+				redirectRules.title = `Welcome ${data.name}`;
 				redirectRules.description = `Redirecting you to desktop app...`;
 				redirectRules.message = `If the application does not open automatically,
 				please click below.`;

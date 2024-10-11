@@ -15,6 +15,8 @@
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 	import Button from '$lib/components/button/Button.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
+
+
 	export let id;
 
 	let isEmailTouched = false;
@@ -53,9 +55,12 @@
 		loadingMessage: 'Please wait while we sign you in....'
 	};
 	let loginLoader = false;
+	
+	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
+
 </script>
 
-{#if isLogin}
+{#if isLogin }
 	<Redirect
 		title={redirectRules.title}
 		description={redirectRules.description}
@@ -95,20 +100,27 @@
 							isLogin = true;
 							const accessToken = response?.accessToken?.token;
 							const refreshToken = response?.refreshToken?.token;
-							const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login`;
-							setTimeout(() => {
-								let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
-								redirectRules.title = `Welcome back ${data.name}`;
-								redirectRules.description = `Redirecting you to desktop app...`;
-								redirectRules.message = `If the application does not open automatically,
-						please click below.`;
-								redirectRules.loadingMessage = '';
-								redirectRules.isSpinner = false;
-								navigate(sparrowRedirect);
-								redirectRules.buttonClick = () => {
+							const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
+							const sparrowWebRedirect = constants.SPARROW_WEB_URL +`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
+							if(userFromDesktop === "true"){
+								setTimeout(() => {
+									let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
+									redirectRules.title = `Welcome back ${data.name}`;
+									redirectRules.description = `Redirecting you to desktop app...`;
+									redirectRules.message = `If the application does not open automatically,
+							please click below.`;
+									redirectRules.loadingMessage = '';
+									redirectRules.isSpinner = false;
 									navigate(sparrowRedirect);
-								};
-							}, 1000);
+									redirectRules.buttonClick = () => {
+										navigate(sparrowRedirect);
+									};
+								}, 1000);
+
+							}
+							else{
+								navigate(sparrowWebRedirect);
+							}
 						} else {
 							localStorage.setItem(`timer-verify-${loginCredentials.email}`, new Date().getTime());
 							notifications.success('Verification code has been sent to your registered Email ID.');
@@ -132,7 +144,7 @@
 			<p class="card-subtitle sparrow-fs-20 sparrow-fw-500 mb-3">Sign In</p>
 			<div class="mb-3">
 				<label for="exampleInputEmail1" class="form-label text-lightGray sparrow-fs-14 d-flex"
-					>Email
+					>Email ID
 					<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p>
 				</label>
 				<!-- <img src={starIcon} alt="" class="mb-3" style="width: 7px;" /> -->

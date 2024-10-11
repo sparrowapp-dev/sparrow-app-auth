@@ -2,7 +2,7 @@
 	import lineIcon from '$lib/assets/line.svg';
 	import starIcon from '$lib/assets/starIcon.svg';
 	import { errorMessageText, isLoading, username } from '$lib/store/auth.store';
-	import { handleVerifyEmail, isSuccessfulResponse } from './verify-email';
+	import { handleVerifyUserEmail, isSuccessfulResponse } from './verify-email';
 	import sparrowicon from '$lib/assets/logoSparrowSquare.svg';
 	import { writable } from 'svelte/store';
 	import { onDestroy, onMount } from 'svelte';
@@ -492,12 +492,12 @@
 						loader={verifyCodeLoader}
 						onClick={async () => {
 							verifyCodeLoader = true;
-							let response = await handleVerifyEmail(verifyCodeCredential);
+							let response = await handleVerifyUserEmail(verifyCodeCredential);
 							if (response?.isSuccessful) {
 								isRegistered = true;
 								const accessToken = response?.data.accessToken?.token;
 								const refreshToken = response?.data.refreshToken?.token;
-								const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=register`;
+								const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=register&method=email`;
 								setTimeout(() => {
 									let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
 									redirectRules.title = `Welcome ${data.name.split(' ')[0]}`;
