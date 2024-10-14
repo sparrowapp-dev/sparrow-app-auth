@@ -7,7 +7,7 @@
 	onMount(() => {
 		const urlParams = new URLSearchParams(window.location.search);
 		const accessToken = urlParams.get('accessToken');
-		const refreshToken = urlParams.get('refreshToken');
+		const refreshToken = urlParams.get('refreshToken'); 
 		const source = urlParams.get('source');
 		const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
 

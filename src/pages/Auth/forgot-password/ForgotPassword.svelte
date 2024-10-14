@@ -66,7 +66,7 @@
 		</div>
 		<div class="mb-3">
 			<div>
-				<label for="exampleInputEmail1" class="form-label text-lightGray sparrow-fs-14 d-flex">Email<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label>
+				<label for="exampleInputEmail1" class="form-label text-lightGray sparrow-fs-14 d-flex">Email ID<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label>
 			</div>
 			<input
 				type="email"
