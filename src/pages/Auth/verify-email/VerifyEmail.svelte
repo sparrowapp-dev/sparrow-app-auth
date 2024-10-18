@@ -14,6 +14,7 @@
 	import AngleUp from '$lib/assets/angle-up.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
 	import Redirect from '../redirect/Redirect.svelte';
+	import constants from '$lib/utils/constants';
 	export let id: string;
 
 	let seconds = 60;
@@ -73,6 +74,10 @@
 	let verificationCode6: string = '';
 
 	let emailText: string = id || '';
+
+
+	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
+
 
 	const handleVerificationCode = () => {
 		verifyCode =
@@ -498,6 +503,9 @@
 								const accessToken = response?.data.accessToken?.token;
 								const refreshToken = response?.data.refreshToken?.token;
 								const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=register&method=email`;
+								const sparrowWebRedirect = constants.SPARROW_WEB_URL +`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=register&method=email`;
+
+								if(userFromDesktop === "true"){
 								setTimeout(() => {
 									let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
 									redirectRules.title = `Welcome ${data.name.split(' ')[0]}`;
@@ -511,6 +519,11 @@
 										navigate(sparrowRedirect);
 									};
 								}, 5000);
+							}
+
+								else{
+									navigate(sparrowWebRedirect);
+								}
 							}
 
 							verifyCodeLoader = false;
