@@ -113,7 +113,7 @@
 
 		<div class="form-group mb-1 text-lightGray">
 			<div>
-				<label for="password" class="sparrow-fs-16">New Password</label>
+				<label for="password" class="sparrow-fs-16 d-flex">New Password <p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label>
 			</div>
 			<div class="d-flex position-relative">
 				<input

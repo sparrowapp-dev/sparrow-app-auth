@@ -4,14 +4,19 @@
 	import Redirect from '../redirect/Redirect.svelte';
 	import constants from '$lib/utils/constants';
 
+	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
+
+
 	onMount(() => {
 		const urlParams = new URLSearchParams(window.location.search);
 		const accessToken = urlParams.get('accessToken');
-		const refreshToken = urlParams.get('refreshToken');
+		const refreshToken = urlParams.get('refreshToken'); 
 		const source = urlParams.get('source');
 		const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
+		const sparrowWebRedirect = constants.SPARROW_WEB_URL +`?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
 
 		if (accessToken && refreshToken) {
+			if(userFromDesktop === "true"){
 			setTimeout(() => {
 				let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
 				redirectRules.title = `Welcome ${data.name}`;
@@ -26,6 +31,10 @@
 					navigate(sparrowRedirect);
 				};
 			}, constants.API_REDIRECT_TIMEOUT);
+		}
+			else{
+				navigate(sparrowWebRedirect)
+			}
 		}
 	});
 	let redirectRules = {
