@@ -270,9 +270,9 @@
 						<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label
 					>
 				</div>
-				<div class="d-flex position-relative">
+				<div class="d-flex position-relative mt-1">
 					<input
-						class="form-control sparrow-fs-16 mt-1 pe-5 border:{validationErrors?.password &&
+						class="form-control sparrow-fs-16 pe-5 border:{validationErrors?.password &&
 						isPasswordTouched
 							? '3px'
 							: '1px'} solid {validationErrors?.password && isPasswordTouched
@@ -294,13 +294,14 @@
 							validationErrors = await handleRegisterValidation(userData);
 							validatePassword();
 						}}
+						maxlength="32"
 					/>
 					<button
 						type="button"
 						on:click={togglePasswordVisibility}
 						class=" border-0 position-absolute eye-icon d-flex align-items-center"
 					>
-						{#if isPasswordVisible}
+						{#if !isPasswordVisible}
 							<img src={eyeShow} alt="eye-show" />
 						{:else}
 							<img src={eyeHide} alt="eye-hie" />
@@ -406,8 +407,9 @@
 
 <style>
 	.eye-icon {
-		top: 10px;
 		right: 5px;
+		top: 50%;
+    	transform: translateY(-50%);
 		background-color: transparent;
 	}
 	input {
@@ -421,5 +423,8 @@
 	}
 	.btn-primary:active {
 		background: var(--button-pressed);
+	}
+	input:disabled{
+		opacity: 0.5;
 	}
 </style>

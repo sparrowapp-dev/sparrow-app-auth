@@ -190,7 +190,7 @@
 						type="password"
 						autocomplete="off"
 						id="exampleInputPassword1"
-						placeholder="Please enter your Password"
+						placeholder="Please enter your password"
 						autocorrect="off"
 						autocapitalize="none"
 						bind:value={loginCredentials.password}
@@ -210,13 +210,14 @@
 							validationErrors = await handleLoginValidation(loginCredentials);
 							authenticationError = false;
 						}}
+						maxlength="32"
 					/>
 					<button
 						type="button"
 						on:click={togglePasswordVisibility}
 						class="border-0 position-absolute eye-icon d-flex align-items-center"
 					>
-						{#if isPasswordVisible}
+						{#if !isPasswordVisible}
 							<img src={eyeShow} alt="eye-show" />
 						{:else}
 							<img src={eyeHide} alt="eye-hie" />
@@ -258,8 +259,9 @@
 
 <style>
 	.eye-icon {
-		top: 5px;
 		right: 5px;
+		top: 50%;
+    	transform: translateY(-50%);
 		background-color: transparent;
 	}
 
@@ -274,5 +276,8 @@
 	}
 	input {
 		background-color: transparent !important;
+	}
+	input:disabled{
+		opacity: 0.5;
 	}
 </style>
