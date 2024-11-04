@@ -6,10 +6,10 @@ export const isSuccessfulResponse = writable(false);
 import { writable } from 'svelte/store';
 
 export const handleVerifyUserEmail = async (verifyCodeCredential: verifyPostbody) => {
-	const response = await verifyUserEmail(verifyCodeCredential);
-	if (response.isSuccessful) {
+	const response = await verifyUserEmail(verifyCodeCredential);  
+	if (response.isSuccessful) {  
         errorMessageText.set("");
-	} else {
+	} else { 
 		isSuccessfulResponse.set(true);
 		if (response.message === 'verificationCode should not be empty') {
 			errorMessageText.set('Please enter the 6-digit verification code.');
