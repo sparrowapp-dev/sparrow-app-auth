@@ -14,6 +14,7 @@
 	import AngleUp from '$lib/assets/angle-up.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
 	import Redirect from '../redirect/Redirect.svelte';
+	import constants from '$lib/utils/constants';
 	export let id: string;
 
 	let seconds = 60;
@@ -74,6 +75,10 @@
 
 	let emailText: string = id || '';
 
+
+	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
+
+
 	const handleVerificationCode = () => {
 		verifyCode =
 			verificationCode1 +
@@ -119,6 +124,13 @@
 			notifications.success('Verification code sent successfully');
 			localStorage.setItem(`timer-verify-${id}`, new Date().getTime());
 			startTimer();
+			verificationCode1 = '';
+			verificationCode2 = '';
+			verificationCode3 = '';
+			verificationCode4 = '';
+			verificationCode5 = '';
+			verificationCode6 = '';
+			onCodeInput();
 		} else {
 			notifications.error(response.message);
 		}
@@ -464,9 +476,7 @@
 							</div>
 							{#if verificationCodeError === true}
 								<small class="form-text text-dangerColor">
-									{errorMessage === 'Unauthorized Access'
-										? 'You have entered the wrong code. Please check again.'
-										: errorMessage}
+									{errorMessage}
 								</small>
 							{/if}
 						</div>
@@ -498,6 +508,9 @@
 								const accessToken = response?.data.accessToken?.token;
 								const refreshToken = response?.data.refreshToken?.token;
 								const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=register&method=email`;
+								const sparrowWebRedirect = constants.SPARROW_WEB_URL +`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=register&method=email`;
+
+								if(userFromDesktop === "true"){
 								setTimeout(() => {
 									let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
 									redirectRules.title = `Welcome ${data.name.split(' ')[0]}`;
@@ -511,6 +524,11 @@
 										navigate(sparrowRedirect);
 									};
 								}, 5000);
+							}
+
+								else{
+									navigate(sparrowWebRedirect);
+								}
 							}
 
 							verifyCodeLoader = false;
