@@ -113,11 +113,14 @@
 
 		<div class="form-group mb-1 text-lightGray">
 			<div>
-				<label for="password" class="sparrow-fs-16 d-flex">New Password <p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label>
+				<label for="password" class="sparrow-fs-16 d-flex">New Password
+					<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p>
+				</label>
+				
 			</div>
-			<div class="d-flex position-relative">
+			<div class="d-flex position-relative mt-1">
 				<input
-					class="form-control mt-1 sparrow-fs-16 pe-5 border:{(!isPasswordValid1 || !isPasswordValid2 || !isPasswordValid3) &&
+					class="form-control sparrow-fs-16 pe-5 border:{(!isPasswordValid1 || !isPasswordValid2 || !isPasswordValid3) &&
 						isPasswordTouched
 						? '3px'
 						: '1px'} solid {(!isPasswordValid1 || !isPasswordValid2 || !isPasswordValid3) &&
@@ -137,13 +140,14 @@
 						validatePassword();
 					}}
 					on:input={validatePassword}
+					maxlength="32"
 				/>
 				<button
 					type="button"
 					on:click={togglePasswordVisibility}
 					class=" border-0 position-absolute eye-icon d-flex align-items-center"
 				>
-					{#if isPasswordVisible}
+					{#if !isPasswordVisible}
 						<img src={eyeShow} alt="eye-show" />
 					{:else}
 						<img src={eyeHide} alt="eye-hie" />
@@ -269,8 +273,9 @@
 		background: var(--primary-color);
 	}
 	.eye-icon {
-		top: 10px;
 		right: 5px;
+		top: 50%;
+    	transform: translateY(-50%);
 		background-color: transparent;
 	}
 	input {

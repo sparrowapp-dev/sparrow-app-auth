@@ -11,12 +11,12 @@ export const handleVerifyUserEmail = async (verifyCodeCredential: verifyPostbody
         errorMessageText.set("");
 	} else { 
 		isSuccessfulResponse.set(true);
-		if (response.message === 'verificationCode should not be empty') {
+		if (response.message === 'verificationCode should not be empty' || response.message === "verificationCode must be longer than or equal to 6 characters") {
 			errorMessageText.set('Please enter the 6-digit verification code.');
 		}
 
 		if (response.message === 'Wrong Code') {
-			errorMessageText.set('You have entered wrong code, Please check again.');
+			errorMessageText.set('You have entered wrong code, please check your email.');
 		}
 	}
 	return response;

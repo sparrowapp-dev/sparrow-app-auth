@@ -17,7 +17,7 @@ export const handleVerifyEmail = async (
 		navigate(`/reset/password/${verifyCodeCredential.email}/${response?.data}`);
 	} else {
     isSuccessfulResponse.set(true);
-    if (response.message === "verificationCode should not be empty") {
+    if (response.message === "verificationCode should not be empty" || response.message === "verificationCode must be longer than or equal to 6 characters") {
       errorMessageText.set("Please enter the 6-digit verification code.");
     }
 

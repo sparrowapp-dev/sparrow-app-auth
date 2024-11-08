@@ -108,6 +108,13 @@
 			notifications.success('Verification code sent successfully');
 			localStorage.setItem(`timer-${id}`, new Date().getTime());
 			startTimer();
+			verificationCode1 = '';
+			verificationCode2 = '';
+			verificationCode3 = '';
+			verificationCode4 = '';
+			verificationCode5 = '';
+			verificationCode6 = '';
+			onCodeInput();
 		} else {
 			notifications.error(response.message);
 		}
@@ -441,9 +448,7 @@
 						</div>
 						{#if verificationCodeError === true}
 							<small class="form-text text-dangerColor">
-								{errorMessage === 'Unauthorized Access'
-								? 'You have entered the wrong code. Please check again.'
-								: errorMessage}
+								 {errorMessage}
 							</small>
 						{/if}
 					</div>
