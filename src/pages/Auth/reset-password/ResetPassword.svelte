@@ -147,7 +147,7 @@
 					on:click={togglePasswordVisibility}
 					class=" border-0 position-absolute eye-icon d-flex align-items-center"
 				>
-					{#if !isPasswordVisible}
+					{#if isPasswordVisible}
 						<img src={eyeShow} alt="eye-show" />
 					{:else}
 						<img src={eyeHide} alt="eye-hie" />
