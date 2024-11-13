@@ -220,7 +220,9 @@
 			<div class="sparrow-fs-14 sparrow-fs-300">
 				<p>
 					Please enter the verification code you have received on
-					<span class="sparrow-fw-700 text-whiteColor cursor-pointer">{emailText}</span>
+					<span class="sparrow-fw-700 text-whiteColor cursor-pointer " style="	overflow:hidden;  display: inline-block;
+    word-break: break-all; "> {emailText.slice(0, 100)}
+    {emailText.length > 100 ? '...' : ''}</span>
 				</p>
 				{#if seconds > 0}
 				<div class="d-flex flex-column">
