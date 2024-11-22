@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { navigate } from 'svelte-navigator';
 	import Redirect from '../redirect/Redirect.svelte';
@@ -6,11 +6,12 @@
 
 	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
 
-
+	let accessToken = "";
+	let refreshToken = "";
 	onMount(() => {
 		const urlParams = new URLSearchParams(window.location.search);
-		const accessToken = urlParams.get('accessToken');
-		const refreshToken = urlParams.get('refreshToken'); 
+		accessToken = urlParams.get('accessToken') as string;
+		refreshToken = urlParams.get('refreshToken') as string; 
 		const source = urlParams.get('source');
 		const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
 		const sparrowWebRedirect = constants.SPARROW_WEB_URL +`?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
@@ -36,6 +37,14 @@
 				navigate(sparrowWebRedirect)
 			}
 		}
+		else{
+			if(userFromDesktop === "true"){
+				navigate("/init")
+			}
+			else{
+				navigate("/init?source=web")
+			}			
+		}
 	});
 	let redirectRules = {
 		title: 'Welcome to Sparrow!',
@@ -48,12 +57,14 @@
 	};
 </script>
 
-<Redirect
-	title={redirectRules.title}
-	description={redirectRules.description}
-	message={redirectRules.message}
-	isSpinner={redirectRules.isSpinner}
-	buttonText={redirectRules.buttonText}
-	buttonClick={redirectRules.buttonClick}
-	loadingMessage={redirectRules.loadingMessage}
-/>
+{#if accessToken && refreshToken}
+	<Redirect
+		title={redirectRules.title}
+		description={redirectRules.description}
+		message={redirectRules.message}
+		isSpinner={redirectRules.isSpinner}
+		buttonText={redirectRules.buttonText}
+		buttonClick={redirectRules.buttonClick}
+		loadingMessage={redirectRules.loadingMessage}
+	/>
+{/if}

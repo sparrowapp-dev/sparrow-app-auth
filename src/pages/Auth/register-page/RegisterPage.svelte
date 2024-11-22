@@ -301,7 +301,7 @@
 						on:click={togglePasswordVisibility}
 						class=" border-0 position-absolute eye-icon d-flex align-items-center"
 					>
-						{#if !isPasswordVisible}
+						{#if isPasswordVisible}
 							<img src={eyeShow} alt="eye-show" />
 						{:else}
 							<img src={eyeHide} alt="eye-hie" />
@@ -365,10 +365,10 @@
 				</div>
 			</div>
 
-			<div class="form-group mt-3 d-flex align-item-center" data-tauri-drag-region>
+			<div class="form-group mt-3 d-flex align-items-center" data-tauri-drag-region>
 				<input
 					type="checkbox"
-					class="form-check-input"
+					class="form-check-input mt-0"
 					id="tnsCheckbox"
 					bind:checked={userData.tnsCheckbox}
 					on:input={async () => {
