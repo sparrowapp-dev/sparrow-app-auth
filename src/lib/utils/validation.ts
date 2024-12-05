@@ -25,7 +25,7 @@ export const registrationSchema = yup.object().shape({
 		.email()
 		.matches(emailRegex, 'Please enter a valid Email ID')
 		.required('Please enter a valid Email ID'),
-	firstName: yup.string().matches(firstNameRegex, "Your first name cannot have numbers or special characters.").required('Please enter your first name.'),
+	firstName: yup.string().trim().matches(firstNameRegex, "Your first name cannot have numbers or special characters.").required('Please enter your first name.'),
 	lastName: yup.string().matches(lastNameRegex, "Your last name cannot have numbers or special characters."),
 	password: yup
 		.string()
