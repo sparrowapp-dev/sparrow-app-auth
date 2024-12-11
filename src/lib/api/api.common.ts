@@ -39,7 +39,6 @@ const makeRequest = async (method: Method, url: string, requestData?: RequestDat
 		});
 		return success(response.data?.data, response.data?.message);
 	} catch (e: any) {
-		console.log(e);
 		if (e.response) {
 			return error(e.response.data?.data, e.response.data?.message);
 		}
