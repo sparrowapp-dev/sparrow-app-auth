@@ -58,7 +58,7 @@
     disabled={disable}
     style={`${buttonStyleProp} ${
       type !== "other" && type !== "icon"
-        ? "border-radius: 4px; padding: 6px 12px;"
+        ? "border-radius: 10px; padding: 6px 12px;"
         : ""
     } `}
     class={`${buttonClassProp} ${
@@ -91,10 +91,39 @@
     .sparrow-icon-btn:hover {
       background-color: var(--blackColor);
     }
+ 
     .custom-btn-primary {
-      background: var(--primary-btn-color);
-      color: var(--white-color);
-    }
+    height: 44px;
+		font-weight: 400;
+		background-color: white;
+    color:black;
+
+
+	}
+
+	.custom-btn-primary:hover {
+		background-color: #6147ff; /* purple-600 */
+		border-color: transparent;
+	}
+
+	.custom-btn-primary:active {
+		box-shadow: inset 0px 0px 12px 5px rgba(0, 0, 0, 0.55);
+	}
+	.custom-btn-primary:disabled {
+    user-select: none;
+    pointer-events: none;
+    opacity: 45%;
+	}
+
+
+
+
+
+
+
+
+
+
     .custom-btn-primary-gradient{
         // background: linear-gradient(270deg, #6147ff -1.72%, #1193f0 100%);
         background: var(--primary-color);

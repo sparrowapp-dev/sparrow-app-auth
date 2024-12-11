@@ -26,7 +26,7 @@
 	let redirectRules = {
 		title: 'Welcome to Sparrow!',
 		description: 'Bridging Frontend and Backend Development.',
-		message: `Easily document and manage APIs for seamless collaboration between frontend and backend teams. Get started now to simplify your development workflows.`,
+		message: `the token if you are facing any issue in redirecting to the login page`,
 		isSpinner: true,
 		buttonText: 'Open Desktop App',
 		buttonClick: () => {},
@@ -37,7 +37,8 @@
 		firstName: '',
 		lastName: '',
 		password: '',
-		tnsCheckbox: false
+		tnsCheckbox: false,
+		marketingUpdates:false
 	};
 	let isDuplicateEmail = false;
 	let validationErrors: any = {};
@@ -139,7 +140,8 @@
 					!validationErrors?.lastName &&
 					!validationErrors?.email &&
 					!validationErrors?.password &&
-					userData?.tnsCheckbox
+					userData?.tnsCheckbox &&
+					userData?.marketingUpdates
 				) {
 					registerLoader = true;
 					const response = await handleRegister(userData);
@@ -344,7 +346,7 @@
 
 </div>
 
-			<div class="form-group mt-3 d-flex align-items-center" data-tauri-drag-region>
+			<div class="form-group mt-3 d-flex align-items-start" data-tauri-drag-region>
 				<input
 					type="checkbox"
 					class="form-check-input mt-0"
@@ -354,16 +356,23 @@
 						isCheckboxTouched = true;
 					}}
 				/>
-				<label data-tauri-drag-region class="form-check-label ms-2 sparrow-fs-12" for="tnsCheckbox"
-					>I agree to Sparrow's <a
+				<label data-tauri-drag-region class="form-check-label ms-2  sparrow-fs-12" for="tnsCheckbox"
+					>I agree to Sparrow's
+
+					 <a
 						href={constants.SPARROW_TERMS_OF_SERVICE}
 						target="_blank"
-						class=" text-primaryColor sparrow-fw-500">Terms of Service</a
-					> and    <a
-					href={constants.SPARROW_TERMS_OF_SERVICE}
-					target="_blank"
-					class=" text-primaryColor sparrow-fw-500">Privacy Policy</a
-				> </label
+						class=" text-primaryColor sparrow-fw-500">Terms of Service
+					</a> 
+
+						and  <br>
+						
+						<a href={constants.SPARROW_TERMS_OF_SERVICE} target="_blank"
+					      class=" text-primaryColor sparrow-fw-500">
+						  Privacy Policy
+						</a>
+					
+				</label
 				>
 			</div>
 			{#if !userData.tnsCheckbox && isCheckboxTouched}
@@ -372,29 +381,34 @@
 				>
 			{/if}
 
-			<div class="mb-3 mt-4">
-				
-				<button
-				disabled={registerLoader}
-
-					class="btn d-flex justify-content-center align-items-center sparrow-fs-16 btn-primary w-100 text-blackColor"
-					style="height:44px;"
-					on:click={() => {
-						// skipLoginHandler();
-					}}
-					id="create_account_or_sign_in"
+			<div class="form-group mt-3 d-flex align-items-start" data-tauri-drag-region>
+				<input
+					type="checkbox"
+					class="form-check-input mt-0"
+					id="marketingUpdates"
+					bind:checked={userData.marketingUpdates}
+				/>
+				<label data-tauri-drag-region class="form-check-label ms-2 sparrow-fs-12" for="marketingUpdates"
+					>I agree to receive occasional updates and <br> helpful resources from Sparrow </label
 				>
-				{#if registerLoader}
-				<Spinner size={'16px'} />
-				{:else}
-				Create Account
-			  {/if}
-					
-				</button>
+			</div>
+
+			<!-- <PrivacyPolicy/> -->
+		
+
+			<div class="mb-3 mt-4">
+				<Button
+				disable={registerLoader}
+				title={"Create account"}
+				buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-14'}
+				type={'primary'}
+				
+			/>
+
+
+
 			</div>
 		</form>
-		<!-- <Oauth /> -->
-		<!-- <PrivacyPolicy/> -->
 		<SupportHelp />
 	</BgContainer>
 {/if}

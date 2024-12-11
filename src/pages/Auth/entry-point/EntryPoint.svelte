@@ -127,7 +127,6 @@
 				if (!validationErrors?.email) {
 					entryLoader = true;
 					const response = await handleEntry(entryCredentials);
-					debugger;
 					if (response.isSuccessful) {
 						if (
 							response?.data?.registeredWith === 'email' ||
@@ -162,7 +161,7 @@
 				<div class="d-flex position-relative mt-1">
 					<input
 						type="email"
-						class="form-control sparrow-fs-16 border:{validationErrors?.email && isEmailTouched
+						class="form-control pe-5 sparrow-fs-16 border:{validationErrors?.email && isEmailTouched
 							? '3px'
 							: '1px'} solid {validationErrors?.email && isEmailTouched
 							? 'border-error'
@@ -195,13 +194,10 @@
 						class=" border-0 position-absolute eye-icon d-flex align-items-center"
 					>
 						{#if entryLoader}
-							<!-- Show loader while checking -->
 							<Spinner size={'16px'} />
 						{:else if emailExists}
-							<!-- Show success icon if email exists -->
 							<CircleTick height={'16px'} width={'16px'} />
-			
-							
+
 						{/if}
 					</button>
 				</div>
@@ -212,8 +208,8 @@
 			</div>
 
 			<div>
-				<button
-					class="btn btn-primary w-100 text-blackColor"
+				<!-- <button
+					class="mb-5 btn btn-primary w-100 text-blackColor"
 					style="height:44px;"
 					on:click={() => {
 						// skipLoginHandler();
@@ -221,17 +217,25 @@
 					id="create_account_or_sign_in"
 				>
 					Send magic code
-				</button>
+				</button> -->
+
+				<Button
+					disable={entryLoader}
+					title={'Send magic code'}
+					buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-16'}
+					type={'primary'}
+					
+				/>
 			</div>
 		</form>
 
-		<div class="d-flex p-2">
+		<div class="d-flex align-items-start ms-1 ">
 			<div style="height: 24px; width:24px;">
 				<AiSparkle height={'24px'} width={'24px'} />
 			</div>
-			<p class="text-center">
+			<p class="text-center sparrow-fs-12 pt-1 " style="margin-left:-10px; color: #CCCCCCE5;">
 				We will email you a magic code for password free Sign in or you can <span
-					style="color:#3760F7;">continue with password</span
+					style="color:#3760F7; cursor:pointer;">continue with password</span
 				>
 			</p>
 		</div>
@@ -247,9 +251,7 @@
 		transform: translateY(-50%);
 		background-color: transparent;
 	}
-	.outline-none {
-		outline: none;
-	}
+
 	.btn-primary {
 		font-weight: 400;
 		border-radius: 10px;
@@ -295,7 +297,7 @@
 	}
 
 	.divider .text {
-		margin: 0 10px;
+		margin: 0 3px;
 		color: #bfc0d2;
 		font-size: 14px;
 	}

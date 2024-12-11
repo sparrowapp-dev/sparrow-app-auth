@@ -15,9 +15,14 @@
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
 	import Redirect from '../redirect/Redirect.svelte';
 	import constants from '$lib/utils/constants';
+	import PrivacyPolicy from '$lib/components/privacy-policy/PrivacyPolicy.svelte';
+	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
+	import AiSparkle from '$lib/assets/AiSparkle.svelte';
+	import CircleTick from '$lib/assets/CircleTick.svelte';
+	import CircleCheck from '$lib/assets/CircleCheck.svelte';
 	export let id: string;
 
-	let seconds = 60;
+	let seconds = 600;
 	const verifyString = writable('');
 	let verifyLength: string = '';
 	let isRegistered = false;
@@ -78,6 +83,7 @@
 
 	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
 
+	let showResendSuccess = false;
 
 	const handleVerificationCode = () => {
 		verifyCode =
@@ -121,6 +127,7 @@
 		resentCodeLoader = true;
 		const response = await sendUserEmailVerification({ email: id });
 		if (response.isSuccessful) {
+			showResendSuccess = true;
 			notifications.success('Verification code sent successfully');
 			localStorage.setItem(`timer-verify-${id}`, new Date().getTime());
 			startTimer();
@@ -225,15 +232,31 @@
 	/>
 {:else}
 	<BgContainer>
-		<p
-			class="container-header pb-3 sparrow-fs-36 text-whiteColor ms-2 me-2 sparrow-fw-500 w-100 text-left"
-			style="letter-spacing: 0.05em;"
-		>
-			Welcome to Sparrow!
-		</p>
+
+		<div class="d-flex align-items-start gap-2">
+			<div
+				class="text-white d-flex justify-content-center align-items-center bg-sparrowPrimaryColor"
+				style="height: 23px; width: 23px; border-radius: 6px;"
+			>
+				<img height="20px" width="20px" src={sparrowicon} alt="" class="" />
+			</div>
+			<p style="font-weight:500;">Sparrow</p>
+		</div>
+
+		<div  style="margin-top:20px; display: flex ; flex-direction:column; align-items:center;">
+			<p
+				class="container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
+				style="font-size:24px; font-weight: 400;  line-height:28px; text-align:center;"
+			>
+				Welcome!
+			</p>
+			<p class="" style="color: lightGray; font-size:14px;">Let’s get you onboard</p>
+		</div>
+
+	
 		<div class="login-form text-lightGray ps-1 pe-1 gap-16">
 			<div class="d-flex flex-column align-items-left mb-2">
-				<div class="d-flex align-items-center justify-content-start mb-3 gap-2">
+				<!-- <div class="d-flex align-items-center justify-content-start mb-3 gap-2">
 					<a
 						class="border-0 bg-transparent font-monospace"
 						style="transform: rotate(-90deg);"
@@ -242,23 +265,19 @@
 						<AngleUp color="var(--sparrow-text-color)" height={20} width={20} />
 					</a>
 					<p class="text-whiteColor sparrow-fs-14 sparrow-fw-500 mb-0">Go back</p>
-				</div>
+				</div> -->
 
-				<div class="sparrow-fs-14 sparrow-fs-300">
-					<p>
-						Check your inbox for the verification code sent to <span
-							class="sparrow-fw-700 text-whiteColor cursor-pointer">{emailText}</span
-						> and enter it below to proceed.
+				<div class="text-center  sparrow-fs-14 sparrow-fs-300 mt-5">
+					<p class="sparrow-fs-12">
+						We have sent a magic code at <br> {emailText}
 					</p>
-					{#if seconds > 0}
+					<div>
+						
 						<div class="d-flex flex-column">
-							<div class="d-flex align-items-center mb-2">
-								<p class="mb-1 sparrow-fs-14">Verification Code</p>
-								<img src={starIcon} alt="" class="mb-2 ms-1" style="width: 7px;" />
-							</div>
+						
 							<div
 								class="d-flex mb-2 align-items-center justify-content-start"
-								style="padding: 6px, 12px, 6px, 12px;border-radius: 4px;border: 1px;gap:8px"
+								style="gap: 6px;"
 							>
 								<input
 									type="text"
@@ -272,7 +291,7 @@
 										: '1px'} solid {verificationCodeError === true
 										? 'border-error'
 										: 'border-default'}"
-									style="width:48px;height:36px;border-none"
+									style="width:41px;height:54px;border-none"
 									bind:value={verificationCode1}
 									on:click={(e) => {
 										e.target.select();
@@ -291,14 +310,15 @@
 									on:input={handleVerificationCode}
 									on:paste={handlePaste}
 								/>
-								<img src={lineIcon} alt="" />
+						
+								
 								<input
 									type="text"
 									autocorrect="off"
 									autocapitalize="none"
 									autocomplete="off"
 									id="verificationCode2"
-									style="width:48px;height:36px;"
+									style="width:41px;height:54px;"
 									class="form-control text-center rounded fs-5 border:{verificationCodeError ===
 									true
 										? '3px'
@@ -328,14 +348,15 @@
 									on:input={handleVerificationCode}
 									on:paste={handlePaste}
 								/>
-								<img src={lineIcon} alt="" />
+							
+								
 								<input
 									type="text"
 									autocorrect="off"
 									autocapitalize="none"
 									autocomplete="off"
 									id="verificationCode3"
-									style="width:48px;height:36px;"
+									style="width:41px;height:54px;"
 									class="form-control text-center rounded fs-5 border:{verificationCodeError ===
 									true
 										? '3px'
@@ -373,7 +394,7 @@
 									autocapitalize="none"
 									autocomplete="off"
 									id="verificationCode4"
-									style="width:48px;height:36px;"
+									style="width:41px;height:54px;"
 									class="form-control text-center rounded fs-5 border:{verificationCodeError ===
 									true
 										? '3px'
@@ -404,14 +425,15 @@
 									on:input={handleVerificationCode}
 									on:paste={handlePaste}
 								/>
-								<img src={lineIcon} alt="" />
+							
+								
 								<input
 									type="text"
 									autocorrect="off"
 									autocapitalize="none"
 									autocomplete="off"
 									id="verificationCode5"
-									style="width:48px;height:36px; "
+									style="width:41px;height:54px; "
 									class="form-control text-center rounded fs-5 border:{verificationCodeError ===
 									true
 										? '3px'
@@ -441,14 +463,15 @@
 									on:input={handleVerificationCode}
 									on:paste={handlePaste}
 								/>
-								<img src={lineIcon} alt="" />
+								
+								
 								<input
 									type="text"
 									autocorrect="off"
 									autocapitalize="none"
 									autocomplete="off"
 									id="verificationCode6"
-									style="width:48px;height:36px;"
+									style="width:41px;height:54px;"
 									class="form-control text-center rounded fs-5 border:{verificationCodeError ===
 									true
 										? '3px'
@@ -475,28 +498,32 @@
 								/>
 							</div>
 							{#if verificationCodeError === true}
-								<small class="form-text text-dangerColor">
+								<small class="form-text" style="color: #FE8C98;">
 									{errorMessage}
 								</small>
 							{/if}
 						</div>
-					{/if}
 
-					{#if seconds > 0}
-						<p class="my-4">
-							The code will expire in <span class="text-dangerColor">{seconds} seconds</span>
+						{#if showResendSuccess && seconds > 0}
+							<div style=" display:flex; align-items:center; justify-content:center; background-color: #272E34; border-radius:6px; width:fit-content; padding:8px 16px; margin:30px auto;">
+								<CircleCheck height={"16px"} width={"16px"} color={"#00DF80"}/>
+								<p class="mb-0 ms-2">Code Resend successfully.</p>
+							</div>
+						{/if}
+
+					 {#if seconds > 0} 
+						<p class="mt-5 sparrow-fs-12 " style="color: #CCCCCC; font-weight:400; ">
+							Code will expire in {seconds}
 						</p>
-					{:else}
-						<p class="my-4 text-dangerColor">Verification code expired</p>
-					{/if}
-					{#if !(seconds > 0)}
-						<p>Please enter the verification code within the specified timeframe.</p>
-					{/if}
+					 {:else} 
+						<p class="mt-5 text-dangerColor">Code Expired</p>
+					 {/if}
+					</div>
 				</div>
-				{#if seconds > 0}
+				<!-- {#if seconds > 0} -->
 					<Button
-						disable={verifyCodeLoader}
-						title={'Verify'}
+						disable={!seconds}
+						title={'Verify Code'}
 						buttonClassProp={'w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16'}
 						type={'primary'}
 						loader={verifyCodeLoader}
@@ -516,7 +543,7 @@
 									redirectRules.title = `Welcome ${data.name.split(' ')[0]}`;
 									redirectRules.description = `Redirecting you to desktop app...`;
 									redirectRules.message = `If the application does not open automatically,
-						please click below.`;
+`;
 									redirectRules.loadingMessage = '';
 									redirectRules.isSpinner = false;
 									navigate(sparrowRedirect);
@@ -534,7 +561,7 @@
 							verifyCodeLoader = false;
 						}}
 					/>
-				{:else}
+				<!-- {:else}
 					<Button
 						onClick={() => {
 							handleResend();
@@ -543,25 +570,27 @@
 						buttonClassProp={'w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16'}
 						type={'primary'}
 					/>
-				{/if}
+				{/if} -->
 			</div>
 
-			{#if seconds > 0}
-				<div class="d-flex gap-3 align-items-center mt-3">
-					<p style="font-size: 13px;" class="mb-0">Didn’t received the code?</p>
-					{#if !resentCodeLoader}
+				<div class="d-flex gap-3 align-items-center justify-content-center mt-3">
+					<p style="font-size: 13px; text-align:center; line-height:15px;" class="mb-0">
+						If you haven't received the code, <br>
+						click on the link in the mail or 
 						<span
 							on:click={handleResend}
-							style="font-size: 13px;"
-							class="cursor-pointer text-decoration-none text-primaryColor fw-bold"
-							>Resend
+							style="font-size: 13px; color:#3670F7;"
+							class="cursor-pointer text-decoration-none"
+						>
+							Resend code
+	
 						</span>
-					{:else}
-						<Spinner size={'12px'} />
-					{/if}
+					</p>
 				</div>
-			{/if}
 		</div>
+	<div class="mt-4">
+		<SupportHelp/>
+	</div>
 	</BgContainer>
 {/if}
 
