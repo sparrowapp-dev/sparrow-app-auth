@@ -1,12 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
-	import CopyIcon from '$lib/assets/CopyIcon.svelte';
 	import sparrowicon from '$lib/assets/logoSparrowSquare.svg';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
 	import Button from '$lib/components/button/Button.svelte';
-	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
 
-	const dispatch = createEventDispatcher();
 
 	export let handleContinueButtonClick;
 
@@ -69,7 +66,3 @@ Sparrow may send product updates and marketing emails <br> if you opt in. You ca
 	</div>
 </BgContainer>
 
-<style>
-	
-
-</style>

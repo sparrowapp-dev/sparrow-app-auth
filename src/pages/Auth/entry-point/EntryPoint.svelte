@@ -3,15 +3,12 @@
 	import sparrowicon from '$lib/assets/logoSparrowSquare.svg';
 	import { navigate } from 'svelte-navigator';
 	import Redirect from '../redirect/Redirect.svelte';
-	import constants from '$lib/utils/constants';
 	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 	import Oauth from '$lib/components/o-auth/Oauth.svelte';
-	import starIcon from '$lib/assets/starIcon.svg';
 	import Button from '$lib/components/button/Button.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
 	import { onMount } from 'svelte';
-	import PrivacyPolicy from '$lib/components/privacy-policy/PrivacyPolicy.svelte';
 	import AiSparkle from '$lib/assets/AiSparkle.svelte';
 	import Spinner from '$lib/components/transition/Spinner.svelte';
 	import CircleTick from '$lib/assets/CircleTick.svelte';
@@ -36,6 +33,7 @@
 		loadingMessage: 'Please wait while we are redirecting you to your email account....'
 	};
 	let entryLoader = false;
+	let isSubmitting = false;  // Add this new state variable
 
 	onMount(() => {
 		// Check the query parameters in the URL
@@ -51,34 +49,30 @@
 	let emailExists = false;
 
 	const checkEmailExistenceOnInput = async (email) => {
-  if (!email) return;
+		if (!email) return;
 
-  isEmailTouched = true;
-  entryLoader = true;
-    emailExists = false; // Reset before the check starts
-  try {
-    const response = await handleEntry({ email }); // Reuse the same `handleEntry` function
-    if (response.isSuccessful) {
-      // Check if the email is registered
-      emailExists =
-        response?.data?.registeredWith === 'email' ||
-        response?.data?.registeredWith === 'google';
-    } else {
-      emailExists = false; // Email not registered
-    }
-  } catch (error) {
-    emailExists = false; // Handle errors gracefully
-  }
-  entryLoader = false;
-};
-
-	
-
+		isEmailTouched = true;
+		entryLoader = true;
+		emailExists = false; // Reset before the check starts
+		try {
+			const response = await handleEntry({ email }); // Reuse the same `handleEntry` function
+			if (response.isSuccessful) {
+				// Check if the email is registered
+				emailExists =
+					response?.data?.registeredWith === 'email' || response?.data?.registeredWith === 'google';
+			} else {
+				emailExists = false; // Email not registered
+			}
+		} catch (error) {
+			emailExists = false; // Handle errors gracefully
+		}
+		entryLoader = false;
+	};
 
 	let checkTimeout;
 </script>
 
-{#if isEntry}
+<!-- {#if isEntry}
 	<Redirect
 		title={redirectRules.title}
 		description={redirectRules.description}
@@ -88,7 +82,7 @@
 		buttonClick={redirectRules.buttonClick}
 		loadingMessage={redirectRules.loadingMessage}
 	/>
-{:else}
+{:else} -->
 	<BgContainer>
 		<div class="d-flex align-items-start gap-2">
 			<div
@@ -122,6 +116,7 @@
 			class="login-form w-100 text-whiteColor ps-1 pe-1 mb-2"
 			novalidate
 			on:submit|preventDefault={async () => {
+				isSubmitting = true;  // Set to true when form submission starts
 				isEmailTouched = true;
 				validationErrors = await handleEntryValidation(entryCredentials);
 				if (!validationErrors?.email) {
@@ -133,20 +128,25 @@
 							response?.data?.registeredWith === 'google'
 						) {
 							// registered with email
-							isEntry = true;
+							// isEntry = true;
 							redirectRules.title = `Redirecting to your account...`;
 							redirectRules.description = `${entryCredentials?.email} has been previously used to login via email account.`;
 							redirectRules.loadingMessage = `Please wait while we are redirecting you to your email account....`;
 							setTimeout(() => {
 								navigate(`/login/${entryCredentials?.email}`);
+								isSubmitting = false;  // Reset after navigation
 							}, 1000);
 						} else {
 							navigate(`/register/${entryCredentials?.email}`);
+							isSubmitting = false;  // Reset after navigation
 						}
 					} else {
 						notifications.error(response?.message);
+						isSubmitting = false;  // Reset on error
 					}
 					entryLoader = false;
+				} else {
+					isSubmitting = false;  // Reset if validation fails
 				}
 			}}
 		>
@@ -156,7 +156,6 @@
 					>Email ID
 					<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label
 				>
-				<!-- <img src={starIcon} alt="" class="mb-3" style="width: 7px;" /> -->
 
 				<div class="d-flex position-relative mt-1">
 					<input
@@ -177,14 +176,18 @@
 							isEmailTouched = true;
 							validationErrors = await handleEntryValidation(entryCredentials);
 							clearTimeout(checkTimeout);
-							checkTimeout = setTimeout(() => checkEmailExistenceOnInput(entryCredentials.email), 1000);
-						
+							checkTimeout = setTimeout(
+								() => checkEmailExistenceOnInput(entryCredentials.email),
+								1000
+							);
 						}}
 						on:input={async () => {
 							validationErrors = await handleEntryValidation(entryCredentials);
 							clearTimeout(checkTimeout);
-							checkTimeout = setTimeout(() => checkEmailExistenceOnInput(entryCredentials.email), 1000);
-							
+							checkTimeout = setTimeout(
+								() => checkEmailExistenceOnInput(entryCredentials.email),
+								1000
+							);
 						}}
 					/>
 
@@ -197,7 +200,6 @@
 							<Spinner size={'16px'} />
 						{:else if emailExists}
 							<CircleTick height={'16px'} width={'16px'} />
-
 						{/if}
 					</button>
 				</div>
@@ -208,41 +210,28 @@
 			</div>
 
 			<div>
-				<!-- <button
-					class="mb-5 btn btn-primary w-100 text-blackColor"
-					style="height:44px;"
-					on:click={() => {
-						// skipLoginHandler();
-					}}
-					id="create_account_or_sign_in"
-				>
-					Send magic code
-				</button> -->
-
 				<Button
-					disable={entryLoader}
+					disable={entryLoader || isSubmitting} 
 					title={'Send magic code'}
 					buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-16'}
 					type={'primary'}
-					
 				/>
 			</div>
 		</form>
 
-		<div class="d-flex align-items-start ms-1 ">
+		<div class="d-flex align-items-start ms-1">
 			<div style="height: 24px; width:24px;">
 				<AiSparkle height={'24px'} width={'24px'} />
 			</div>
-			<p class="text-center sparrow-fs-12 pt-1 " style="margin-left:-10px; color: #CCCCCCE5;">
+			<p class="text-center sparrow-fs-12 pt-1" style="margin-left:-10px; color: #CCCCCCE5;">
 				We will email you a magic code for password free Sign in or you can <span
 					style="color:#3760F7; cursor:pointer;">continue with password</span
 				>
 			</p>
 		</div>
-		<!-- <PrivacyPolicy/> -->
 		<SupportHelp />
 	</BgContainer>
-{/if}
+<!-- {/if} -->
 
 <style>
 	.eye-icon {
@@ -250,28 +239,6 @@
 		top: 50%;
 		transform: translateY(-50%);
 		background-color: transparent;
-	}
-
-	.btn-primary {
-		font-weight: 400;
-		border-radius: 10px;
-		font-size: 14px;
-		background-color: white;
-		color: var(--text-primary-300);
-		border: 1px solid #ffffff;
-	}
-
-	.btn-primary:hover {
-		background-color: #6147ff; /* purple-600 */
-		border-color: transparent;
-	}
-
-	.btn-primary:active {
-		box-shadow: inset 0px 0px 12px 5px rgba(0, 0, 0, 0.55);
-	}
-	.btn-primary:disabled {
-		background-color: var(--bg-secondary-100);
-		border: 1px solid #ffffff;
 	}
 
 	input {

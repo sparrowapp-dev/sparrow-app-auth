@@ -1,21 +1,14 @@
 <script lang="ts">
-	import AiSparkle from '$lib/assets/AiSparkle.svelte';
 	import CopyIcon from '$lib/assets/CopyIcon.svelte';
 	import sparrowicon from '$lib/assets/logoSparrowSquare.svg';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
 	import Button from '$lib/components/button/Button.svelte';
 	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
-	import Oauth from '$lib/components/o-auth/Oauth.svelte';
-	import Spinner from '$lib/components/transition/Spinner.svelte';
-	import { fly, fade } from 'svelte/transition';
 
 	export let title = 'Title';
-	export let description = 'Description';
 	export let message = 'Detailed Message';
-	export let isSpinner = true;
 	export let buttonText = 'Button';
 	export let buttonClick = () => {};
-	export let loadingMessage = '';
 </script>
 
 <!-- <Header /> -->
@@ -46,21 +39,12 @@
 				style="font-size: 14px;text-align:center"
 				class="text-lightGray d-flex align-items-center justify-content-center mt-3"
 			>
-
-				
-			<Button
-			title={buttonText}
-			buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-14'}
-			type={'primary'}
-			onClick={buttonClick}
-			
-		/>
-				<!-- <button
-					class="buttons sparrow-fs-16 px-3 py-2 d-flex justify-content-center align-items-center gap-1"
-					on:click={buttonClick}
-				>
-					{buttonText}
-				</button> -->
+				<Button
+					title={buttonText}
+					buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-14'}
+					type={'primary'}
+					onClick={buttonClick}
+				/>
 			</div>
 		</div>
 
@@ -86,4 +70,3 @@
 		<SupportHelp />
 	</div>
 </BgContainer>
-

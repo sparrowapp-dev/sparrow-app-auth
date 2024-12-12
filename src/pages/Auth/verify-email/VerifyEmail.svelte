@@ -1,24 +1,19 @@
 <script lang="ts">
 	import lineIcon from '$lib/assets/line.svg';
-	import starIcon from '$lib/assets/starIcon.svg';
 	import { errorMessageText, isLoading, username } from '$lib/store/auth.store';
 	import { handleVerifyUserEmail, isSuccessfulResponse } from './verify-email';
 	import sparrowicon from '$lib/assets/logoSparrowSquare.svg';
 	import { writable } from 'svelte/store';
 	import { onDestroy, onMount } from 'svelte';
-	import { Link, navigate } from 'svelte-navigator';
+	import { navigate } from 'svelte-navigator';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
-	import { forgotPassword, sendUserEmailVerification } from '$lib/services/auth.service';
-	import Spinner from '$lib/components/transition/Spinner.svelte';
+	import { sendUserEmailVerification } from '$lib/services/auth.service';
 	import Button from '$lib/components/button/Button.svelte';
-	import AngleUp from '$lib/assets/angle-up.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
 	import Redirect from '../redirect/Redirect.svelte';
 	import constants from '$lib/utils/constants';
-	import PrivacyPolicy from '$lib/components/privacy-policy/PrivacyPolicy.svelte';
 	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
-	import AiSparkle from '$lib/assets/AiSparkle.svelte';
-	import CircleTick from '$lib/assets/CircleTick.svelte';
+
 	import CircleCheck from '$lib/assets/CircleCheck.svelte';
 	export let id: string;
 
@@ -79,7 +74,6 @@
 	let verificationCode6: string = '';
 
 	let emailText: string = id || '';
-
 
 	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
 
@@ -240,7 +234,6 @@
 	/>
 {:else}
 	<BgContainer>
-
 		<div class="d-flex align-items-start gap-2">
 			<div
 				class="text-white d-flex justify-content-center align-items-center bg-sparrowPrimaryColor"
@@ -251,7 +244,7 @@
 			<p style="font-weight:500;">Sparrow</p>
 		</div>
 
-		<div  style="margin-top:20px; display: flex ; flex-direction:column; align-items:center;">
+		<div style="margin-top:20px; display: flex ; flex-direction:column; align-items:center;">
 			<p
 				class="container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
 				style="font-size:24px; font-weight: 400;  line-height:28px; text-align:center;"
@@ -261,99 +254,108 @@
 			<p class="" style="color: lightGray; font-size:14px;">Let’s get you onboard</p>
 		</div>
 
-	
 		<div class="login-form text-lightGray ps-1 pe-1 gap-16">
 			<div class="d-flex flex-column align-items-left mb-2">
-
-				<div class="text-center  sparrow-fs-14 sparrow-fs-300 mt-5">
-					<p class="sparrow-fs-12">
-						We have sent a magic code at <br> {emailText}
+				<div class="text-center sparrow-fs-14 sparrow-fs-300 mt-5">
+					<p class="sparrow-fs-12 ">
+						We have sent a magic code at <br />
+						<span class="email-text">{emailText}</span>
 					</p>
 					<div>
-						
 						<div class="d-flex flex-column">
-						
-							<div
-								class="d-flex mb-2 align-items-center justify-content-start"
-								style="gap: 6px;"
-							>
-
-
-
-
-							<div class="input-container {selectedInput === 'verificationCode1' ? 'selected' : ''} {verificationCodeError ? 'error' : ''}">
-								<input
-									type="text"
-									autocorrect="off"
-									autocapitalize="none"
-									autocomplete="off"
-									id="verificationCode1"
-									disabled={seconds === 0}
-									bind:value={verificationCode1}
-									on:focus={() => handleFocus('verificationCode1')}
-									on:blur={handleBlur}
-									on:click={(e) => e.target.select()}
-									on:input={(e) => {
-										if (verificationCode1.length === 1) {
-											document.getElementById('verificationCode2')?.focus();
-											document.getElementById('verificationCode2')?.select();
-										} else if (e.inputType === 'insertText' && verificationCode1.length > 1) {
-											verificationCode1 = verificationCode1.charAt(1);
-											document.getElementById('verificationCode2')?.focus();
-											document.getElementById('verificationCode2')?.select();
-										}
-										onCodeInput();
-									}}
-									on:input={handleVerificationCode}
-									on:paste={handlePaste}
-								/>
-								{#if selectedInput === 'verificationCode1'}
-									<div class="line-icon">
-										<img src={lineIcon} alt="" style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);">
-									</div>
-								{/if}
-							</div>
-								
-							<div class="input-container {selectedInput === 'verificationCode2' ? 'selected' : ''} {verificationCodeError ? 'error' : ''}">
-								<input
-									type="text"
-									autocorrect="off"
-									autocapitalize="none"
-									autocomplete="off"
-									id="verificationCode2"
-									bind:value={verificationCode2}
-									disabled={seconds === 0}
-									on:focus={() => handleFocus('verificationCode2')}
-									on:blur={handleBlur}
-									on:click={(e) => e.target.select()}
-									on:input={(e) => {
-										if (verificationCode2.length === 1) {
-											document.getElementById('verificationCode3')?.focus();
-											document.getElementById('verificationCode3')?.select();
-										} else if (e.inputType === 'insertText' && verificationCode2.length > 1) {
-											verificationCode2 = verificationCode2.charAt(1);
-											document.getElementById('verificationCode3')?.focus();
-											document.getElementById('verificationCode3')?.select();
-										}
-										onCodeInput();
-									}}
-									on:keydown={(e) => {
-										if (e.key === 'Backspace' && verificationCode2.length === 0) {
-											document.getElementById('verificationCode1')?.focus();
-										}
-									}}
-									on:input={handleVerificationCode}
-									on:paste={handlePaste}
+							<div class="d-flex mb-2 align-items-center justify-content-start" style="gap: 6px;">
+								<div
+									class="input-container {selectedInput === 'verificationCode1'
+										? 'selected'
+										: ''} {verificationCodeError ? 'error' : ''}"
+								>
+									<input
+										type="text"
+										autocorrect="off"
+										autocapitalize="none"
+										autocomplete="off"
+										id="verificationCode1"
+										disabled={seconds === 0}
+										bind:value={verificationCode1}
+										on:focus={() => handleFocus('verificationCode1')}
+										on:blur={handleBlur}
+										on:click={(e) => e.target.select()}
+										on:input={(e) => {
+											if (verificationCode1.length === 1) {
+												document.getElementById('verificationCode2')?.focus();
+												document.getElementById('verificationCode2')?.select();
+											} else if (e.inputType === 'insertText' && verificationCode1.length > 1) {
+												verificationCode1 = verificationCode1.charAt(1);
+												document.getElementById('verificationCode2')?.focus();
+												document.getElementById('verificationCode2')?.select();
+											}
+											onCodeInput();
+										}}
+										on:input={handleVerificationCode}
+										on:paste={handlePaste}
 									/>
-									{#if selectedInput === 'verificationCode2'}
+									{#if selectedInput === 'verificationCode1'}
 										<div class="line-icon">
-											<img src={lineIcon} alt="" style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);">
+											<img
+												src={lineIcon}
+												alt=""
+												style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);"
+											/>
 										</div>
 									{/if}
 								</div>
-							
-								
-								<div class="input-container {selectedInput === 'verificationCode3' ? 'selected' : ''} {verificationCodeError ? 'error' : ''}">
+
+								<div
+									class="input-container {selectedInput === 'verificationCode2'
+										? 'selected'
+										: ''} {verificationCodeError ? 'error' : ''}"
+								>
+									<input
+										type="text"
+										autocorrect="off"
+										autocapitalize="none"
+										autocomplete="off"
+										id="verificationCode2"
+										bind:value={verificationCode2}
+										disabled={seconds === 0}
+										on:focus={() => handleFocus('verificationCode2')}
+										on:blur={handleBlur}
+										on:click={(e) => e.target.select()}
+										on:input={(e) => {
+											if (verificationCode2.length === 1) {
+												document.getElementById('verificationCode3')?.focus();
+												document.getElementById('verificationCode3')?.select();
+											} else if (e.inputType === 'insertText' && verificationCode2.length > 1) {
+												verificationCode2 = verificationCode2.charAt(1);
+												document.getElementById('verificationCode3')?.focus();
+												document.getElementById('verificationCode3')?.select();
+											}
+											onCodeInput();
+										}}
+										on:keydown={(e) => {
+											if (e.key === 'Backspace' && verificationCode2.length === 0) {
+												document.getElementById('verificationCode1')?.focus();
+											}
+										}}
+										on:input={handleVerificationCode}
+										on:paste={handlePaste}
+									/>
+									{#if selectedInput === 'verificationCode2'}
+										<div class="line-icon">
+											<img
+												src={lineIcon}
+												alt=""
+												style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);"
+											/>
+										</div>
+									{/if}
+								</div>
+
+								<div
+									class="input-container {selectedInput === 'verificationCode3'
+										? 'selected'
+										: ''} {verificationCodeError ? 'error' : ''}"
+								>
 									<input
 										type="text"
 										autocorrect="off"
@@ -386,15 +388,22 @@
 									/>
 									{#if selectedInput === 'verificationCode3'}
 										<div class="line-icon">
-											<img src={lineIcon} alt="" style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);">
+											<img
+												src={lineIcon}
+												alt=""
+												style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);"
+											/>
 										</div>
 									{/if}
 								</div>
 
 								<img src={lineIcon} alt="" />
 
-								
-								<div class="input-container {selectedInput === 'verificationCode4' ? 'selected' : ''} {verificationCodeError ? 'error' : ''}">
+								<div
+									class="input-container {selectedInput === 'verificationCode4'
+										? 'selected'
+										: ''} {verificationCodeError ? 'error' : ''}"
+								>
 									<input
 										type="text"
 										autocorrect="off"
@@ -427,13 +436,20 @@
 									/>
 									{#if selectedInput === 'verificationCode4'}
 										<div class="line-icon">
-											<img src={lineIcon} alt="" style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);">
+											<img
+												src={lineIcon}
+												alt=""
+												style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);"
+											/>
 										</div>
 									{/if}
 								</div>
-							
-								
-								<div class="input-container {selectedInput === 'verificationCode5' ? 'selected' : ''} {verificationCodeError ? 'error' : ''}">
+
+								<div
+									class="input-container {selectedInput === 'verificationCode5'
+										? 'selected'
+										: ''} {verificationCodeError ? 'error' : ''}"
+								>
 									<input
 										type="text"
 										autocorrect="off"
@@ -466,13 +482,20 @@
 									/>
 									{#if selectedInput === 'verificationCode5'}
 										<div class="line-icon">
-											<img src={lineIcon} alt="" style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);">
+											<img
+												src={lineIcon}
+												alt=""
+												style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);"
+											/>
 										</div>
 									{/if}
 								</div>
-								
-								
-								<div class="input-container {selectedInput === 'verificationCode6' ? 'selected' : ''} {verificationCodeError ? 'error' : ''}">
+
+								<div
+									class="input-container {selectedInput === 'verificationCode6'
+										? 'selected'
+										: ''} {verificationCodeError ? 'error' : ''}"
+								>
 									<input
 										type="text"
 										autocorrect="off"
@@ -500,7 +523,11 @@
 									/>
 									{#if selectedInput === 'verificationCode6'}
 										<div class="line-icon">
-											<img src={lineIcon} alt="" style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);">
+											<img
+												src={lineIcon}
+												alt=""
+												style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);"
+											/>
 										</div>
 									{/if}
 								</div>
@@ -513,39 +540,43 @@
 						</div>
 
 						{#if showResendSuccess && seconds > 0}
-							<div style=" display:flex; align-items:center; justify-content:center; background-color: #272E34; border-radius:6px; width:fit-content; padding:8px 16px; margin:30px auto;">
-								<CircleCheck height={"16px"} width={"16px"} color={"#00DF80"}/>
+							<div
+								style=" display:flex; align-items:center; justify-content:center; background-color: #272E34; border-radius:6px; width:fit-content; padding:8px 16px; margin:30px auto;"
+							>
+								<CircleCheck height={'16px'} width={'16px'} color={'#00DF80'} />
 								<p class="mb-0 ms-2">Code Resend successfully.</p>
 							</div>
 						{/if}
 
-					 {#if seconds > 0} 
-						<p class="mt-5 sparrow-fs-12 " style="color: #CCCCCC; font-weight:400; ">
-							Code will expire in {seconds}
-						</p>
-					 {:else} 
-						<p class="mt-5 text-dangerColor">Code Expired</p>
-					 {/if}
+						{#if seconds > 0}
+							<p class="mt-5 sparrow-fs-12" style="color: #CCCCCC; font-weight:400; ">
+								Code will expire in {seconds}
+							</p>
+						{:else}
+							<p class="mt-5 text-dangerColor">Code Expired</p>
+						{/if}
 					</div>
 				</div>
-		
-					<Button
-						disable={!seconds}
-						title={'Verify Code'}
-						buttonClassProp={'w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16'}
-						type={'primary'}
-						loader={verifyCodeLoader}
-						onClick={async () => {
-							verifyCodeLoader = true;
-							let response = await handleVerifyUserEmail(verifyCodeCredential);
-							if (response?.isSuccessful) {
-								isRegistered = true;
-								const accessToken = response?.data.accessToken?.token;
-								const refreshToken = response?.data.refreshToken?.token;
-								const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=register&method=email`;
-								const sparrowWebRedirect = constants.SPARROW_WEB_URL +`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=register&method=email`;
 
-								if(userFromDesktop === "true"){
+				<Button
+					disable={!seconds}
+					title={'Verify Code'}
+					buttonClassProp={'w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16'}
+					type={'primary'}
+					loader={verifyCodeLoader}
+					onClick={async () => {
+						verifyCodeLoader = true;
+						let response = await handleVerifyUserEmail(verifyCodeCredential);
+						if (response?.isSuccessful) {
+							isRegistered = true;
+							const accessToken = response?.data.accessToken?.token;
+							const refreshToken = response?.data.refreshToken?.token;
+							const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=register&method=email`;
+							const sparrowWebRedirect =
+								constants.SPARROW_WEB_URL +
+								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=register&method=email`;
+
+							if (userFromDesktop === 'true') {
 								setTimeout(() => {
 									let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
 									redirectRules.title = `Welcome ${data.name.split(' ')[0]}`;
@@ -559,37 +590,33 @@
 										navigate(sparrowRedirect);
 									};
 								}, 5000);
+							} else {
+								navigate(sparrowWebRedirect);
 							}
+						}
 
-								else{
-									navigate(sparrowWebRedirect);
-								}
-							}
-
-							verifyCodeLoader = false;
-						}}
-					/>
-
+						verifyCodeLoader = false;
+					}}
+				/>
 			</div>
 
-				<div class="d-flex gap-3 align-items-center justify-content-center mt-3">
-					<p style="font-size: 13px; text-align:center; line-height:15px;" class="mb-0">
-						If you haven't received the code, <br>
-						click on the link in the mail or 
-						<span
-							on:click={handleResend}
-							style="font-size: 13px; color:#3670F7;"
-							class="cursor-pointer text-decoration-none"
-						>
-							Resend code
-	
-						</span>
-					</p>
-				</div>
+			<div class="d-flex gap-3 align-items-center justify-content-center mt-3">
+				<p style="font-size: 13px; text-align:center; line-height:15px;" class="mb-0">
+					If you haven't received the code, <br />
+					click on the link in the mail or
+					<span
+						on:click={handleResend}
+						style="font-size: 13px; color:#3670F7;"
+						class="cursor-pointer text-decoration-none"
+					>
+						Resend code
+					</span>
+				</p>
+			</div>
 		</div>
-	<div class="mt-4">
-		<SupportHelp/>
-	</div>
+		<div class="mt-4">
+			<SupportHelp />
+		</div>
 	</BgContainer>
 {/if}
 
@@ -602,25 +629,25 @@
 	}
 	input:disabled {
 		background-color: transparent;
-		border-color: #62636C !important;
+		border-color: #62636c !important;
 		opacity: 0.7;
 	}
 	.input-container {
 		position: relative;
 		width: 41px;
 		height: 54px;
-		background-color:transparent;
-		border: 1px solid #62636C;
+		background-color: transparent;
+		border: 1px solid #62636c;
 		border-radius: 5px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
 	.input-container.selected {
-		border-color: #3670F7;
+		border-color: #3670f7;
 	}
 	.input-container.error {
-		border-color: #FE8C98;
+		border-color: #fe8c98;
 	}
 	.input-container input {
 		width: 100%;
@@ -631,11 +658,19 @@
 		color: white;
 		text-align: center;
 		caret-color: transparent;
+		font-size: 22px;
 	}
 	.line-icon {
 		position: absolute;
 		bottom: 0;
 		width: 100%;
 		text-align: center;
+	}
+	.email-text {
+		display: inline-block;
+		max-width: 260px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 </style>
