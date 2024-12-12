@@ -393,9 +393,6 @@
 				>
 			</div>
 
-			<!-- <PrivacyPolicy/> -->
-		
-
 			<div class="mb-3 mt-4">
 				<Button
 				disable={registerLoader}
@@ -435,27 +432,7 @@
 		border: 1px solid white;
 		border-radius: 5px;
 	}
-	.btn-primary {
-		font-weight: 400;
-		border-radius: 10px;
-		font-size: 14px;
-		background-color: white;
-		color: var(--text-primary-300);
-		border: 1px solid #ffffff;
-	}
-
-	.btn-primary:hover {
-		background-color: #6147ff; /* purple-600 */
-		border-color: transparent;
-	}
-
-	.btn-primary:active {
-		box-shadow: inset 0px 0px 12px 5px rgba(0, 0, 0, 0.55);
-	}
-	.btn-primary:disabled {
-		background-color: var(--bg-secondary-100);
-		border: 1px solid #ffffff;
-	}
+	
 
 	input:disabled{
 		opacity: 0.5;

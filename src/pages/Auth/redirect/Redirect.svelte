@@ -87,19 +87,3 @@
 	</div>
 </BgContainer>
 
-<style>
-	
-
-	.buttons {
-		border-radius: 4px;
-		background: var(--primary-color);
-		border: none;
-	}
-	.buttons:hover {
-		background: var(--primary-btn-color-hover);
-	}
-	.buttons:active {
-		background: var(--button-pressed);
-	}
-
-</style>
