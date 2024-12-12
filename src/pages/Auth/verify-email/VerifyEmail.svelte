@@ -218,6 +218,14 @@
 		onCodeInput();
 		handleVerificationCode();
 	}
+
+	let selectedInput = '';
+	const handleFocus = (inputId) => {
+		selectedInput = inputId;
+	};
+	const handleBlur = () => {
+		selectedInput = '';
+	};
 </script>
 
 {#if isRegistered}
@@ -256,16 +264,6 @@
 	
 		<div class="login-form text-lightGray ps-1 pe-1 gap-16">
 			<div class="d-flex flex-column align-items-left mb-2">
-				<!-- <div class="d-flex align-items-center justify-content-start mb-3 gap-2">
-					<a
-						class="border-0 bg-transparent font-monospace"
-						style="transform: rotate(-90deg);"
-						href="/init"
-					>
-						<AngleUp color="var(--sparrow-text-color)" height={20} width={20} />
-					</a>
-					<p class="text-whiteColor sparrow-fs-14 sparrow-fw-500 mb-0">Go back</p>
-				</div> -->
 
 				<div class="text-center  sparrow-fs-14 sparrow-fs-300 mt-5">
 					<p class="sparrow-fs-12">
@@ -279,23 +277,22 @@
 								class="d-flex mb-2 align-items-center justify-content-start"
 								style="gap: 6px;"
 							>
+
+
+
+
+							<div class="input-container {selectedInput === 'verificationCode1' ? 'selected' : ''} {verificationCodeError ? 'error' : ''}">
 								<input
 									type="text"
 									autocorrect="off"
 									autocapitalize="none"
 									autocomplete="off"
 									id="verificationCode1"
-									class="form-control text-center rounded fs-5 border:{verificationCodeError ===
-									true
-										? '3px'
-										: '1px'} solid {verificationCodeError === true
-										? 'border-error'
-										: 'border-default'}"
-									style="width:41px;height:54px;border-none"
+									disabled={seconds === 0}
 									bind:value={verificationCode1}
-									on:click={(e) => {
-										e.target.select();
-									}}
+									on:focus={() => handleFocus('verificationCode1')}
+									on:blur={handleBlur}
+									on:click={(e) => e.target.select()}
 									on:input={(e) => {
 										if (verificationCode1.length === 1) {
 											document.getElementById('verificationCode2')?.focus();
@@ -310,25 +307,25 @@
 									on:input={handleVerificationCode}
 									on:paste={handlePaste}
 								/>
-						
+								{#if selectedInput === 'verificationCode1'}
+									<div class="line-icon">
+										<img src={lineIcon} alt="" style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);">
+									</div>
+								{/if}
+							</div>
 								
+							<div class="input-container {selectedInput === 'verificationCode2' ? 'selected' : ''} {verificationCodeError ? 'error' : ''}">
 								<input
 									type="text"
 									autocorrect="off"
 									autocapitalize="none"
 									autocomplete="off"
 									id="verificationCode2"
-									style="width:41px;height:54px;"
-									class="form-control text-center rounded fs-5 border:{verificationCodeError ===
-									true
-										? '3px'
-										: '1px'} solid {verificationCodeError === true
-										? 'border-error'
-										: 'border-default'}"
 									bind:value={verificationCode2}
-									on:click={(e) => {
-										e.target.select();
-									}}
+									disabled={seconds === 0}
+									on:focus={() => handleFocus('verificationCode2')}
+									on:blur={handleBlur}
+									on:click={(e) => e.target.select()}
 									on:input={(e) => {
 										if (verificationCode2.length === 1) {
 											document.getElementById('verificationCode3')?.focus();
@@ -347,155 +344,166 @@
 									}}
 									on:input={handleVerificationCode}
 									on:paste={handlePaste}
-								/>
+									/>
+									{#if selectedInput === 'verificationCode2'}
+										<div class="line-icon">
+											<img src={lineIcon} alt="" style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);">
+										</div>
+									{/if}
+								</div>
 							
 								
-								<input
-									type="text"
-									autocorrect="off"
-									autocapitalize="none"
-									autocomplete="off"
-									id="verificationCode3"
-									style="width:41px;height:54px;"
-									class="form-control text-center rounded fs-5 border:{verificationCodeError ===
-									true
-										? '3px'
-										: '1px'} solid {verificationCodeError === true
-										? 'border-error'
-										: 'border-default'}"
-									bind:value={verificationCode3}
-									on:click={(e) => {
-										e.target.select();
-									}}
-									on:input={(e) => {
-										if (verificationCode3.length === 1) {
-											document.getElementById('verificationCode4')?.focus();
-											document.getElementById('verificationCode4')?.select();
-										} else if (e.inputType === 'insertText' && verificationCode3.length > 1) {
-											verificationCode3 = verificationCode3.charAt(1);
+								<div class="input-container {selectedInput === 'verificationCode3' ? 'selected' : ''} {verificationCodeError ? 'error' : ''}">
+									<input
+										type="text"
+										autocorrect="off"
+										autocapitalize="none"
+										autocomplete="off"
+										id="verificationCode3"
+										bind:value={verificationCode3}
+										disabled={seconds === 0}
+										on:focus={() => handleFocus('verificationCode3')}
+										on:blur={handleBlur}
+										on:click={(e) => e.target.select()}
+										on:input={(e) => {
+											if (verificationCode3.length === 1) {
+												document.getElementById('verificationCode4')?.focus();
+												document.getElementById('verificationCode4')?.select();
+											} else if (e.inputType === 'insertText' && verificationCode3.length > 1) {
+												verificationCode3 = verificationCode3.charAt(1);
+												document.getElementById('verificationCode4')?.focus();
+												document.getElementById('verificationCode4')?.select();
+											}
+											onCodeInput();
+										}}
+										on:keydown={(e) => {
+											if (e.key === 'Backspace' && verificationCode3.length === 0) {
+												document.getElementById('verificationCode2')?.focus();
+											}
+										}}
+										on:input={handleVerificationCode}
+										on:paste={handlePaste}
+									/>
+									{#if selectedInput === 'verificationCode3'}
+										<div class="line-icon">
+											<img src={lineIcon} alt="" style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);">
+										</div>
+									{/if}
+								</div>
 
-											document.getElementById('verificationCode4')?.focus();
-											document.getElementById('verificationCode4')?.select();
-										}
-										onCodeInput();
-									}}
-									on:keydown={(e) => {
-										if (e.key === 'Backspace' && verificationCode3.length === 0) {
-											document.getElementById('verificationCode2')?.focus();
-										}
-									}}
-									on:input={handleVerificationCode}
-									on:paste={handlePaste}
-								/>
 								<img src={lineIcon} alt="" />
-								<input
-									type="text"
-									autocorrect="off"
-									autocapitalize="none"
-									autocomplete="off"
-									id="verificationCode4"
-									style="width:41px;height:54px;"
-									class="form-control text-center rounded fs-5 border:{verificationCodeError ===
-									true
-										? '3px'
-										: '1px'} solid {verificationCodeError === true
-										? 'border-error'
-										: 'border-default'}"
-									bind:value={verificationCode4}
-									on:click={(e) => {
-										e.target.select();
-									}}
-									on:input={(e) => {
-										if (verificationCode4.length === 1) {
-											document.getElementById('verificationCode5')?.focus();
-											document.getElementById('verificationCode5')?.select();
-										} else if (e.inputType === 'insertText' && verificationCode4.length > 1) {
-											verificationCode4 = verificationCode4.charAt(1);
 
-											document.getElementById('verificationCode5')?.focus();
-											document.getElementById('verificationCode5')?.select();
-										}
-										onCodeInput();
-									}}
-									on:keydown={(e) => {
-										if (e.key === 'Backspace' && verificationCode4.length === 0) {
-											document.getElementById('verificationCode3')?.focus();
-										}
-									}}
-									on:input={handleVerificationCode}
-									on:paste={handlePaste}
-								/>
+								
+								<div class="input-container {selectedInput === 'verificationCode4' ? 'selected' : ''} {verificationCodeError ? 'error' : ''}">
+									<input
+										type="text"
+										autocorrect="off"
+										autocapitalize="none"
+										autocomplete="off"
+										id="verificationCode4"
+										bind:value={verificationCode4}
+										disabled={seconds === 0}
+										on:focus={() => handleFocus('verificationCode4')}
+										on:blur={handleBlur}
+										on:click={(e) => e.target.select()}
+										on:input={(e) => {
+											if (verificationCode4.length === 1) {
+												document.getElementById('verificationCode5')?.focus();
+												document.getElementById('verificationCode5')?.select();
+											} else if (e.inputType === 'insertText' && verificationCode4.length > 1) {
+												verificationCode4 = verificationCode4.charAt(1);
+												document.getElementById('verificationCode5')?.focus();
+												document.getElementById('verificationCode5')?.select();
+											}
+											onCodeInput();
+										}}
+										on:keydown={(e) => {
+											if (e.key === 'Backspace' && verificationCode4.length === 0) {
+												document.getElementById('verificationCode3')?.focus();
+											}
+										}}
+										on:input={handleVerificationCode}
+										on:paste={handlePaste}
+									/>
+									{#if selectedInput === 'verificationCode4'}
+										<div class="line-icon">
+											<img src={lineIcon} alt="" style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);">
+										</div>
+									{/if}
+								</div>
 							
 								
-								<input
-									type="text"
-									autocorrect="off"
-									autocapitalize="none"
-									autocomplete="off"
-									id="verificationCode5"
-									style="width:41px;height:54px; "
-									class="form-control text-center rounded fs-5 border:{verificationCodeError ===
-									true
-										? '3px'
-										: '1px'} solid {verificationCodeError === true
-										? 'border-error'
-										: 'border-default'}"
-									bind:value={verificationCode5}
-									on:click={(e) => {
-										e.target.select();
-									}}
-									on:input={(e) => {
-										if (verificationCode5.length === 1) {
-											document.getElementById('verificationCode6')?.focus();
-											document.getElementById('verificationCode6')?.select();
-										} else if (e.inputType === 'insertText' && verificationCode5.length > 1) {
-											verificationCode5 = verificationCode5.charAt(1);
-											document.getElementById('verificationCode6')?.focus();
-											document.getElementById('verificationCode6')?.select();
-										}
-										onCodeInput();
-									}}
-									on:keydown={(e) => {
-										if (e.key === 'Backspace' && verificationCode5.length === 0) {
-											document.getElementById('verificationCode4')?.focus();
-										}
-									}}
-									on:input={handleVerificationCode}
-									on:paste={handlePaste}
-								/>
+								<div class="input-container {selectedInput === 'verificationCode5' ? 'selected' : ''} {verificationCodeError ? 'error' : ''}">
+									<input
+										type="text"
+										autocorrect="off"
+										autocapitalize="none"
+										autocomplete="off"
+										id="verificationCode5"
+										bind:value={verificationCode5}
+										disabled={seconds === 0}
+										on:focus={() => handleFocus('verificationCode5')}
+										on:blur={handleBlur}
+										on:click={(e) => e.target.select()}
+										on:input={(e) => {
+											if (verificationCode5.length === 1) {
+												document.getElementById('verificationCode6')?.focus();
+												document.getElementById('verificationCode6')?.select();
+											} else if (e.inputType === 'insertText' && verificationCode5.length > 1) {
+												verificationCode5 = verificationCode5.charAt(1);
+												document.getElementById('verificationCode6')?.focus();
+												document.getElementById('verificationCode6')?.select();
+											}
+											onCodeInput();
+										}}
+										on:keydown={(e) => {
+											if (e.key === 'Backspace' && verificationCode5.length === 0) {
+												document.getElementById('verificationCode4')?.focus();
+											}
+										}}
+										on:input={handleVerificationCode}
+										on:paste={handlePaste}
+									/>
+									{#if selectedInput === 'verificationCode5'}
+										<div class="line-icon">
+											<img src={lineIcon} alt="" style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);">
+										</div>
+									{/if}
+								</div>
 								
 								
-								<input
-									type="text"
-									autocorrect="off"
-									autocapitalize="none"
-									autocomplete="off"
-									id="verificationCode6"
-									style="width:41px;height:54px;"
-									class="form-control text-center rounded fs-5 border:{verificationCodeError ===
-									true
-										? '3px'
-										: '1px'} solid {verificationCodeError === true
-										? 'border-error'
-										: 'border-default'}"
-									bind:value={verificationCode6}
-									on:click={(e) => {
-										e.target.select();
-									}}
-									on:input={(e) => {
-										if (verificationCode6.length > 1) {
-											verificationCode6 = verificationCode6.charAt(1);
-										}
-										onCodeInput();
-									}}
-									on:keydown={(e) => {
-										if (e.key === 'Backspace' && verificationCode6.length === 0) {
-											document.getElementById('verificationCode5')?.focus();
-										}
-									}}
-									on:input={handleVerificationCode}
-									on:paste={handlePaste}
-								/>
+								<div class="input-container {selectedInput === 'verificationCode6' ? 'selected' : ''} {verificationCodeError ? 'error' : ''}">
+									<input
+										type="text"
+										autocorrect="off"
+										autocapitalize="none"
+										autocomplete="off"
+										id="verificationCode6"
+										bind:value={verificationCode6}
+										disabled={seconds === 0}
+										on:focus={() => handleFocus('verificationCode6')}
+										on:blur={handleBlur}
+										on:click={(e) => e.target.select()}
+										on:input={(e) => {
+											if (verificationCode6.length > 1) {
+												verificationCode6 = verificationCode6.charAt(1);
+											}
+											onCodeInput();
+										}}
+										on:keydown={(e) => {
+											if (e.key === 'Backspace' && verificationCode6.length === 0) {
+												document.getElementById('verificationCode5')?.focus();
+											}
+										}}
+										on:input={handleVerificationCode}
+										on:paste={handlePaste}
+									/>
+									{#if selectedInput === 'verificationCode6'}
+										<div class="line-icon">
+											<img src={lineIcon} alt="" style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);">
+										</div>
+									{/if}
+								</div>
 							</div>
 							{#if verificationCodeError === true}
 								<small class="form-text" style="color: #FE8C98;">
@@ -520,7 +528,7 @@
 					 {/if}
 					</div>
 				</div>
-				<!-- {#if seconds > 0} -->
+		
 					<Button
 						disable={!seconds}
 						title={'Verify Code'}
@@ -561,16 +569,7 @@
 							verifyCodeLoader = false;
 						}}
 					/>
-				<!-- {:else}
-					<Button
-						onClick={() => {
-							handleResend();
-						}}
-						title={'Try again'}
-						buttonClassProp={'w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16'}
-						type={'primary'}
-					/>
-				{/if} -->
+
 			</div>
 
 				<div class="d-flex gap-3 align-items-center justify-content-center mt-3">
@@ -596,9 +595,47 @@
 
 <style>
 	input {
-		background-color: var(--blackColor);
+		background-color: transparent;
 	}
 	.cursor-pointer {
 		cursor: pointer;
+	}
+	input:disabled {
+		background-color: transparent;
+		border-color: #62636C !important;
+		opacity: 0.7;
+	}
+	.input-container {
+		position: relative;
+		width: 41px;
+		height: 54px;
+		background-color:transparent;
+		border: 1px solid #62636C;
+		border-radius: 5px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.input-container.selected {
+		border-color: #3670F7;
+	}
+	.input-container.error {
+		border-color: #FE8C98;
+	}
+	.input-container input {
+		width: 100%;
+		height: 45px;
+		outline: none;
+		border: none;
+		background-color: transparent;
+		color: white;
+		text-align: center;
+		caret-color: transparent;
+	}
+	.line-icon {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		text-align: center;
 	}
 </style>
