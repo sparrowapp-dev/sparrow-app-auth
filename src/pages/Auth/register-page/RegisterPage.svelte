@@ -131,6 +131,12 @@
 				isLastNameTouched = true;
 				isPasswordTouched = true;
 				validationErrors = await handleRegisterValidation(userData);
+				
+				if (isDuplicateEmail) {
+					notifications.error('Email ID already exists.');
+					return;
+				}
+
 				if (
 					!validationErrors?.firstName &&
 					!validationErrors?.lastName &&
@@ -152,6 +158,7 @@
 							'The account with the provided email currently exists. Please choose another one.'
 						) {
 							isDuplicateEmail = true;
+							notifications.error('This email is already registered. Please use a different email address.');
 						} else {
 							notifications.error(response.message);
 						}

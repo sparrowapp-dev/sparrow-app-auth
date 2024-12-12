@@ -4,11 +4,15 @@
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
 	import Button from '$lib/components/button/Button.svelte';
 	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
+	import Spinner from '$lib/components/transition/Spinner.svelte';
 
-	export let title = 'Title';
-	export let message = 'Detailed Message';
-	export let buttonText = 'Button';
-	export let buttonClick = () => {};
+	export let title="Title";
+	export let description= "Description";
+	export let message="Detailed Message";
+	export let isSpinner= true;
+	export let buttonText="Button";
+	export let buttonClick = () =>{} ;
+	export let loadingMessage = "";
 </script>
 
 <!-- <Header /> -->
@@ -34,6 +38,17 @@
 			<span class="sparrow-fs-14" style="font-weight:400;">To your Sparrow Space</span>
 		</p>
 
+
+		{#if isSpinner}
+			<div
+				style="font-size: 14px;text-align:center"
+				class="mt-3  text-lightGray d-flex align-items-center justify-content-center mt-4"
+			>
+				<Spinner size={'40px'} />
+			</div>
+		
+
+			{/if}
 		<div style="margin-top: 40px;">
 			<div
 				style="font-size: 14px;text-align:center"

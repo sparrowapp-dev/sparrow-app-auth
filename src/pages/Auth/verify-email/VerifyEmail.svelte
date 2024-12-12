@@ -17,14 +17,14 @@
 	import CircleCheck from '$lib/assets/CircleCheck.svelte';
 	export let id: string;
 
-	let seconds = 600;
+	let seconds = 300; // Changed from 600 to 300 (5 minutes)
 	const verifyString = writable('');
 	let verifyLength: string = '';
 	let isRegistered = false;
 	let redirectRules = {
 		title: 'Welcome to Sparrow!',
 		description: 'Bridging Frontend and Backend Development.',
-		message: `Easily document and manage APIs for seamless collaboration between frontend and backend teams. Get started now to simplify your development workflows.`,
+		message: `the token if you are facing any issue in redirecting to the login page`,
 		isSpinner: true,
 		buttonText: 'Open Desktop App',
 		buttonClick: () => {},
@@ -37,12 +37,19 @@
 		const storedTime = parseInt(localStorage.getItem(`timer-verify-${id}`));
 		if (storedTime) {
 			const elapsedTime = storedTime ? Math.floor((currentTime - storedTime) / 1000) : 0;
-			const remainingTime = Math.max(60 - elapsedTime, 0);
+			const remainingTime = Math.max(300 - elapsedTime, 0); // Changed from 60 to 300
 			return remainingTime;
 		} else {
 			return 0;
 		}
 	};
+
+	const formatTime = (seconds: number) => {
+		const minutes = Math.floor(seconds / 60);
+		const remainingSeconds = seconds % 60;
+		return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+	};
+
 	const startTimer = () => {
 		clearInterval(timer);
 		timer = setInterval(() => {
@@ -550,7 +557,7 @@
 
 						{#if seconds > 0}
 							<p class="mt-5 sparrow-fs-12" style="color: #CCCCCC; font-weight:400; ">
-								Code will expire in {seconds}
+								Code will expire in {formatTime(seconds)}
 							</p>
 						{:else}
 							<p class="mt-5 text-dangerColor">Code Expired</p>
@@ -581,8 +588,7 @@
 									let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
 									redirectRules.title = `Welcome ${data.name.split(' ')[0]}`;
 									redirectRules.description = `Redirecting you to desktop app...`;
-									redirectRules.message = `If the application does not open automatically,
-`;
+									redirectRules.message = `the token if you are facing any issue in redirecting to the login page`
 									redirectRules.loadingMessage = '';
 									redirectRules.isSpinner = false;
 									navigate(sparrowRedirect);
