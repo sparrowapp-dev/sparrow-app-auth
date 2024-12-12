@@ -243,11 +243,10 @@
 					</a>
 					<p class="text-whiteColor sparrow-fs-14 sparrow-fw-500 mb-0">Go back</p>
 				</div>
-
-				<div class="sparrow-fs-14 sparrow-fs-300">
+				<div class="d-flex flex-column mx-auto sparrow-fs-14 sparrow-fs-300">
 					<p>
-						Check your inbox for the verification code sent to <span
-							class="sparrow-fw-700 text-whiteColor cursor-pointer">{emailText}</span
+						Check your inbox for the verification code sent<span
+							class="sparrow-fw-700 text-whiteColor cursor-pointer email-text d-inline-block">{emailText}</span
 						> and enter it below to proceed.
 					</p>
 					{#if seconds > 0}
@@ -571,5 +570,10 @@
 	}
 	.cursor-pointer {
 		cursor: pointer;
+	}
+	.email-text { 
+		word-wrap: break-word; 
+		word-break: break-all; 
+		max-width: 100%;
 	}
 </style>
