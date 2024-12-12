@@ -1,4 +1,0 @@
-const startAuthFlow = () => {
-    sessionStorage.removeItem('currentRegistrationRedirectShown');
-    // ... rest of your auth flow logic
-};

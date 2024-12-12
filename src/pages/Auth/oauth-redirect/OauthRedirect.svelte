@@ -10,7 +10,7 @@
 	let accessToken = "";
 	let refreshToken = "";
 	let source = "";
-	let showRegisterComponent = false;
+	let showRegisterComponent = true;
 
 	onMount(() => {
 		const urlParams = new URLSearchParams(window.location.search);
@@ -19,10 +19,13 @@
 		source = urlParams.get('source');
 		const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
 		const sparrowWebRedirect = constants.SPARROW_WEB_URL +`?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
-
+        // debugger;
 		if (source === "register") {
 			showRegisterComponent = true;
-		} else if (accessToken && refreshToken) {
+		} else { 
+			showRegisterComponent = false;
+		}
+		if (accessToken && refreshToken) {
 			if(userFromDesktop === "true"){
 				setTimeout(() => {
 					let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
