@@ -245,7 +245,7 @@
 				</div>
 				<div class="d-flex flex-column mx-auto sparrow-fs-14 sparrow-fs-300">
 					<p>
-						Check your inbox for the verification code sent<span
+						Check your inbox for the verification code sent to<span
 							class="sparrow-fw-700 text-whiteColor cursor-pointer email-text d-inline-block">{emailText}</span
 						> and enter it below to proceed.
 					</p>
