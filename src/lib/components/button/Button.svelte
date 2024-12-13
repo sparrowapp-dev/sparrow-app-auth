@@ -13,6 +13,7 @@
     export let allowChild = false;
     export let type:
       | "primary"
+      | "secondary"
       | "dark"
       | "danger"
       | "primary-gradient"
@@ -21,6 +22,7 @@
       | "icon" = "other";
     enum BtnType {
       PRIMARY = "primary",
+      SECONDARY = "secondary",
       DARK = "dark",
       DANGER = "danger",
       TRANSPARENT = "transparent",
@@ -33,6 +35,9 @@
     switch (type) {
       case BtnType.PRIMARY:
         btnClass = "custom-btn-primary";
+        break;
+        case BtnType.SECONDARY:
+        btnClass = "custom-btn-secondary";
         break;
       case BtnType.DARK:
         btnClass = "custom-btn-dark";
@@ -91,7 +96,12 @@
 
 button:active {
     transition: all 300ms ease-in-out;
-  }
+}
+
+button {
+    transition: all 300ms ease-in-out;
+}
+
     .sparrow-icon-btn {
       background-color: transparent;
       border: 0px;
@@ -134,6 +144,29 @@ button:active {
         box-shadow: inset 0px 0px 12px 5px rgba(0, 0, 0, 0.55);
         border: 0.4px solid white !important;
     }
+
+    .custom-btn-secondary {
+    font-weight: 400;
+    font-size: 14px;
+    background-color: transparent;
+    border: 1px solid rgba(214, 211, 209, 0.9);
+    border-radius: 8px;
+  }
+
+  .custom-btn-secondary:hover {
+    background-color: #6147ff;
+    border-color: transparent;
+  }
+
+  .custom-btn-secondary:active {
+    box-shadow: inset 0px 0px 12px 5px rgba(0, 0, 0, 0.55);
+    transition: all 100ms ease-in-out;
+  }
+
+  .custom-btn-secondary:disabled {
+    background-color: transparent;
+    border: 1px solid rgba(214, 211, 209, 0.9);
+  }
 
     .custom-btn-primary-gradient{
         // background: linear-gradient(270deg, #6147ff -1.72%, #1193f0 100%);

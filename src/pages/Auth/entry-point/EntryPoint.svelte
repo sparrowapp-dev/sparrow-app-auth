@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { handleEntryValidation, handleEntry } from './EntryPoint.ViewModel';
+	import { sendMagicCodeEmail } from '$lib/services/auth.service';
 	import sparrowicon from '$lib/assets/logoSparrowSquare.svg';
 	import { navigate } from 'svelte-navigator';
 	import Redirect from '../redirect/Redirect.svelte';
@@ -69,6 +70,19 @@
 		entryLoader = false;
 	};
 
+	const handleMagicCodeAndRedirect = async (email: string) => {
+		try {
+			const magicCodeResponse = await sendMagicCodeEmail({ email });
+			if (magicCodeResponse.isSuccessful) {
+				navigate(`/verify-magic-code/${email}`);  // Updated this line
+			} else {
+				notifications.error(magicCodeResponse?.message);
+			}
+		} catch (error) {
+			notifications.error('Failed to send magic code');
+		}
+	};
+
 	let checkTimeout;
 </script>
 
@@ -116,7 +130,7 @@
 			class="login-form w-100 text-whiteColor ps-1 pe-1 mb-2"
 			novalidate
 			on:submit|preventDefault={async () => {
-				isSubmitting = true;  // Set to true when form submission starts
+				isSubmitting = true;
 				isEmailTouched = true;
 				validationErrors = await handleEntryValidation(entryCredentials);
 				if (!validationErrors?.email) {
@@ -127,27 +141,18 @@
 							response?.data?.registeredWith === 'email' ||
 							response?.data?.registeredWith === 'google'
 						) {
-							// registered with email
-							// isEntry = true;
-							redirectRules.title = `Redirecting to your account...`;
-							redirectRules.description = `${entryCredentials?.email} has been previously used to login via email account.`;
-							redirectRules.loadingMessage = `Please wait while we are redirecting you to your email account....`;
-							setTimeout(() => {
-								navigate(`/login/${entryCredentials?.email}`);
-								isSubmitting = false;  // Reset after navigation
-							}, 1000);
+							 // Send magic code before redirecting
+							await handleMagicCodeAndRedirect(entryCredentials?.email);
 						} else {
+							// New user - redirect to registration
 							navigate(`/register/${entryCredentials?.email}`);
-							isSubmitting = false;  // Reset after navigation
 						}
 					} else {
 						notifications.error(response?.message);
-						isSubmitting = false;  // Reset on error
 					}
 					entryLoader = false;
-				} else {
-					isSubmitting = false;  // Reset if validation fails
 				}
+				isSubmitting = false;
 			}}
 		>
 			<!-- <p class="card-subtitle sparrow-fs-20 sparrow-fw-500 mb-3">Sign In or Create an Account</p> -->

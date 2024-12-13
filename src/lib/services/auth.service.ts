@@ -9,6 +9,12 @@ import { makeRequest } from '$lib/api/api.common';
 import constants from '$lib/utils/constants';
 const apiUrl: string = constants.API_URL;
 
+// Add new type for magic code verification
+type MagicCodeVerifyBody = {
+	email: string;
+	magicCode: string;
+};
+
 const registerUser = async (userInfo: registerUserPostBody) => {
 	const response = await makeRequest('POST', `${apiUrl}/api/user`, {
 		body: userInfo
@@ -72,4 +78,32 @@ const verifyUserEmail = async (verifyInfo: verifyPostbody) => {
 	return response;
 };
 
-export { registerUser, loginUser, forgotPassword, loginWithGoogle, verifyEmail, resetPassword, getUser, sendUserEmailVerification, verifyUserEmail };
+const sendMagicCodeEmail = async (emailInfo: EmailPostBody) => {
+	const response = await makeRequest('POST', `${apiUrl}/api/user/send-magic-code-email`, {
+		body: emailInfo
+	});
+	return response;
+};
+
+const verifyMagicCode = async (verifyInfo: MagicCodeVerifyBody) => {
+	console.log("This is verify code credentialss",verifyInfo)
+	const response = await makeRequest('POST', `${apiUrl}/api/user/verify-magic-code`, {
+		body: verifyInfo
+	});
+	return response;
+};
+
+
+export { 
+	registerUser, 
+	loginUser, 
+	forgotPassword, 
+	loginWithGoogle, 
+	verifyEmail, 
+	resetPassword, 
+	getUser, 
+	sendUserEmailVerification, 
+	verifyUserEmail,
+	sendMagicCodeEmail,
+	verifyMagicCode 
+};
