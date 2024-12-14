@@ -16,7 +16,8 @@
 	import Redirect from '../redirect/Redirect.svelte';
 	import constants from '$lib/utils/constants';
 	export let id: string;
-
+   
+	let isTryAgainButtonDisabled = false;
 	let seconds = 60;
 	const verifyString = writable('');
 	let verifyLength: string = '';
@@ -118,6 +119,7 @@
 	});
 	let resentCodeLoader = false;
 	const handleResend = async () => {
+	 isTryAgainButtonDisabled = true;
 		resentCodeLoader = true;
 		const response = await sendUserEmailVerification({ email: id });
 		if (response.isSuccessful) {
@@ -135,6 +137,7 @@
 			notifications.error(response.message);
 		}
 		resentCodeLoader = false;
+		isTryAgainButtonDisabled = false;
 	};
 	const onCodeInput = () => {
 		errorMessageText.set('');
@@ -542,6 +545,7 @@
 						title={'Try again'}
 						buttonClassProp={'w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16'}
 						type={'primary'}
+						disable={isTryAgainButtonDisabled}
 					/>
 				{/if}
 			</div>
