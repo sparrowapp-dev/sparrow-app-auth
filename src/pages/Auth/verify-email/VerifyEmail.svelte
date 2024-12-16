@@ -59,10 +59,6 @@
 	};
 
 	onMount(() => {
-		const storedTime = localStorage.getItem(`timer-verify-${id}`);
-		if (!storedTime) {
-			localStorage.setItem(`timer-verify-${id}`, new Date().getTime()); // Set the timer if not already set
-		}
 		seconds = calculateRemainingTime();
 		startTimer();
 	});

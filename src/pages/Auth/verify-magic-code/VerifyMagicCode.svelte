@@ -14,7 +14,7 @@
 	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
 
 	import CircleCheck from '$lib/assets/CircleCheck.svelte';
-	import { handleVerifyUserEmail, isSuccessfulResponse } from './verify-magic-code';
+	import { handleVerifyUserEmail, isSuccessfulResponseMagicCode } from './verify-magic-code';
 	export let id: string;
 
 	let seconds = 300; // Changed from 600 to 300 (5 minutes)
@@ -59,10 +59,6 @@
 	};
 
 	onMount(() => {
-		const storedTime = localStorage.getItem(`timer-verify-magic-code-${id}`);
-		if (!storedTime) {
-			localStorage.setItem(`timer-verify-magic-code-${id}`, new Date().getTime()); // Set the timer if not already set
-		}
 		seconds = calculateRemainingTime();
 		startTimer();
 	});
@@ -70,7 +66,7 @@
 
 	let verifyCodeCredential = {
 		email: id || '',
-		verificationCode: ''
+		magicCode: ''
 	};
 
 	let verifyCode: string = '';
@@ -98,7 +94,7 @@
 			verificationCode4 +
 			verificationCode5 +
 			verificationCode6;
-		verifyCodeCredential.verificationCode = verifyCode;
+		verifyCodeCredential.magicCode = verifyCode;
 
 		if (verifyCode.length === 6) {
 			verifyString.set(verifyCode);
@@ -117,7 +113,7 @@
 	});
 
 	let verificationCodeError: boolean;
-	isSuccessfulResponse.subscribe((value) => {
+	isSuccessfulResponseMagicCode.subscribe((value) => {
 		verificationCodeError = value;
 	});
 
@@ -150,7 +146,7 @@
 	};
 	const onCodeInput = () => {
 		errorMessageText.set('');
-		isSuccessfulResponse.set(false);
+		isSuccessfulResponseMagicCode.set(false);
 	};
 	let verifyCodeLoader = false;
 	onDestroy(() => {

@@ -142,6 +142,8 @@
 							response?.data?.registeredWith === 'google'
 						) {
 							 // Send magic code before redirecting
+							 localStorage.setItem(`timer-verify-magic-code-${entryCredentials.email}`, new Date().getTime());
+
 							await handleMagicCodeAndRedirect(entryCredentials?.email);
 						} else {
 							// New user - redirect to registration
