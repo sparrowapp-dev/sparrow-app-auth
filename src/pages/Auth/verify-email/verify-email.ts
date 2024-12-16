@@ -16,7 +16,7 @@ export const handleVerifyUserEmail = async (verifyCodeCredential: verifyPostbody
 		}
 
 		if (response.message === 'Wrong Code') {
-			errorMessageText.set('You have entered wrong code, please check your email.');
+			errorMessageText.set('Wrong verification code');
 		}
 	}
 	return response;
