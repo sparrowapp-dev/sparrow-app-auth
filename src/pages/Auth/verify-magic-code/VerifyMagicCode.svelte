@@ -1,12 +1,12 @@
 <script lang="ts">
 	import lineIcon from '$lib/assets/line.svg';
-	import { errorMessageText, isLoading, username } from '$lib/store/auth.store';
+	import { errorMessageTextMagicCode, isLoading, username } from '$lib/store/auth.store';
 	import sparrowicon from '$lib/assets/logoSparrowSquare.svg';
 	import { writable } from 'svelte/store';
 	import { onDestroy, onMount } from 'svelte';
 	import { navigate } from 'svelte-navigator';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
-	import { sendUserEmailVerification } from '$lib/services/auth.service';
+	import { sendMagicCodeEmail } from '$lib/services/auth.service';
 	import Button from '$lib/components/button/Button.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
 	import Redirect from '../redirect/Redirect.svelte';
@@ -118,7 +118,7 @@
 	});
 
 	let errorMessage: string = '';
-	errorMessageText.subscribe((value) => {
+	errorMessageTextMagicCode.subscribe((value) => {
 		if (value) {
 			errorMessage = value;
 		}
@@ -126,7 +126,7 @@
 	let resentCodeLoader = false;
 	const handleResend = async () => {
 		resentCodeLoader = true;
-		const response = await sendUserEmailVerification({ email: id });
+		const response = await sendMagicCodeEmail({ email: id });
 		if (response.isSuccessful) {
 			showResendSuccess = true;
 			notifications.success('Verification code sent successfully');
@@ -140,12 +140,16 @@
 			verificationCode6 = '';
 			onCodeInput();
 		} else {
-			notifications.error(response.message);
+			if (response.message === 'Cooldown Active') {
+				navigate('/cool-down');
+			} else {
+				notifications.error(response.message);
+			}
 		}
 		resentCodeLoader = false;
 	};
 	const onCodeInput = () => {
-		errorMessageText.set('');
+		errorMessageTextMagicCode.set('');
 		isSuccessfulResponseMagicCode.set(false);
 	};
 	let verifyCodeLoader = false;
@@ -548,13 +552,16 @@
 						</div>
 
 						{#if showResendSuccess && seconds > 0}
-							<div
-								style=" display:flex; align-items:center; justify-content:center; background-color: #272E34; border-radius:6px; width:fit-content; padding:8px 16px; margin:30px auto;"
-							>
-								<CircleCheck height={'16px'} width={'16px'} color={'#00DF80'} />
-								<p class="mb-0 ms-2">Code Resend successfully.</p>
-							</div>
-						{/if}
+						<div
+							style=" display:flex; align-items:center; justify-content:center; background-color: #272E34; border-radius:6px; width:fit-content; padding:8px 16px; margin:30px auto;"
+						>
+							<CircleCheck height={'16px'} width={'16px'} color={'#00DF80'} />
+							<p class="mb-0 ms-2">Code Resend successfully.</p>
+						</div>
+					{/if}
+
+
+						<div class="" style="margin-top:64px; margin-bottom:24px;">
 
 						{#if seconds > 0}
 							<p class="mt-5 sparrow-fs-12" style="color: #CCCCCC; font-weight:400; ">
@@ -563,6 +570,7 @@
 						{:else}
 							<p class="mt-5 text-dangerColor">Code Expired</p>
 						{/if}
+						</div>
 					</div>
 				</div>
 
@@ -608,7 +616,7 @@
 				/>
 			</div>
 
-			<div class="d-flex gap-3 align-items-center justify-content-center mt-3">
+			<div class="d-flex gap-3 align-items-center justify-content-center " style="margin-top: 18px;">
 				<p style="font-size: 13px; text-align:center; line-height:15px;" class="mb-0">
 					If you haven't received the code, <br />
 					click on the link in the mail or

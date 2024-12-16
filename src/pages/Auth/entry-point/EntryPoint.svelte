@@ -35,7 +35,7 @@
 	};
 	let entryLoader = false;
 	let isSubmitting = false;  // Add this new state variable
-
+	let showContinueButton=false;
 	onMount(() => {
 		// Check the query parameters in the URL
 		const urlParams = new URLSearchParams(window.location.search);
@@ -54,17 +54,21 @@
 
 		isEmailTouched = true;
 		entryLoader = true;
+		showContinueButton=false;
 		emailExists = false; // Reset before the check starts
 		try {
 			const response = await handleEntry({ email }); // Reuse the same `handleEntry` function
 			if (response.isSuccessful) {
 				// Check if the email is registered
+				showContinueButton=true;
 				emailExists =
 					response?.data?.registeredWith === 'email' || response?.data?.registeredWith === 'google';
 			} else {
+				showContinueButton=false;
 				emailExists = false; // Email not registered
 			}
 		} catch (error) {
+			showContinueButton=false;
 			emailExists = false; // Handle errors gracefully
 		}
 		entryLoader = false;
@@ -76,10 +80,14 @@
 			if (magicCodeResponse.isSuccessful) {
 				navigate(`/verify-magic-code/${email}`);  // Updated this line
 			} else {
-				notifications.error(magicCodeResponse?.message);
+				if (magicCodeResponse?.message === 'Cooldown Active') {
+					navigate('/cool-down-active');
+				} else {
+					notifications.error(magicCodeResponse?.message);
+				}
 			}
 		} catch (error) {
-			notifications.error('Failed to send magic code');
+			notifications.error('Failed to send magic code.');
 		}
 	};
 
@@ -219,7 +227,7 @@
 			<div>
 				<Button
 					disable={entryLoader || isSubmitting} 
-					title={'Send magic code'}
+					title={!emailExists && showContinueButton ? 'Continue' : 'Send magic code'}
 					buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-16'}
 					type={'primary'}
 				/>
@@ -230,13 +238,15 @@
 			<div style="height: 24px; width:24px;">
 				<AiSparkle height={'24px'} width={'24px'} />
 			</div>
-			<p class="text-center sparrow-fs-12 pt-1" style="margin-left:-10px; color: #CCCCCCE5;">
+			<p class="text-center sparrow-fs-12 pt-1 mb-0" style="margin-left:-10px; color: #CCCCCCE5;">
 				We will email you a magic code for password free Sign in or you can <span
 					style="color:#3760F7; cursor:pointer;">continue with password</span
 				>
 			</p>
 		</div>
-		<SupportHelp />
+		<div style="margin-top: 24px;">
+			<SupportHelp />
+		</div>
 	</BgContainer>
 <!-- {/if} -->
 
@@ -261,7 +271,7 @@
 	}
 
 	.divider .line {
-		flex: 1;
+		width: 111px;
 		height: 1px;
 		background: linear-gradient(to right, #62636c00, #bfc0d2);
 	}
