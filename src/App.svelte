@@ -13,12 +13,14 @@
 	import EntryPoint from './pages/Auth/entry-point/EntryPoint.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
 	import bg from '$lib/assets/sparrowLogoBackground.svg';
+	import SparrowBackgroundV2 from '$lib/assets/SparrowBackgroundV2.svg';
 	import ExternalNavigation from './routing/ExternalNavigation.svelte';
 	import constants from '$lib/utils/constants';
 	import VerifyEmail from './pages/Auth/verify-email/VerifyEmail.svelte';
 	import { onMount } from 'svelte';
+	import VerifyMagicCode from './pages/Auth/verify-magic-code/VerifyMagicCode.svelte';
+	import CoolDownPage from './pages/Auth/cool-down-page/CoolDownPage.svelte';
 	export let url = '/';
-
 
 </script>
 
@@ -37,11 +39,13 @@
 		<ExternalNavigation to={`mailto:${constants.SPARROW_SUPPORT_EMAIL}`}/>
 	</Route>
 	<!-- <Route path="/success" component={AuthSuccess} /> -->
+	<Route path="/verify-magic-code/:id" component={VerifyMagicCode} />
+	<Route path="/cool-down-active" component={CoolDownPage} />
 	<Route path="/*"><Navigate to="/init" /></Route>
 </Router>
 <Toast/>
 
 <div style="height: 100vh; top:0; left:0;
 right:0; z-index:-100 !important" class="w-100 position-fixed">
-	<img src={bg} alt="" style="height:100%; width:100%; opacity: 0.7">
+	<img src={SparrowBackgroundV2} alt="" style="height:100%; width:100%; opacity: 0.7">
 </div>
