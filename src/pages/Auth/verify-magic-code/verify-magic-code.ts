@@ -3,7 +3,7 @@ import { errorMessageTextMagicCode } from '$lib/store/auth.store';
 import type { verifyMagicCodePostBody } from '$lib/utils/dto';
 import { writable } from 'svelte/store';
 
-export const isSuccessfulResponseMagicCode = writable(false);
+export const isSuccessfulResponseMagicCode = writable(false); 
 
 export const handleVerifyUserEmail = async (verifyCodeCredential: verifyMagicCodePostBody) => {
  

@@ -17,7 +17,7 @@
 		"$lib/*": ["./src/lib/*"],
 	  }
 	},
-	"include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "src/lib/assets/AiSparkleV2.svg"],
+	"include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.svelte"],
 	"references": [{ "path": "./tsconfig.node.json" }]
   }
   
