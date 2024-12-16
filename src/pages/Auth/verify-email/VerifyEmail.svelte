@@ -85,6 +85,7 @@
 	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
 
 	let showResendSuccess = false;
+	let isResendDisabled = false;
 
 	const handleVerificationCode = () => {
 		verifyCode =
@@ -125,6 +126,7 @@
 	});
 	let resentCodeLoader = false;
 	const handleResend = async () => {
+		isResendDisabled = true;
 		resentCodeLoader = true;
 		const response = await sendUserEmailVerification({ email: id });
 		if (response.isSuccessful) {
@@ -143,6 +145,7 @@
 			notifications.error(response.message);
 		}
 		resentCodeLoader = false;
+		isResendDisabled = false;
 	};
 	const onCodeInput = () => {
 		errorMessageText.set('');
@@ -616,6 +619,7 @@
 						on:click={handleResend}
 						style="font-size: 13px; color:#3670F7;"
 						class="cursor-pointer text-decoration-none"
+						class:disabled={isResendDisabled}
 					>
 						Resend code
 					</span>
@@ -680,5 +684,9 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+	}
+	.disabled {
+		pointer-events: none;
+		opacity: 0.5;
 	}
 </style>
