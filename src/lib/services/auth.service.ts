@@ -86,7 +86,6 @@ const sendMagicCodeEmail = async (emailInfo: EmailPostBody) => {
 };
 
 const verifyMagicCode = async (verifyInfo: MagicCodeVerifyBody) => {
-	console.log("This is verify code credentialss",verifyInfo)
 	const response = await makeRequest('POST', `${apiUrl}/api/user/verify-magic-code`, {
 		body: verifyInfo
 	});

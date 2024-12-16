@@ -8,7 +8,6 @@ export const isSuccessfulResponseMagicCode = writable(false);
 export const handleVerifyUserEmail = async (verifyCodeCredential: verifyMagicCodePostBody) => {
  
 	const response = await verifyMagicCode(verifyCodeCredential); 
-	console.log('Verification response:', response); // Add logging for debugging
 	if (response.isSuccessful) {  
 		errorMessageTextMagicCode.set("");
 		isSuccessfulResponseMagicCode.set(false); // Ensure this is set to false on success
