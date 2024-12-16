@@ -34,9 +34,9 @@
 	let timer: number;
 	const calculateRemainingTime = () => {
 		const currentTime = new Date().getTime();
-		const storedTime = parseInt(localStorage.getItem(`timer-verify-${id}`));
+		const storedTime = parseInt(localStorage.getItem(`timer-verify-magic-code-${id}`));
 		if (storedTime) {
-			const elapsedTime = storedTime ? Math.floor((currentTime - storedTime) / 1000) : 0;
+			const elapsedTime = Math.floor((currentTime - storedTime) / 1000);
 			const remainingTime = Math.max(300 - elapsedTime, 0); // Changed from 60 to 300
 			return remainingTime;
 		} else {
@@ -59,6 +59,10 @@
 	};
 
 	onMount(() => {
+		const storedTime = localStorage.getItem(`timer-verify-magic-code-${id}`);
+		if (!storedTime) {
+			localStorage.setItem(`timer-verify-magic-code-${id}`, new Date().getTime()); // Set the timer if not already set
+		}
 		seconds = calculateRemainingTime();
 		startTimer();
 	});
@@ -66,7 +70,7 @@
 
 	let verifyCodeCredential = {
 		email: id || '',
-		magicCode: ''
+		verificationCode: ''
 	};
 
 	let verifyCode: string = '';
@@ -94,7 +98,7 @@
 			verificationCode4 +
 			verificationCode5 +
 			verificationCode6;
-		verifyCodeCredential.magicCode = verifyCode; // Ensure magicCode is set
+		verifyCodeCredential.verificationCode = verifyCode;
 
 		if (verifyCode.length === 6) {
 			verifyString.set(verifyCode);
@@ -130,7 +134,7 @@
 		if (response.isSuccessful) {
 			showResendSuccess = true;
 			notifications.success('Verification code sent successfully');
-			localStorage.setItem(`timer-verify-${id}`, new Date().getTime());
+			localStorage.setItem(`timer-verify-magic-code-${id}`, new Date().getTime());
 			startTimer();
 			verificationCode1 = '';
 			verificationCode2 = '';
@@ -282,6 +286,7 @@
 										autocapitalize="none"
 										autocomplete="off"
 										id="verificationCode1"
+										disabled={seconds === 0}
 										bind:value={verificationCode1}
 										on:focus={() => handleFocus('verificationCode1')}
 										on:blur={handleBlur}
@@ -323,6 +328,7 @@
 										autocomplete="off"
 										id="verificationCode2"
 										bind:value={verificationCode2}
+										disabled={seconds === 0}
 										on:focus={() => handleFocus('verificationCode2')}
 										on:blur={handleBlur}
 										on:click={(e) => e.target.select()}
@@ -368,6 +374,7 @@
 										autocomplete="off"
 										id="verificationCode3"
 										bind:value={verificationCode3}
+										disabled={seconds === 0}
 										on:focus={() => handleFocus('verificationCode3')}
 										on:blur={handleBlur}
 										on:click={(e) => e.target.select()}
@@ -416,6 +423,7 @@
 										autocomplete="off"
 										id="verificationCode4"
 										bind:value={verificationCode4}
+										disabled={seconds === 0}
 										on:focus={() => handleFocus('verificationCode4')}
 										on:blur={handleBlur}
 										on:click={(e) => e.target.select()}
@@ -461,6 +469,7 @@
 										autocomplete="off"
 										id="verificationCode5"
 										bind:value={verificationCode5}
+										disabled={seconds === 0}
 										on:focus={() => handleFocus('verificationCode5')}
 										on:blur={handleBlur}
 										on:click={(e) => e.target.select()}
@@ -506,6 +515,7 @@
 										autocomplete="off"
 										id="verificationCode6"
 										bind:value={verificationCode6}
+										disabled={seconds === 0}
 										on:focus={() => handleFocus('verificationCode6')}
 										on:blur={handleBlur}
 										on:click={(e) => e.target.select()}
@@ -514,7 +524,6 @@
 												verificationCode6 = verificationCode6.charAt(1);
 											}
 											onCodeInput();
-											handleVerificationCode(); // Ensure this is called here
 										}}
 										on:keydown={(e) => {
 											if (e.key === 'Backspace' && verificationCode6.length === 0) {
@@ -562,14 +571,14 @@
 				</div>
 
 				<Button
-                buttonStyleProp={"height:44px;"}
+				buttonStyleProp={"height:44px;"}
+					disable={!seconds}
 					title={'Verify Code'}
 					buttonClassProp={'w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16'}
 					type={'primary'}
 					loader={verifyCodeLoader}
 					onClick={async () => {
 						verifyCodeLoader = true;
-						handleVerificationCode(); // Ensure this is called to set the magicCode
 						let response = await handleVerifyUserEmail(verifyCodeCredential);
 						if (response?.isSuccessful) {
 							isRegistered = true;
@@ -603,18 +612,6 @@
 				/>
 			</div>
 
-
-       {#if seconds <= 0}
-             <Button
-					 
-                     title={'Try Sparrow Edge'}
-                     buttonStyleProp={"height:44px;"}
-                     buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-16'}
-                     type={'secondary'}
-                 />
- 
-       {/if}
-              
 			<div class="d-flex gap-3 align-items-center justify-content-center mt-3">
 				<p style="font-size: 13px; text-align:center; line-height:15px;" class="mb-0">
 					If you haven't received the code, <br />
