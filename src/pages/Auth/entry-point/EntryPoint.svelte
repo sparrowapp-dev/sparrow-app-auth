@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { handleEntryValidation, handleEntry } from './EntryPoint.ViewModel';
+	import { sendMagicCodeEmail } from '$lib/services/auth.service';
 	import sparrowicon from '$lib/assets/logoSparrowSquare.svg';
 	import { navigate } from 'svelte-navigator';
 	import Redirect from '../redirect/Redirect.svelte';
@@ -34,7 +35,7 @@
 	};
 	let entryLoader = false;
 	let isSubmitting = false;  // Add this new state variable
-
+	let showContinueButton=false;
 	onMount(() => {
 		// Check the query parameters in the URL
 		const urlParams = new URLSearchParams(window.location.search);
@@ -53,20 +54,41 @@
 
 		isEmailTouched = true;
 		entryLoader = true;
+		showContinueButton=false;
 		emailExists = false; // Reset before the check starts
 		try {
 			const response = await handleEntry({ email }); // Reuse the same `handleEntry` function
 			if (response.isSuccessful) {
 				// Check if the email is registered
+				showContinueButton=true;
 				emailExists =
 					response?.data?.registeredWith === 'email' || response?.data?.registeredWith === 'google';
 			} else {
+				showContinueButton=false;
 				emailExists = false; // Email not registered
 			}
 		} catch (error) {
+			showContinueButton=false;
 			emailExists = false; // Handle errors gracefully
 		}
 		entryLoader = false;
+	};
+
+	const handleMagicCodeAndRedirect = async (email: string) => {
+		try {
+			const magicCodeResponse = await sendMagicCodeEmail({ email });
+			if (magicCodeResponse.isSuccessful) {
+				navigate(`/verify-magic-code/${email}`);  // Updated this line
+			} else {
+				if (magicCodeResponse?.message === 'Cooldown Active') {
+					navigate('/cool-down-active');
+				} else {
+					notifications.error(magicCodeResponse?.message);
+				}
+			}
+		} catch (error) {
+			notifications.error('Failed to send magic code.');
+		}
 	};
 
 	let checkTimeout;
@@ -116,7 +138,7 @@
 			class="login-form w-100 text-whiteColor ps-1 pe-1 mb-2"
 			novalidate
 			on:submit|preventDefault={async () => {
-				isSubmitting = true;  // Set to true when form submission starts
+				isSubmitting = true;
 				isEmailTouched = true;
 				validationErrors = await handleEntryValidation(entryCredentials);
 				if (!validationErrors?.email) {
@@ -127,27 +149,20 @@
 							response?.data?.registeredWith === 'email' ||
 							response?.data?.registeredWith === 'google'
 						) {
-							// registered with email
-							// isEntry = true;
-							redirectRules.title = `Redirecting to your account...`;
-							redirectRules.description = `${entryCredentials?.email} has been previously used to login via email account.`;
-							redirectRules.loadingMessage = `Please wait while we are redirecting you to your email account....`;
-							setTimeout(() => {
-								navigate(`/login/${entryCredentials?.email}`);
-								isSubmitting = false;  // Reset after navigation
-							}, 1000);
+							 // Send magic code before redirecting
+							 localStorage.setItem(`timer-verify-magic-code-${entryCredentials.email}`, new Date().getTime());
+
+							await handleMagicCodeAndRedirect(entryCredentials?.email);
 						} else {
+							// New user - redirect to registration
 							navigate(`/register/${entryCredentials?.email}`);
-							isSubmitting = false;  // Reset after navigation
 						}
 					} else {
 						notifications.error(response?.message);
-						isSubmitting = false;  // Reset on error
 					}
 					entryLoader = false;
-				} else {
-					isSubmitting = false;  // Reset if validation fails
 				}
+				isSubmitting = false;
 			}}
 		>
 			<!-- <p class="card-subtitle sparrow-fs-20 sparrow-fw-500 mb-3">Sign In or Create an Account</p> -->
@@ -212,7 +227,7 @@
 			<div>
 				<Button
 					disable={entryLoader || isSubmitting} 
-					title={'Send magic code'}
+					title={!emailExists && showContinueButton ? 'Continue' : 'Send magic code'}
 					buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-16'}
 					type={'primary'}
 				/>
@@ -223,13 +238,15 @@
 			<div style="height: 24px; width:24px;">
 				<AiSparkle height={'24px'} width={'24px'} />
 			</div>
-			<p class="text-center sparrow-fs-12 pt-1" style="margin-left:-10px; color: #CCCCCCE5;">
+			<p class="text-center sparrow-fs-12 pt-1 mb-0" style="margin-left:-10px; color: #CCCCCCE5;">
 				We will email you a magic code for password free Sign in or you can <span
 					style="color:#3760F7; cursor:pointer;">continue with password</span
 				>
 			</p>
 		</div>
-		<SupportHelp />
+		<div style="margin-top: 24px;">
+			<SupportHelp />
+		</div>
 	</BgContainer>
 <!-- {/if} -->
 
@@ -254,7 +271,7 @@
 	}
 
 	.divider .line {
-		flex: 1;
+		width: 111px;
 		height: 1px;
 		background: linear-gradient(to right, #62636c00, #bfc0d2);
 	}

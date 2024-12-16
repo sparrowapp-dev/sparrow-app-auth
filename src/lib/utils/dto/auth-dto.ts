@@ -20,6 +20,11 @@ export interface verifyPostbody {
   verificationCode: string;
 }
 
+export interface verifyMagicCodePostBody {
+  email: string;
+  magicCode: string;
+}
+
 export interface resetPasswordPostBody {
   email: string;
   newPassword: string;

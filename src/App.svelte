@@ -18,8 +18,9 @@
 	import constants from '$lib/utils/constants';
 	import VerifyEmail from './pages/Auth/verify-email/VerifyEmail.svelte';
 	import { onMount } from 'svelte';
+	import VerifyMagicCode from './pages/Auth/verify-magic-code/VerifyMagicCode.svelte';
+	import CoolDownPage from './pages/Auth/cool-down-page/CoolDownPage.svelte';
 	export let url = '/';
-
 
 </script>
 
@@ -38,6 +39,8 @@
 		<ExternalNavigation to={`mailto:${constants.SPARROW_SUPPORT_EMAIL}`}/>
 	</Route>
 	<!-- <Route path="/success" component={AuthSuccess} /> -->
+	<Route path="/verify-magic-code/:id" component={VerifyMagicCode} />
+	<Route path="/cool-down-active" component={CoolDownPage} />
 	<Route path="/*"><Navigate to="/init" /></Route>
 </Router>
 <Toast/>
