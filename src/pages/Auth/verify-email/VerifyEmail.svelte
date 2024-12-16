@@ -542,6 +542,8 @@
 										</div>
 									{/if}
 								</div>
+
+								
 							</div>
 							{#if verificationCodeError === true}
 								<small class="form-text" style="color: #FE8C98;">

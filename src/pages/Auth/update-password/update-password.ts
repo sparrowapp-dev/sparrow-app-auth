@@ -23,7 +23,7 @@ export const handleVerifyEmail = async (
 
     if (response.message === "Unauthorized Access") {
       errorMessageText.set(
-        "You have entered wrong code, please check your email.",
+        "Wrong verification code",
       );
     }
   }
