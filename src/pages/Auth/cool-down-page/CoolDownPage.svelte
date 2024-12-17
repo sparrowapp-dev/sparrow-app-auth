@@ -8,7 +8,8 @@
 
 
 	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
-
+	const sparrowRedirect = `sparrow://?accessToken=&refreshToken=&response=&event=login&method=email&isSparrowEdge=true`;
+    
 
 </script>
 
@@ -36,7 +37,7 @@
 		{#if userFromDesktop}
 		<div class="w-100 mb-5">
 
-			<Button 
+			<Button onClick={() => navigate(sparrowRedirect)}
 				title={'Try Sparrow Edge'}
 				buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-16'}
 				type={'primary'}/>
