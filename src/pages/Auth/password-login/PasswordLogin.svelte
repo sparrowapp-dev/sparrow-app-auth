@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { handleEntryValidation, handleEntry } from './EntryPoint.ViewModel';
+	import { handleEntryValidation, handleEntry } from './PasswordLogin.ViewModel';
 	import { sendMagicCodeEmail } from '$lib/services/auth.service';
 	import sparrowicon from '$lib/assets/logoSparrowSquare.svg';
 	import { navigate } from 'svelte-navigator';
@@ -36,16 +36,16 @@
 	let entryLoader = false;
 	let isSubmitting = false; // Add this new state variable
 	let showContinueButton = false;
-	onMount(() => {
-		// Check the query parameters in the URL
-		const urlParams = new URLSearchParams(window.location.search);
-		const source = urlParams.get('source'); // Get 'source' from query param
-		if (source === 'web') {
-			localStorage.setItem('isUserFromDesktop', 'false');
-		} else {
-			localStorage.setItem('isUserFromDesktop', 'true');
-		}
-	});
+	// onMount(() => {
+	// 	// Check the query parameters in the URL
+	// 	const urlParams = new URLSearchParams(window.location.search);
+	// 	const source = urlParams.get('source'); // Get 'source' from query param
+	// 	if (source === 'web') {
+	// 		localStorage.setItem('isUserFromDesktop', 'false');
+	// 	} else {
+	// 		localStorage.setItem('isUserFromDesktop', 'true');
+	// 	}
+	// });
 
 	let emailExists = false;
 
@@ -121,18 +121,18 @@
 			class="container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
 			style="font-size:24px; font-weight: 400; padding-top:20px; line-height:28px; text-align:center;"
 		>
-			Welcome to Sparrow!
+			Welcome to Sparrow
 		</p>
-		<p class="" style="color: lightGray; font-size:12px;">The only API Sidekick you need</p>
+		<p class="" style="color: lightGray; font-size:12px; margin-bottom:15%;">Your API Sidekick</p>
 	</div>
 
-	<Oauth />
+	<!-- <Oauth /> -->
 
-	<div class="divider w-100">
-		<span class="line"></span>
-		<span class="text" style="color:var(--editor-angle-bracket)">Or</span>
-		<span class="line"></span>
-	</div>
+	<!-- <div class="divider w-100">
+			<span class="line"></span>
+			<span class="text" style="color:var(--editor-angle-bracket)">Or</span>
+			<span class="line"></span>
+		</div> -->
 
 	<form
 		class="login-form w-100 text-whiteColor ps-1 pe-1 mb-2"
@@ -150,12 +150,10 @@
 						response?.data?.registeredWith === 'google'
 					) {
 						// Send magic code before redirecting
-						localStorage.setItem(
-							`timer-verify-magic-code-${entryCredentials.email}`,
-							new Date().getTime()
-						);
+						navigate(`/login/${entryCredentials?.email}`);
+						//  localStorage.setItem(`timer-verify-magic-code-${entryCredentials.email}`, new Date().getTime());
 
-						await handleMagicCodeAndRedirect(entryCredentials?.email);
+						// await handleMagicCodeAndRedirect(entryCredentials?.email);
 					} else {
 						// New user - redirect to registration
 						navigate(`/register/${entryCredentials?.email}`);
@@ -185,7 +183,7 @@
 						: 'border-default'}"
 					id="exampleInputEmail1"
 					aria-describedby="emailHelp"
-					placeholder="Enter your email addresss"
+					placeholder="Enter your email address"
 					autocorrect="off"
 					autocapitalize="none"
 					autocomplete="off"
@@ -230,7 +228,7 @@
 		<div>
 			<Button
 				disable={entryLoader || isSubmitting}
-				title={!emailExists && showContinueButton ? 'Continue' : 'Send magic code'}
+				title={'Continue'}
 				buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-16'}
 				type={'primary'}
 			/>
@@ -242,11 +240,16 @@
 			<AiSparkle height={'24px'} width={'24px'} />
 		</div>
 		<p class="text-center sparrow-fs-12 pt-1 mb-0" style="margin-left:-10px; color: #CCCCCCE5;">
-			We will email you a magic code for password free Sign in or you can <span
+			Looking for a password less Login? <span
 				on:click={() => {
-					navigate('/password-login');
+					const isDesktopUser = localStorage.getItem('isUserFromDesktop');
+					if (isDesktopUser === "true") {
+						navigate('/init?source=desktop');
+					} else {
+						navigate('/init?source=web');
+					}
 				}}
-				style="color:#3760F7; cursor:pointer;">continue with password</span
+				style="color:#3760F7; cursor:pointer;">continue with magic code</span
 			>
 		</p>
 	</div>

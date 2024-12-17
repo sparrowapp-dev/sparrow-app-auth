@@ -20,6 +20,7 @@
 	import { onMount } from 'svelte';
 	import VerifyMagicCode from './pages/Auth/verify-magic-code/VerifyMagicCode.svelte';
 	import CoolDownPage from './pages/Auth/cool-down-page/CoolDownPage.svelte';
+	import PasswordLogin from './pages/Auth/password-login/PasswordLogin.svelte';
 	export let url = '/';
 
 </script>
@@ -41,6 +42,7 @@
 	<!-- <Route path="/success" component={AuthSuccess} /> -->
 	<Route path="/verify-magic-code/:id" component={VerifyMagicCode} />
 	<Route path="/cool-down-active" component={CoolDownPage} />
+	<Route path="/password-login" component={PasswordLogin} />
 	<Route path="/*"><Navigate to="/init" /></Route>
 </Router>
 <Toast/>
