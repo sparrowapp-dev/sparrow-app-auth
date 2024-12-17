@@ -85,6 +85,13 @@
 		}
 	};
 	let registerLoader = false;
+	// Reactive statement to check if the form is valid
+    $: isFormValid = 
+    !validationErrors?.firstName &&
+    !validationErrors?.lastName &&
+    !validationErrors?.email &&
+    !validationErrors?.password &&
+    userData?.tnsCheckbox;
 </script>
 
 {#if isRegistered}
@@ -377,11 +384,11 @@
 					</a>
 				</label>
 			</div>
-			{#if !userData.tnsCheckbox && isCheckboxTouched}
+			<!-- {#if !userData.tnsCheckbox && isCheckboxTouched}
 				<small class="text-dangerColor form-text"
 					>You will need to agree to the terms of service to create a Sparrow account.</small
 				>
-			{/if}
+			{/if} -->
 
 			<div class="form-group mt-3 d-flex align-items-start" data-tauri-drag-region>
 				<input
@@ -400,7 +407,7 @@
 
 			<div class="mb-3 mt-4">
 				<Button
-					disable={registerLoader}
+				disable={!isFormValid || registerLoader}
 					title={'Create account'}
 					buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-14'}
 					type={'primary'}
