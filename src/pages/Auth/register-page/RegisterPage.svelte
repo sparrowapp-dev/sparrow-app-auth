@@ -142,8 +142,7 @@
 					!validationErrors?.lastName &&
 					!validationErrors?.email &&
 					!validationErrors?.password &&
-					userData?.tnsCheckbox &&
-					userData?.marketingUpdates
+					userData?.tnsCheckbox
 				) {
 					registerLoader = true;
 					const response = await handleRegister(userData);
@@ -164,7 +163,7 @@
 						}
 					}
 					registerLoader = false;
-				}
+				} 
 			}}
 		>
 			<div style="margin-top:44px;">

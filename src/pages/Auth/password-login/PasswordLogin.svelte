@@ -151,9 +151,7 @@
 					) {
 						// Send magic code before redirecting
 						navigate(`/login/${entryCredentials?.email}`);
-						//  localStorage.setItem(`timer-verify-magic-code-${entryCredentials.email}`, new Date().getTime());
 
-						// await handleMagicCodeAndRedirect(entryCredentials?.email);
 					} else {
 						// New user - redirect to registration
 						navigate(`/register/${entryCredentials?.email}`);
