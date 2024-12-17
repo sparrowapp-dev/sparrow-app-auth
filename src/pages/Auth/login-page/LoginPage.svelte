@@ -15,7 +15,7 @@
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 	import Button from '$lib/components/button/Button.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
-
+	import AiSparkle from '$lib/assets/AiSparkle.svelte';
 
 	export let id;
 
@@ -55,12 +55,11 @@
 		loadingMessage: 'Please wait while we sign you in....'
 	};
 	let loginLoader = false;
-	
-	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
 
+	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
 </script>
 
-{#if isLogin }
+{#if isLogin}
 	<Redirect
 		title={redirectRules.title}
 		description={redirectRules.description}
@@ -72,18 +71,27 @@
 	/>
 {:else}
 	<BgContainer>
-		<div
-			class="text-white d-flex justify-content-center align-items-center bg-sparrowPrimaryColor"
-			style="height: 60px; width: 60px; border-radius: 6px;"
-		>
-			<img src={sparrowicon} alt="" class="" />
+		<div class="d-flex align-items-start gap-2">
+			<div
+				class="text-white d-flex justify-content-center align-items-center bg-sparrowPrimaryColor"
+				style="height: 23px; width: 23px; border-radius: 6px;"
+			>
+				<img height="20px" width="20px" src={sparrowicon} alt="" class="" />
+			</div>
+			<p style="font-weight:500;">Sparrow</p>
 		</div>
-		<p
-			class="container-header pt-4 pb-4 sparrow-fs-28 sparrow-fw-600 text-whiteColor text-center ms-2 me-2"
-			style="letter-spacing: 0.05rem;"
-		>
-			Welcome to Sparrow!
-		</p>
+
+		<div style="display: flex ; flex-direction:column; align-items:center;">
+			<p
+				class="container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
+				style="font-size:24px; font-weight: 400; padding-top:20px; line-height:28px; text-align:center;"
+			>
+				Welcome Back User
+			</p>
+			<p class="" style="color: lightGray; font-size:12px; margin-bottom:15%;">
+				Let’s get back to work
+			</p>
+		</div>
 		<form
 			class="login-form w-100 text-whiteColor ps-1 pe-1 gap-16 mb-2"
 			novalidate
@@ -101,8 +109,10 @@
 							const accessToken = response?.accessToken?.token;
 							const refreshToken = response?.refreshToken?.token;
 							const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
-							const sparrowWebRedirect = constants.SPARROW_WEB_URL +`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
-							if(userFromDesktop === "true"){
+							const sparrowWebRedirect =
+								constants.SPARROW_WEB_URL +
+								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
+							if (userFromDesktop === 'true') {
 								setTimeout(() => {
 									let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
 									redirectRules.title = `Welcome back ${data.name}`;
@@ -116,9 +126,7 @@
 										navigate(sparrowRedirect);
 									};
 								}, 1000);
-
-							}
-							else{
+							} else {
 								navigate(sparrowWebRedirect);
 							}
 						} else {
@@ -141,7 +149,7 @@
 				}
 			}}
 		>
-			<p class="card-subtitle sparrow-fs-20 sparrow-fw-500 mb-3">Sign In</p>
+			<!-- <p class="card-subtitle sparrow-fs-20 sparrow-fw-500 mb-3">Sign In</p> -->
 			<div class="mb-3">
 				<label for="exampleInputEmail1" class="form-label text-lightGray sparrow-fs-14 d-flex"
 					>Email ID
@@ -245,15 +253,35 @@
 			<div class="mb-1">
 				<Button
 					disable={loginLoader}
-					title={'Sign In'}
+					title={'Login'}
 					buttonClassProp={'w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16'}
-					type={'primary-gradient'}
+					type={'primary'}
 					loader={loginLoader}
 				/>
 			</div>
 		</form>
-		<Oauth />
-		<SupportHelp />
+		<div class="d-flex align-items-start ms-1">
+			<div style="height: 24px; width:24px;">
+				<AiSparkle height={'24px'} width={'24px'} />
+			</div>
+			<p class="text-center sparrow-fs-12 pt-1 mb-0" style="margin-left:-10px; color: #CCCCCCE5;">
+				Looking for a password less Login? <span
+					on:click={() => {
+						const isDesktopUser = localStorage.getItem('isUserFromDesktop');
+						if (isDesktopUser === 'true') {
+							navigate('/init?source=desktop');
+						} else {
+							navigate('/init?source=web');
+						}
+					}}
+					style="color:#3760F7; cursor:pointer;">continue with magic code</span
+				>
+			</p>
+		</div>
+		<!-- <Oauth /> -->
+		<div style="margin-top: 24px;">
+			<SupportHelp />
+		</div>
 	</BgContainer>
 {/if}
 
@@ -261,7 +289,7 @@
 	.eye-icon {
 		right: 5px;
 		top: 50%;
-    	transform: translateY(-50%);
+		transform: translateY(-50%);
 		background-color: transparent;
 	}
 
@@ -277,7 +305,7 @@
 	input {
 		background-color: transparent !important;
 	}
-	input:disabled{
+	input:disabled {
 		opacity: 0.5;
 	}
 </style>
