@@ -3,7 +3,7 @@ import { errorMessageTextMagicCode } from '$lib/store/auth.store';
 import type { verifyMagicCodePostBody } from '$lib/utils/dto';
 import { writable } from 'svelte/store';
 
-export const isSuccessfulResponseMagicCode = writable(false);  
+export const isSuccessfulResponseMagicCode = writable(false);   
 
 export const handleVerifyUserEmail = async (verifyCodeCredential: verifyMagicCodePostBody) => {
  
@@ -18,7 +18,7 @@ export const handleVerifyUserEmail = async (verifyCodeCredential: verifyMagicCod
 		}
 
 		if (response.message === 'Wrong Code') {
-			errorMessageTextMagicCode.set('Wrong verification code');
+			errorMessageTextMagicCode.set('Please check the code again');
 		}
 	}
 	return response;

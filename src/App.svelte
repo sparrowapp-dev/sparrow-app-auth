@@ -49,5 +49,5 @@
 
 <div style="height: 100vh; top:0; left:0;
 right:0; z-index:-100 !important" class="w-100 position-fixed">
-	<img src={SparrowBackgroundV2} alt="" style="height:100%; width:100%; opacity: 0.7">
+	<img src={SparrowBackgroundV2} alt="" style="height:100%; width:100%;">
 </div>
