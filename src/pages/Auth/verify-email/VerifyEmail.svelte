@@ -28,6 +28,7 @@
 		isSpinner: true,
 		buttonText: 'Open Desktop App',
 		buttonClick: () => {},
+		copyLink: () => {},
 		loadingMessage: 'Please wait while we sign you in....'
 	};
 
@@ -240,6 +241,7 @@
 		isSpinner={redirectRules.isSpinner}
 		buttonText={redirectRules.buttonText}
 		buttonClick={redirectRules.buttonClick}
+		copyLink={redirectRules.copyLink}
 		loadingMessage={redirectRules.loadingMessage}
 	/>
 {:else}
@@ -601,6 +603,12 @@
 									navigate(sparrowRedirect);
 									redirectRules.buttonClick = () => {
 										navigate(sparrowRedirect);
+									};
+									redirectRules.copyLink = () => {
+										if (navigator.clipboard) {
+											notifications.success("Link copied to clipboard.");
+											return navigator.clipboard.writeText(sparrowRedirect);
+										} 
 									};
 								}, 5000);
 							} else {

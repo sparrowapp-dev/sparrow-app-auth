@@ -14,18 +14,8 @@
 	import Button from '$lib/components/button/Button.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
 
-
 	export let id;
-	let isRegistered = false;
-	let redirectRules = {
-		title: 'Welcome to Sparrow!',
-		description: 'Bridging Frontend and Backend Development.',
-		message: `the token if you are facing any issue in redirecting to the login page`,
-		isSpinner: true,
-		buttonText: 'Open Desktop App',
-		buttonClick: () => {},
-		loadingMessage: 'Please wait while we sign you in....'
-	};
+
 	let userData = {
 		email: id || '',
 		firstName: '',
@@ -94,17 +84,7 @@
     userData?.tnsCheckbox;
 </script>
 
-{#if isRegistered}
-	<Redirect
-		title={redirectRules.title}
-		description={redirectRules.description}
-		message={redirectRules.message}
-		isSpinner={redirectRules.isSpinner}
-		buttonText={redirectRules.buttonText}
-		buttonClick={redirectRules.buttonClick}
-		loadingMessage={redirectRules.loadingMessage}
-	/>
-{:else}
+
 	<BgContainer>
 		<div class="d-flex align-items-start gap-2">
 			<div
@@ -154,7 +134,6 @@
 					registerLoader = true;
 					const response = await handleRegister(userData);
 					if (response.isSuccessful) {
-						isRegistered = true;
 						localStorage.setItem(`timer-verify-${userData.email}`, new Date().getTime());
 						notifications.success('Verification code has been sent to your registered Email ID.');
 						navigate(`/verify/email/${userData.email}`);
@@ -416,7 +395,6 @@
 		</form>
 		<SupportHelp />
 	</BgContainer>
-{/if}
 
 <style>
 	.eye-icon {

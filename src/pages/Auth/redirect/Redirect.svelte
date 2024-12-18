@@ -11,7 +11,8 @@
 	export let message="Detailed Message";
 	export let isSpinner= true;
 	export let buttonText="Button";
-	export let buttonClick = () =>{} ;
+	export let buttonClick = () => {} ;
+	export let copyLink = () => {} ;
 	export let loadingMessage = "";
 </script>
 
@@ -69,12 +70,16 @@
 				class="text-lightGray mt-4 sparrow-fw-300 sparrow-fs-14"
 			>
 				<p>
-					<CopyIcon height={'16px'} width={'16px'} color={'#CCCCCCE5'} />
-					<a
-						href=""
-						style="text-decoration: underline; color:#CCCCCCE5;  text-underline-offset: 4px;"
-						>copy</a
-					>
+					<span role="button" on:click={()=>{
+						copyLink();
+					}}>
+						<CopyIcon height={'16px'} width={'16px'} color={'#CCCCCCE5'} />
+						<span
+							style="text-decoration: underline; color:#CCCCCCE5;  text-underline-offset: 4px;"
+							>copy</span
+						>
+
+					</span>
 					{message}
 				</p>
 			</div>

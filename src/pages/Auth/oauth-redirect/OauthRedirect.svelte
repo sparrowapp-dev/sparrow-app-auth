@@ -4,6 +4,7 @@
 	import Redirect from '../redirect/Redirect.svelte';
 	import constants from '$lib/utils/constants';
 	import RegisterRedirectComponent from '../redirect/RegisterRedirectComponent.svelte';
+	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 
 	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
 
@@ -11,15 +12,17 @@
 	let refreshToken = "";
 	let source = "";
 	let showRegisterComponent = true;
+	let sparrowRedirect = "";
+	let sparrowWebRedirect = "";
 
 	onMount(() => {
 		const urlParams = new URLSearchParams(window.location.search);
 		accessToken = urlParams.get('accessToken') as string;
 		refreshToken = urlParams.get('refreshToken') as string; 
-		source = urlParams.get('source');
-		const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
-		const sparrowWebRedirect = constants.SPARROW_WEB_URL +`?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
-        // debugger;
+		source = urlParams.get('source') as string;
+		sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
+		sparrowWebRedirect = constants.SPARROW_WEB_URL +`?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
+       
 		if (source === "register") {
 			showRegisterComponent = true;
 		} else { 
@@ -36,9 +39,6 @@
 					
 					redirectRules.loadingMessage = '';
 					redirectRules.isSpinner = false;
-					redirectRules.buttonClick = () => {
-						window.location.href = sparrowRedirect;
-					};
 					window.location.href = sparrowRedirect;
 				}, constants.API_REDIRECT_TIMEOUT);
 			} else {
@@ -60,7 +60,13 @@
 		isSpinner: true,
 		buttonText: 'Open Desktop App',
 		buttonClick: () => {
-			window.location.href = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
+			window.location.href = sparrowRedirect;
+		},
+		copyLink: () => {
+			if (navigator.clipboard) {
+				notifications.success("Link copied to clipboard.");
+				return navigator.clipboard.writeText(sparrowRedirect);
+			} 
 		},
 		loadingMessage: 'Please wait while we sign you in....'
 	};
@@ -80,6 +86,7 @@
 		isSpinner={redirectRules.isSpinner}
 		buttonText={redirectRules.buttonText}
 		buttonClick={redirectRules.buttonClick}
+		copyLink={redirectRules.copyLink}
 		loadingMessage={redirectRules.loadingMessage}
 	/>
 {/if}
