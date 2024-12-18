@@ -4,6 +4,7 @@
 	import Redirect from '../redirect/Redirect.svelte';
 	import constants from '$lib/utils/constants';
 	import RegisterRedirectComponent from '../redirect/RegisterRedirectComponent.svelte';
+	import { jwtDecode } from '$lib/utils/jwt';
 
 	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
 
@@ -24,7 +25,53 @@
 			showRegisterComponent = true;
 		} else { 
 			showRegisterComponent = false;
+			if (accessToken && refreshToken) {
+			if(userFromDesktop === "true"){
+				setTimeout(() => {
+					let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
+					redirectRules.title = `Welcome ${data.name}`;
+					redirectRules.description = `Redirecting you to desktop app...`;
+					redirectRules.message = `the token if you are facing any issue in redirecting to the login page`;
+					
+					redirectRules.loadingMessage = '';
+					redirectRules.isSpinner = false;
+					redirectRules.buttonClick = () => {
+						window.location.href = sparrowRedirect;
+					};
+					window.location.href = sparrowRedirect;
+				}, constants.API_REDIRECT_TIMEOUT);
+			} else {
+				navigate(sparrowWebRedirect);
+			}
+		} else {
+			if(userFromDesktop === "true"){
+				navigate("/init");
+			} else {
+				navigate("/init?source=web");
+			}			
 		}
+		}
+		
+	});
+
+	let redirectRules = {
+		title: 'Welcome to Sparrow!',
+		description: 'Bridging Frontend and Backend Development.',
+		message: `the token if you are facing any issue in redirecting to the login page`,
+		isSpinner: true,
+		buttonText: 'Open Desktop App',
+		buttonClick: () => {
+			window.location.href = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
+		},
+		loadingMessage: 'Please wait while we sign you in....'
+	};
+
+	function handleContinueButtonClick() {
+		showRegisterComponent = false;
+		const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
+		const sparrowWebRedirect = constants.SPARROW_WEB_URL +`?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
+        // debugger;
+		const response = jwtDecode(accessToken);
 		if (accessToken && refreshToken) {
 			if(userFromDesktop === "true"){
 				setTimeout(() => {
@@ -50,22 +97,6 @@
 				navigate("/init?source=web");
 			}			
 		}
-	});
-
-	let redirectRules = {
-		title: 'Welcome to Sparrow!',
-		description: 'Bridging Frontend and Backend Development.',
-		message: `the token if you are facing any issue in redirecting to the login page`,
-		isSpinner: true,
-		buttonText: 'Open Desktop App',
-		buttonClick: () => {
-			window.location.href = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
-		},
-		loadingMessage: 'Please wait while we sign you in....'
-	};
-
-	function handleContinueButtonClick() {
-		showRegisterComponent = false;
 	}
 </script>
 
