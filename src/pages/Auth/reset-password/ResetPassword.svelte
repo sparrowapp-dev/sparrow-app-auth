@@ -101,9 +101,9 @@
 			class="container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
 			style="font-size:24px; font-weight: 400;  line-height:28px; text-align:center;"
 		>
-			Welcome!
+		New Password
 		</p>
-		<p class="" style="color: lightGray; font-size:14px;">Let’s get you onboard</p>
+		<p class="" style="color: lightGray; font-size:14px;">Let’s create new password</p>
 	</div>
 
 
@@ -120,7 +120,11 @@
 				const response = await handleResetPassword(resetPasswordCredential);
 				if (response.isSuccessful) {
 					notifications.success("Password changed successfully");
-					navigate(`/login/${id}`);
+					localStorage.setItem(
+							`timer-reset-password-redirect-${id}`,
+							new Date().getTime()
+						);
+					navigate(`/password-update-redirect/${id}`);
 				} else {
 				if (response.message === "Unauthorized Access") {
 					notifications.error("Old Password and New Password cannot be same");
@@ -247,7 +251,7 @@
 			<div class="d-flex position-relative mt-2">
 				<input
 				    style="border-radius: 6px; border:1px solid #62636C; padding:8px"
-					class="form-control sparrow-fs-16 pe-5 border:{(!doPasswordsMatch && isConfirmPasswordTouched) ? '3px' : '1px'} solid {(!doPasswordsMatch && isConfirmPasswordTouched) ? 'border-error' : 'border-default'}"
+					class="form-control sparrow-fs-16 pe-5 border:{(!doPasswordsMatch && isConfirmPasswordTouched) ? '3px' : '1px'} solid {!doPasswordsMatch && isConfirmPasswordTouched ? 'border-error' : 'border-default'}"
 					type="password"
 					autocorrect="off"
 					autocapitalize="none"
@@ -369,4 +373,5 @@
 		color: #62636C !important;
 		font-size: 12px !important;
 	}
+	
 </style>
