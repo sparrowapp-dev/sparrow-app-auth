@@ -265,7 +265,7 @@
 			>
 				Welcome!
 			</p>
-			<p class="" style="color: lightGray; font-size:14px;">Let’s get you onboard</p>
+			<p class="" style="color: lightGray; font-size:14px;">Just one more step</p>
 		</div>
 
 		<div class="login-form text-lightGray ps-1 pe-1 gap-16">
