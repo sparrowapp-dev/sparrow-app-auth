@@ -592,10 +592,10 @@
 							isRegistered = true;
 							const accessToken = response?.data.accessToken?.token;
 							const refreshToken = response?.data.refreshToken?.token;
-							const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=register&method=email`;
+							const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=login&method=email`;
 							const sparrowWebRedirect =
 								constants.SPARROW_WEB_URL +
-								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=register&method=email`;
+								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
 
 							if (userFromDesktop === 'true') {
 								setTimeout(() => {
