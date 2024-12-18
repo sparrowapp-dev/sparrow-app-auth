@@ -22,7 +22,7 @@
 	let verifyLength: string = '';
 	let isRegistered = false;
 	let redirectRules = {
-		title: 'Welcome to Sparrow!',
+		title: 'Welcome to Sparrow',
 		description: 'Bridging Frontend and Backend Development.',
 		message: `the token if you are facing any issue in redirecting to the login page`,
 		isSpinner: true,
@@ -131,7 +131,7 @@
 		const response = await sendMagicCodeEmail({ email: id });
 		if (response.isSuccessful) {
 			showResendSuccess = true;
-			notifications.success('Verification code sent successfully');
+			notifications.success('Magic code is sent to your email ID.');
 			localStorage.setItem(`timer-verify-magic-code-${id}`, new Date().getTime());
 			startTimer();
 			verificationCode1 = '';
@@ -142,7 +142,7 @@
 			verificationCode6 = '';
 			onCodeInput();
 		} else {
-			if (response.message === 'Cooldown Active') {
+			if (response.message === 'Cooldown Active') { 
 				navigate('/cool-down-active');
 			} else {
 				notifications.error(response.message);
