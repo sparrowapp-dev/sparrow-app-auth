@@ -13,6 +13,7 @@
 	import AiSparkle from '$lib/assets/AiSparkle.svelte';
 	import Spinner from '$lib/components/transition/Spinner.svelte';
 	import CircleTick from '$lib/assets/CircleTick.svelte';
+	import MixpanelEvent from '$lib/utils/mixpanel/MixpanelEvent';
 	let isEmailTouched = false;
 	//---------------- Login Validation --------------------//
 	let validationErrors: any = {};
@@ -245,6 +246,7 @@
 			We will email you a magic code for password free Sign in or you can <span
 				on:click={() => {
 					navigate('/password-login');
+					MixpanelEvent("Continue_with_password");
 				}}
 				style="color:#3760F7; cursor:pointer;">continue with password</span
 			>
