@@ -21,6 +21,7 @@
 	import VerifyMagicCode from './pages/Auth/verify-magic-code/VerifyMagicCode.svelte';
 	import CoolDownPage from './pages/Auth/cool-down-page/CoolDownPage.svelte';
 	import PasswordLogin from './pages/Auth/password-login/PasswordLogin.svelte';
+	import PasswordUpdateRedirect from './pages/Auth/password-update-redirect/PasswordUpdateRedirect.svelte';
 	export let url = '/';
 
 </script>
@@ -43,11 +44,12 @@
 	<Route path="/verify-magic-code/:id" component={VerifyMagicCode} />
 	<Route path="/cool-down-active" component={CoolDownPage} />
 	<Route path="/password-login" component={PasswordLogin} />
+	<Route path="/password-update-redirect/:id" component={PasswordUpdateRedirect} />
 	<Route path="/*"><Navigate to="/init" /></Route>
 </Router>
 <Toast/>
 
 <div style="height: 100vh; top:0; left:0;
 right:0; z-index:-100 !important" class="w-100 position-fixed">
-	<img src={SparrowBackgroundV2} alt="" style="height:100%; width:100%; opacity: 0.7">
+	<img src={SparrowBackgroundV2} alt="" style="height:100%; width:100%;">
 </div>

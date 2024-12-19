@@ -27,15 +27,13 @@
 			showRegisterComponent = true;
 		} else { 
 			showRegisterComponent = false;
-		}
-		if (accessToken && refreshToken) {
+			if (accessToken && refreshToken) {
 			if(userFromDesktop === "true"){
 				setTimeout(() => {
 					let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
 					redirectRules.title = `Welcome ${data.name}`;
 					redirectRules.description = `Redirecting you to desktop app...`;
-					redirectRules.message = `If the application does not open automatically,
-					please click below.`;
+					redirectRules.message = `the token if you are facing any issue in redirecting to the login page`;
 					
 					redirectRules.loadingMessage = '';
 					redirectRules.isSpinner = false;
@@ -51,6 +49,8 @@
 				navigate("/init?source=web");
 			}			
 		}
+		}
+		
 	});
 
 	let redirectRules = {
@@ -73,6 +73,27 @@
 
 	function handleContinueButtonClick() {
 		showRegisterComponent = false;
+		if (accessToken && refreshToken) {
+			if(userFromDesktop === "true"){
+				setTimeout(() => {
+					let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
+					redirectRules.title = `Welcome ${data.name}`;
+					redirectRules.description = `Redirecting you to desktop app...`;
+					redirectRules.message = `the token if you are facing any issue in redirecting to the login page`;
+					redirectRules.loadingMessage = '';
+					redirectRules.isSpinner = false;
+					window.location.href = sparrowRedirect;
+				}, constants.API_REDIRECT_TIMEOUT);
+			} else {
+				navigate(sparrowWebRedirect);
+			}
+		} else {
+			if(userFromDesktop === "true"){
+				navigate("/init");
+			} else {
+				navigate("/init?source=web");
+			}			
+		}
 	}
 </script>
 
