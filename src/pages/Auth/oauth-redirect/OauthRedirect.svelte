@@ -4,14 +4,13 @@
 	import Redirect from '../redirect/Redirect.svelte';
 	import constants from '$lib/utils/constants';
 	import RegisterRedirectComponent from '../redirect/RegisterRedirectComponent.svelte';
-<<<<<<< HEAD
+
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
-=======
+
 
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 	import { jwtDecode } from '$lib/utils/jwt';
 
->>>>>>> 52737299efc9ccac8c004127d946ca1ed3181917
 
 	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
 
