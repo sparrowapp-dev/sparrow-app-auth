@@ -162,7 +162,7 @@
 					autocomplete="off"
 					name="password"
 					id="newpassword"
-					placeholder="eg: dhanesh@64"
+					placeholder="eg: password@123"
 					bind:value={resetPasswordCredential.newPassword}
 					on:blur={() => {
 						isPasswordTouched = true;
