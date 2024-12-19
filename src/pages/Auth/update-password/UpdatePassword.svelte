@@ -261,9 +261,9 @@
 				class="container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
 				style="font-size:24px; font-weight: 400;  line-height:28px; text-align:center;"
 			>
-				Welcome!
+			Complete Verification
 			</p>
-			<p class="" style="color: lightGray; font-size:14px;">Let’s get you onboard</p>
+			<p class="" style="color: lightGray; font-size:14px;">We are almost there</p>
 		</div>
 
 		<div class="login-form text-lightGray ps-1 pe-1 gap-16">

@@ -27,7 +27,7 @@
 		</div>
 		<div class="d-flex flex-column  align-items-center" style="margin-top: 20px;">
 			<h1 class="" style="font-size:24px; font-weight: 600;">Cooldown Active</h1>
-			<p class="" style="font-size: 14px;">Too many request</p>
+			<p class="" style="font-size: 14px;">Too many requests</p>
 		</div>
 	
 		<div style="margin:44px 0px;">

@@ -3,7 +3,8 @@ import type {
 	registerUserPostBody,
 	EmailPostBody,
 	verifyPostbody,
-	resetPasswordPostBody
+	resetPasswordPostBody,
+	OccaisonalUpdatesBody
 } from '$lib/utils/dto';
 import { makeRequest } from '$lib/api/api.common';
 import constants from '$lib/utils/constants';
@@ -92,7 +93,14 @@ const verifyMagicCode = async (verifyInfo: MagicCodeVerifyBody) => {
 	return response;
 };
 
+const updateOccaisonalUpdatesStatus = async (occaisonalUpdates: OccaisonalUpdatesBody) => { 
+	const response = await makeRequest('POST', `${apiUrl}/aoi/user/update-occasional-updates-status`, { 
+		body: occaisonalUpdates
+	})
+	return response;
+}
 
+ 
 export { 
 	registerUser, 
 	loginUser, 
@@ -104,5 +112,6 @@ export {
 	sendUserEmailVerification, 
 	verifyUserEmail,
 	sendMagicCodeEmail,
-	verifyMagicCode 
+	verifyMagicCode,
+	updateOccaisonalUpdatesStatus
 };
