@@ -3,7 +3,6 @@
 	import { sendMagicCodeEmail } from '$lib/services/auth.service';
 	import sparrowicon from '$lib/assets/logoSparrowSquare.svg';
 	import { navigate } from 'svelte-navigator';
-	import Redirect from '../redirect/Redirect.svelte';
 	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 	import Oauth from '$lib/components/o-auth/Oauth.svelte';
@@ -95,17 +94,6 @@
 	let checkTimeout;
 </script>
 
-<!-- {#if isEntry}
-	<Redirect
-		title={redirectRules.title}
-		description={redirectRules.description}
-		message={redirectRules.message}
-		isSpinner={redirectRules.isSpinner}
-		buttonText={redirectRules.buttonText}
-		buttonClick={redirectRules.buttonClick}
-		loadingMessage={redirectRules.loadingMessage}
-	/>
-{:else} -->
 <BgContainer>
 	<div class="d-flex align-items-start gap-2">
 		<div
@@ -256,8 +244,6 @@
 		<SupportHelp />
 	</div>
 </BgContainer>
-
-<!-- {/if} -->
 
 <style>
 	.eye-icon {
