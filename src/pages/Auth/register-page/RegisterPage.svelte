@@ -425,23 +425,31 @@
 		transform: translateY(-50%);
 		background-color: transparent;
 	}
-	input {
+	input:not([type="checkbox"]) {
 		background-color: transparent !important;
 		border: 1px solid #62636c;
 	}
 
-	input::placeholder {
+	input:not([type="checkbox"])::placeholder {
 		color: #62636c;
 		font-weight: 400;
 	}
 	.form-check-input {
 		height: 16px;
 		width: 16px;
-		border: 1px solid white;
 		border-radius: 5px;
+		border: 1px solid white !important;
+		background-color: transparent !important;
+		position: relative;
+		top: 3px;
 	}
 
-	input:disabled {
+	.form-check-input:checked {
+		background-color: var(--bs-primary) !important;
+		border-color: var(--bs-primary) !important;
+	}
+
+	input:not([type="checkbox"]):disabled {
 		opacity: 0.5;
 	}
 </style>

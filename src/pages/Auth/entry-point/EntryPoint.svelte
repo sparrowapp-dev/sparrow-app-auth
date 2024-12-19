@@ -185,7 +185,7 @@
 						: 'border-default'}"
 					id="exampleInputEmail1"
 					aria-describedby="emailHelp"
-					placeholder="Enter your email addresss"
+					placeholder="Enter your email address"
 					autocorrect="off"
 					autocapitalize="none"
 					autocomplete="off"
