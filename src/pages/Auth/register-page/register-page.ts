@@ -7,7 +7,8 @@ export const handleRegister = async (userData : RegisterUser) => {
 	const response = await registerUser({
 		email: userData.email, 
 		name: userData.lastName ? userData.firstName + " " + userData.lastName : userData.firstName, 
-		password: userData.password
+		password: userData.password,
+		isUserAcceptedOccasionalUpdates: userData?.marketingUpdates ?? false,
 	});
 	return response;
 };

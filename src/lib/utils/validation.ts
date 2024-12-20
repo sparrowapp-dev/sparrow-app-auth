@@ -55,9 +55,9 @@ export const entrySchema = yup.object().shape({
 		.string()
 		.email()
 		.matches(
-			emailRegex,'Please enter a valid Email ID'
+			emailRegex,'Please enter a valid email address'
 			)
-			.required('Please enter a valid Email ID')
+			.required('Please enter a valid email address')
 		,
 });
 
@@ -68,9 +68,9 @@ export const forgotPasswordSchema = yup.object().shape({
 		.required('Please enter an Email ID')
 		.matches(
 			emailRegex,
-			'Please enter a valid Email ID'
+			'Please enter a valid email address'
 		)
-		.required('Please enter a valid Email ID')
+		.required('Please enter a valid email address')
 });
 
 export const resetPasswordSchema = yup.object().shape({
