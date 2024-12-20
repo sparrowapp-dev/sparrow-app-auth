@@ -5,6 +5,7 @@
 	import Button from '$lib/components/button/Button.svelte';
 	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
 	import Spinner from '$lib/components/transition/Spinner.svelte';
+	import { onMount } from 'svelte';
 
 	export let title="Title";
 	export let description= "Description";
@@ -13,6 +14,10 @@
 	export let buttonText="Button";
 	export let buttonClick = () =>{} ;
 	export let loadingMessage = "";
+	let userFromDesktop = true;
+	onMount(() => { 
+		userFromDesktop = localStorage.getItem('isUserFromDesktop');
+	})
 </script>
 
 <!-- <Header /> -->
@@ -49,6 +54,8 @@
 		
 
 			{/if}
+		{#if userFromDesktop}
+			
 		<div style="margin-top: 40px;">
 			<div
 				style="font-size: 14px;text-align:center"
@@ -62,6 +69,8 @@
 				/>
 			</div>
 		</div>
+		{/if}
+
 
 		<div class="sparrow-fw-400 sparrow-fs-16" style="margin-top: 6px;">
 			<div
