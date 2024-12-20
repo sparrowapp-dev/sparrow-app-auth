@@ -21,6 +21,7 @@
 	const verifyString = writable('');
 	let verifyLength: string = '';
 	let isRegistered = false;
+	let maxlength = 40;
 	let redirectRules = {
 		title: 'Welcome to Sparrow!',
 		description: 'Bridging Frontend and Backend Development.',
@@ -211,6 +212,14 @@
 		onCodeInput();
 		handleVerificationCode();
 	}
+	// This function will reduce the email size if it is too long.
+	function handleEmail(text:string,maxlength:number){
+		if(text.length > maxlength){
+			return text.slice(0, maxlength) + "..."
+		}
+		return text
+	}
+	$: EmailText = handleEmail(emailText, maxlength);
 </script>
 
 {#if isRegistered}
@@ -246,7 +255,7 @@
 				<div class="d-flex flex-column mx-auto sparrow-fs-14 sparrow-fs-300">
 					<p>
 						Check your inbox for the verification code sent to<span
-							class="sparrow-fw-700 text-whiteColor cursor-pointer email-text d-inline-block">{emailText}</span
+							class="sparrow-fw-700 text-whiteColor cursor-pointer email-text d-inline-block">{EmailText}</span
 						> and enter it below to proceed.
 					</p>
 					{#if seconds > 0}
