@@ -1,13 +1,12 @@
 <script lang="ts">
 	import lineIcon from '$lib/assets/line.svg';
-	import { errorMessageText, isLoading, username } from '$lib/store/auth.store';
-	import { handleVerifyUserEmail, isSuccessfulResponse } from './verify-email';
+	import { errorMessageTextMagicCode, isLoading, username } from '$lib/store/auth.store';
 	import sparrowicon from '$lib/assets/logoSparrowSquare.svg';
 	import { writable } from 'svelte/store';
 	import { onDestroy, onMount } from 'svelte';
 	import { navigate } from 'svelte-navigator';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
-	import { sendUserEmailVerification } from '$lib/services/auth.service';
+	import { sendMagicCodeEmail } from '$lib/services/auth.service';
 	import Button from '$lib/components/button/Button.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
 	import Redirect from '../redirect/Redirect.svelte';
@@ -15,15 +14,15 @@
 	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
 
 	import CircleCheck from '$lib/assets/CircleCheck.svelte';
+	import { handleVerifyUserEmail, isSuccessfulResponseMagicCode } from './verify-magic-code';
 	export let id: string;
 
 	let seconds = 300; // Changed from 600 to 300 (5 minutes)
 	const verifyString = writable('');
 	let verifyLength: string = '';
 	let isRegistered = false;
-	let maxlength = 40;
 	let redirectRules = {
-		title: 'Welcome to Sparrow!',
+		title: 'Welcome to Sparrow',
 		description: 'Bridging Frontend and Backend Development.',
 		message: `the token if you are facing any issue in redirecting to the login page`,
 		isSpinner: true,
@@ -36,7 +35,7 @@
 	let timer: number;
 	const calculateRemainingTime = () => {
 		const currentTime = new Date().getTime();
-		const storedTime = parseInt(localStorage.getItem(`timer-verify-${id}`));
+		const storedTime = parseInt(localStorage.getItem(`timer-verify-magic-code-${id}`));
 		if (storedTime) {
 			const elapsedTime = Math.floor((currentTime - storedTime) / 1000);
 			const remainingTime = Math.max(300 - elapsedTime, 0); // Changed from 60 to 300
@@ -68,7 +67,7 @@
 
 	let verifyCodeCredential = {
 		email: id || '',
-		verificationCode: ''
+		magicCode: ''
 	};
 
 	let verifyCode: string = '';
@@ -97,7 +96,7 @@
 			verificationCode4 +
 			verificationCode5 +
 			verificationCode6;
-		verifyCodeCredential.verificationCode = verifyCode;
+		verifyCodeCredential.magicCode = verifyCode;
 
 		if (verifyCode.length === 6) {
 			verifyString.set(verifyCode);
@@ -116,12 +115,12 @@
 	});
 
 	let verificationCodeError: boolean;
-	isSuccessfulResponse.subscribe((value) => {
+	isSuccessfulResponseMagicCode.subscribe((value) => {
 		verificationCodeError = value;
 	});
 
 	let errorMessage: string = '';
-	errorMessageText.subscribe((value) => {
+	errorMessageTextMagicCode.subscribe((value) => {
 		if (value) {
 			errorMessage = value;
 		}
@@ -130,11 +129,11 @@
 	const handleResend = async () => {
 		isResendDisabled = true;
 		resentCodeLoader = true;
-		const response = await sendUserEmailVerification({ email: id });
+		const response = await sendMagicCodeEmail({ email: id });
 		if (response.isSuccessful) {
 			showResendSuccess = true;
-			notifications.success('Verification code sent successfully');
-			localStorage.setItem(`timer-verify-${id}`, new Date().getTime());
+			notifications.success('Magic code is sent to your email ID.');
+			localStorage.setItem(`timer-verify-magic-code-${id}`, new Date().getTime());
 			startTimer();
 			verificationCode1 = '';
 			verificationCode2 = '';
@@ -144,14 +143,18 @@
 			verificationCode6 = '';
 			onCodeInput();
 		} else {
-			notifications.error(response.message);
+			if (response.message === 'Cooldown Active') { 
+				navigate('/cool-down-active');
+			} else {
+				notifications.error(response.message);
+			}
 		}
 		resentCodeLoader = false;
 		isResendDisabled = false;
 	};
 	const onCodeInput = () => {
-		errorMessageText.set('');
-		isSuccessfulResponse.set(false);
+		errorMessageTextMagicCode.set('');
+		isSuccessfulResponseMagicCode.set(false);
 	};
 	let verifyCodeLoader = false;
 	onDestroy(() => {
@@ -224,14 +227,6 @@
 		onCodeInput();
 		handleVerificationCode();
 	}
-	// This function will reduce the email size if it is too long.
-	function handleEmail(text:string,maxlength:number){
-		if(text.length > maxlength){
-			return text.slice(0, maxlength) + "..."
-		}
-		return text
-	}
-	$: EmailText = handleEmail(emailText, maxlength);
 
 	let selectedInput = '';
 	const handleFocus = (inputId) => {
@@ -270,9 +265,9 @@
 				class="container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
 				style="font-size:24px; font-weight: 400;  line-height:28px; text-align:center;"
 			>
-			Complete Verification
+				Welcome!
 			</p>
-			<p class="" style="color: lightGray; font-size:14px;">We are almost there</p>
+			<p class="" style="color: lightGray; font-size:14px;">Just one more step</p>
 		</div>
 
 		<div class="login-form text-lightGray ps-1 pe-1 gap-16">
@@ -280,7 +275,7 @@
 				<div class="text-center sparrow-fs-14 sparrow-fs-300 mt-5">
 					<p class="sparrow-fs-12">
 						We have sent a magic code at <br />
-						<span class="email-text">{EmailText}</span>
+						<span class="email-text">{emailText}</span>
 					</p>
 					<div>
 						<div class="d-flex flex-column">
@@ -553,8 +548,6 @@
 										</div>
 									{/if}
 								</div>
-
-								
 							</div>
 							{#if verificationCodeError === true}
 								<small class="form-text" style="color: #FE8C98;">
@@ -563,14 +556,18 @@
 							{/if}
 						</div>
 
+
 						{#if showResendSuccess && seconds > 0}
-							<div
-								style=" display:flex; align-items:center; justify-content:center; background-color: #272E34; border-radius:6px; width:fit-content; padding:8px 16px; margin:30px auto;"
-							>
-								<CircleCheck height={'16px'} width={'16px'} color={'#00DF80'} />
-								<p class="mb-0 ms-2">Code Resend successfully.</p>
-							</div>
-						{/if}
+						<div
+							style=" display:flex; align-items:center; justify-content:center; background-color: #272E34; border-radius:6px; width:fit-content; padding:8px 16px; margin:30px auto;"
+						>
+							<CircleCheck height={'16px'} width={'16px'} color={'#00DF80'} />
+							<p class="mb-0 ms-2">Code Resend successfully.</p>
+						</div>
+					{/if}
+
+
+						<div class="" style="margin-top:64px; margin-bottom:24px;">
 
 						{#if seconds > 0}
 							<p class="mt-5 sparrow-fs-12" style="color: #CCCCCC; font-weight:400; ">
@@ -579,6 +576,7 @@
 						{:else}
 							<p class="mt-5 text-dangerColor">Code Expired</p>
 						{/if}
+						</div>
 					</div>
 				</div>
 
@@ -596,10 +594,10 @@
 							isRegistered = true;
 							const accessToken = response?.data.accessToken?.token;
 							const refreshToken = response?.data.refreshToken?.token;
-							const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=register&method=email`;
+							const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=login&method=code`;
 							const sparrowWebRedirect =
 								constants.SPARROW_WEB_URL +
-								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=register&method=email`;
+								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=code`;
 
 							if (userFromDesktop === 'true') {
 								setTimeout(() => {
@@ -630,7 +628,7 @@
 				/>
 			</div>
 
-			<div class="d-flex gap-3 align-items-center justify-content-center mt-3">
+			<div class="d-flex gap-3 align-items-center justify-content-center " style="margin-top: 18px;">
 				<p style="font-size: 13px; text-align:center; line-height:15px;" class="mb-0">
 					If you haven't received the code, <br />
 					click on the link in the mail or

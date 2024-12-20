@@ -3,36 +3,26 @@
 	import vector2 from '$lib/assets/Vector2.svg';
 	import vector3 from '$lib/assets/Vector3.svg';
 	import { handleRegister, handleRegisterValidation } from './register-page';
-	import starIcon from '$lib/assets/starIcon.svg';
 	import eyeHide from '$lib/assets/eye-hide.svg';
 	import eyeShow from '$lib/assets/eye-show.svg';
 	import { navigate } from 'svelte-navigator';
 	import sparrowicon from '$lib/assets/logoSparrowSquare.svg';
 	import Redirect from '../redirect/Redirect.svelte';
 	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
-	import Oauth from '$lib/components/o-auth/Oauth.svelte';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 	import constants from '$lib/utils/constants';
 	import Button from '$lib/components/button/Button.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
-	import PrivacyPolicy from '$lib/components/privacy-policy/PrivacyPolicy.svelte';
+
 	export let id;
-	let isRegistered = false;
-	let redirectRules = {
-		title: 'Welcome to Sparrow!',
-		description: 'Bridging Frontend and Backend Development.',
-		message: `Easily document and manage APIs for seamless collaboration between frontend and backend teams. Get started now to simplify your development workflows.`,
-		isSpinner: true,
-		buttonText: 'Open Desktop App',
-		buttonClick: () => {},
-		loadingMessage: 'Please wait while we sign you in....'
-	};
+
 	let userData = {
 		email: id || '',
 		firstName: '',
 		lastName: '',
 		password: '',
-		tnsCheckbox: false
+		tnsCheckbox: false,
+		marketingUpdates: false
 	};
 	let isDuplicateEmail = false;
 	let validationErrors: any = {};
@@ -85,32 +75,38 @@
 		}
 	};
 	let registerLoader = false;
+	// Reactive statement to check if the form is valid
+    $: isFormValid = 
+    !validationErrors?.firstName &&
+    !validationErrors?.lastName &&
+    !validationErrors?.email &&
+    !validationErrors?.password &&
+    userData?.tnsCheckbox;
 </script>
 
-{#if isRegistered}
-	<Redirect
-		title={redirectRules.title}
-		description={redirectRules.description}
-		message={redirectRules.message}
-		isSpinner={redirectRules.isSpinner}
-		buttonText={redirectRules.buttonText}
-		buttonClick={redirectRules.buttonClick}
-		loadingMessage={redirectRules.loadingMessage}
-	/>
-{:else}
+
 	<BgContainer>
-		<div
-			class="text-white d-flex justify-content-center align-items-center bg-sparrowPrimaryColor"
-			style="height: 60px; width: 60px; border-radius: 6px;"
-		>
-			<img src={sparrowicon} alt="" class="" />
+		<div class="d-flex align-items-start gap-2">
+			<div
+				class="text-white d-flex justify-content-center align-items-center bg-sparrowPrimaryColor"
+				style="height: 23px; width: 23px; border-radius: 6px;"
+			>
+				<img height="20px" width="20px" src={sparrowicon} alt="" class="" />
+			</div>
+			<p style="font-weight:500;">Sparrow</p>
 		</div>
-		<p
-			class="container-header pt-4 pb-4 sparrow-fs-28 sparrow-fw-600 text-whiteColor text-center ms-2 me-2"
-			style="letter-spacing: 0.05rem;"
-		>
-			Welcome to Sparrow!
-		</p>
+
+		<div class="" style=" display: flex ; flex-direction:column; align-items:center;">
+			<p
+				class="container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
+				style=" font-size:24px; font-weight: 600; padding-top:20px; line-height:28px; text-align:center;"
+			>
+				Create Profile
+			</p>
+			<p class="" style=" line-height:28px; color: lightGray; font-size:14px;">
+				Let's get to know you better
+			</p>
+		</div>
 
 		<form
 			class="register-form w-100 text-whiteColor ps-1 pe-1 gap-16"
@@ -122,6 +118,12 @@
 				isLastNameTouched = true;
 				isPasswordTouched = true;
 				validationErrors = await handleRegisterValidation(userData);
+				
+				if (isDuplicateEmail) {
+					notifications.error('Email ID already exists.');
+					return;
+				}
+
 				if (
 					!validationErrors?.firstName &&
 					!validationErrors?.lastName &&
@@ -132,9 +134,8 @@
 					registerLoader = true;
 					const response = await handleRegister(userData);
 					if (response.isSuccessful) {
-						isRegistered = true;
 						localStorage.setItem(`timer-verify-${userData.email}`, new Date().getTime());
-						notifications.success("Verification code has been sent to your registered Email ID.");
+						notifications.success('Verification code has been sent to your registered Email ID.');
 						navigate(`/verify/email/${userData.email}`);
 					} else {
 						if (
@@ -142,230 +143,196 @@
 							'The account with the provided email currently exists. Please choose another one.'
 						) {
 							isDuplicateEmail = true;
+							notifications.error('This email is already registered. Please use a different email address.');
 						} else {
 							notifications.error(response.message);
 						}
 					}
 					registerLoader = false;
-				}
+				} 
 			}}
 		>
-			<p class="card-subtitle sparrow-fs-20 sparrow-fw-500 mb-3">Create Account</p>
-			<div class="form-group gap-0 mb-3">
-				<div>
-					<label for="email" class="form-label sparrow-fs-14 text-lightGray d-flex"
-						>Email ID
- 						<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label
-					>
-				</div>
-				<input
-					class="form-control sparrow-fs-16 border:{(validationErrors?.email && isEmailTouched) ||
-					isDuplicateEmail
-						? '3px'
-						: '1px'} solid {(validationErrors?.email && isEmailTouched) || isDuplicateEmail
-						? 'border-error'
-						: 'border-default'}"
-					type="email"
-					name="email"
-					id="email"
-					placeholder="Please enter your Email ID"
-					autocorrect="off"
-					autocapitalize="none"
-					autocomplete="off"
-					disabled={id ? true : false}
-					bind:value={userData.email}
-					on:blur={async () => {
-						isEmailTouched = true;
-						validationErrors = await handleRegisterValidation(userData);
-					}}
-					on:input={async () => {
-						validationErrors = await handleRegisterValidation(userData);
-						isDuplicateEmail = false;
-					}}
-				/>
+			<div style="margin-top:44px;">
+				<div class="form-group mb-3">
+					<div>
+						<label for="name" class="sparrow-fs-14 text-colorWhite d-flex"
+							>First Name
+							<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label
+						>
+					</div>
 
-				{#if validationErrors?.email && isEmailTouched}
-					<small class="text-dangerColor form-text">{validationErrors?.email}</small>
-				{:else if isDuplicateEmail}
-					<small class="text-dangerColor form-text">Email ID already exists.</small>
-				{/if}
-			</div>
-			<div class="form-group mb-3">
-				<div>
-					<label for="name" class="sparrow-fs-14 text-lightGray d-flex"
-						>First Name
-						<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label
-					>
-				</div>
-
-				<input
-					class="form-control sparrow-fs-16 mt-1 border:{validationErrors?.firstName &&
-					isFirstNameTouched
-						? '3px'
-						: '1px'} solid {validationErrors?.firstName && isFirstNameTouched
-						? 'border-error'
-						: 'border-default'}"
-					type="text"
-					name="name"
-					placeholder="Please enter your first name"
-					autocorrect="off"
-					autocapitalize="none"
-					autocomplete="off"
-					id="name"
-					maxlength="50"
-					bind:value={userData.firstName}
-					on:blur={async () => {
-						isFirstNameTouched = true;
-						validationErrors = await handleRegisterValidation(userData);
-					}}
-					on:input={async () => {
-						validationErrors = await handleRegisterValidation(userData);
-					}}
-				/>
-
-				{#if validationErrors?.firstName && isFirstNameTouched}
-					<small class="text-dangerColor form-text">{validationErrors?.firstName}</small>
-				{/if}
-			</div>
-
-			<div class="form-group mb-3">
-				<div>
-					<label for="name" class="sparrow-fs-14 text-lightGray d-flex">Last Name</label>
-				</div>
-
-				<input
-					class="form-control sparrow-fs-16 mt-1 border:{false ? '3px' : '1px'} solid {false
-						? 'border-success'
-						: false
-							? 'border-error'
-							: false
-								? 'border-error'
-								: 'border-default'}"
-					type="text"
-					name="lastname"
-					placeholder="Please enter your last name"
-					autocorrect="off"
-					autocapitalize="none"
-					autocomplete="off"
-					id="lastname"
-					maxlength="50"
-					bind:value={userData.lastName}
-					on:blur={async () => {
-						isLastNameTouched = true;
-						validationErrors = await handleRegisterValidation(userData);
-					}}
-					on:input={async () => {
-						validationErrors = await handleRegisterValidation(userData);
-					}}
-				/>
-				{#if validationErrors?.lastName && isLastNameTouched}
-					<small class="text-dangerColor form-text">{validationErrors?.lastName}</small>
-				{/if}
-			</div>
-
-			<div class="form-group">
-				<div>
-					<label for="password" id="password" class="sparrow-fs-14 text-lightGray d-flex"
-						>Password
-						<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label
-					>
-				</div>
-				<div class="d-flex position-relative mt-1">
 					<input
-						class="form-control sparrow-fs-16 pe-5 border:{validationErrors?.password &&
-						isPasswordTouched
+						class="form-control sparrow-fs-16 mt-1 border:{validationErrors?.firstName &&
+						isFirstNameTouched
 							? '3px'
-							: '1px'} solid {validationErrors?.password && isPasswordTouched
+							: '1px'} solid {validationErrors?.firstName && isFirstNameTouched
 							? 'border-error'
 							: 'border-default'}"
-						type="password"
-						name="password"
-						id="expamplePassword"
-						placeholder="Please enter your password"
+						type="text"
+						name="name"
+						placeholder="What should we call you?"
 						autocorrect="off"
 						autocapitalize="none"
 						autocomplete="off"
-						bind:value={userData.password}
+						id="name"
+						maxlength="50"
+						bind:value={userData.firstName}
 						on:blur={async () => {
-							isPasswordTouched = true;
+							isFirstNameTouched = true;
 							validationErrors = await handleRegisterValidation(userData);
 						}}
 						on:input={async () => {
 							validationErrors = await handleRegisterValidation(userData);
-							validatePassword();
 						}}
-						maxlength="32"
 					/>
-					<button
-						type="button"
-						on:click={togglePasswordVisibility}
-						class=" border-0 position-absolute eye-icon d-flex align-items-center"
-					>
-						{#if isPasswordVisible}
-							<img src={eyeShow} alt="eye-show" />
-						{:else}
-							<img src={eyeHide} alt="eye-hie" />
-						{/if}
-					</button>
-				</div>
-			</div>
 
-			<div class="row py-1">
-				<div class="col-12 col-md-12 col-lg-12">
-					<div class="d-flex flex-column align-items-start mt-1 text-sm sparrow-fs-12">
-						<div class="d-flex align-items-center mb-0 gap-2">
-							<img
-								src={isPasswordValid1 ? vector2 : isPasswordTouched ? vector3 : vector1}
-								alt=""
-								class="mr-2"
-							/>
-							<p
-								class="mb-0 {isPasswordValid1
-									? 'text-successColor'
-									: isPasswordTouched
-										? 'text-dangerColor'
-										: 'text-textColor'}"
-							>
-								Min 8 characters
-							</p>
-						</div>
-						<div class="d-flex align-items-center mb-0 gap-2">
-							<img
-								src={isPasswordValid2 ? vector2 : isPasswordTouched ? vector3 : vector1}
-								alt=""
-								class="mr-2"
-							/>
-							<p
-								class="mb-0 {isPasswordValid2
-									? 'text-successColor'
-									: isPasswordTouched
-										? 'text-dangerColor'
-										: 'text-textColor'}"
-							>
-								Has at least one number
-							</p>
-						</div>
-						<div class="d-flex align-items-center gap-2">
-							<img
-								src={isPasswordValid3 ? vector2 : isPasswordTouched ? vector3 : vector1}
-								alt=""
-								class="mr-2"
-							/>
-							<p
-								class="mb-0 {isPasswordValid3
-									? 'text-successColor'
-									: isPasswordTouched
-										? 'text-dangerColor'
-										: 'text-textColor'}"
-							>
-								Has at least one special character
-							</p>
+					{#if validationErrors?.firstName && isFirstNameTouched}
+						<small class="text-dangerColor form-text">{validationErrors?.firstName}</small>
+					{/if}
+				</div>
+
+				<div class="form-group mb-3">
+					<div>
+						<label for="name" class="sparrow-fs-14 text-colorWhite d-flex">Last Name</label>
+					</div>
+
+					<input
+						class="form-control sparrow-fs-16 mt-1 border:{false ? '3px' : '1px'} solid {false
+							? 'border-success'
+							: false
+								? 'border-error'
+								: false
+									? 'border-error'
+									: 'border-default'}"
+						type="text"
+						name="lastname"
+						placeholder="What's your last name?"
+						autocorrect="off"
+						autocapitalize="none"
+						autocomplete="off"
+						id="lastname"
+						maxlength="50"
+						bind:value={userData.lastName}
+						on:blur={async () => {
+							isLastNameTouched = true;
+							validationErrors = await handleRegisterValidation(userData);
+						}}
+						on:input={async () => {
+							validationErrors = await handleRegisterValidation(userData);
+						}}
+					/>
+					{#if validationErrors?.lastName && isLastNameTouched}
+						<small class="text-dangerColor form-text">{validationErrors?.lastName}</small>
+					{/if}
+				</div>
+
+				<div class="form-group">
+					<div>
+						<label for="password" id="password" class="sparrow-fs-14 text-colorWhite d-flex"
+							>Create Password
+							<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label
+						>
+					</div>
+					<div class="d-flex position-relative mt-1">
+						<input
+							class="form-control sparrow-fs-16 pe-5 border:{validationErrors?.password &&
+							isPasswordTouched
+								? '3px'
+								: '1px'} solid {validationErrors?.password && isPasswordTouched
+								? 'border-error'
+								: 'border-default'}"
+							type="password"
+							name="password"
+							id="expamplePassword"
+							placeholder="Create your password here"
+							autocorrect="off"
+							autocapitalize="none"
+							autocomplete="off"
+							bind:value={userData.password}
+							on:blur={async () => {
+								isPasswordTouched = true;
+								validationErrors = await handleRegisterValidation(userData);
+							}}
+							on:input={async () => {
+								validationErrors = await handleRegisterValidation(userData);
+								validatePassword();
+							}}
+							maxlength="32"
+						/>
+						<button
+							type="button"
+							on:click={togglePasswordVisibility}
+							class=" border-0 position-absolute eye-icon d-flex align-items-center"
+						>
+							{#if isPasswordVisible}
+								<img src={eyeShow} alt="eye-show" />
+							{:else}
+								<img src={eyeHide} alt="eye-hie" />
+							{/if}
+						</button>
+					</div>
+				</div>
+
+				<div class="row py-1">
+					<div class="col-12 col-md-12 col-lg-12">
+						<div
+							style="gap:4px;"
+							class="d-flex flex-column align-items-start mt-1 text-sm sparrow-fs-12"
+						>
+							<div class="d-flex align-items-center mb-0 gap-2">
+								<img
+									src={isPasswordValid1 ? vector2 : isPasswordTouched ? vector3 : vector1}
+									alt=""
+									class="mr-2"
+								/>
+								<p
+									class="mb-0 {isPasswordValid1
+										? 'text-successColor'
+										: isPasswordTouched
+											? 'text-dangerColor'
+											: 'text-textColor'}"
+								>
+									Min 8 characters
+								</p>
+							</div>
+							<div class="d-flex align-items-center mb-0 gap-2">
+								<img
+									src={isPasswordValid2 ? vector2 : isPasswordTouched ? vector3 : vector1}
+									alt=""
+									class="mr-2"
+								/>
+								<p
+									class="mb-0 {isPasswordValid2
+										? 'text-successColor'
+										: isPasswordTouched
+											? 'text-dangerColor'
+											: 'text-textColor'}"
+								>
+									Has at least one number
+								</p>
+							</div>
+							<div class="d-flex align-items-center gap-2">
+								<img
+									src={isPasswordValid3 ? vector2 : isPasswordTouched ? vector3 : vector1}
+									alt=""
+									class="mr-2"
+								/>
+								<p
+									class="mb-0 {isPasswordValid3
+										? 'text-successColor'
+										: isPasswordTouched
+											? 'text-dangerColor'
+											: 'text-textColor'}"
+								>
+									Has at least one special character
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="form-group mt-3 d-flex align-items-center" data-tauri-drag-region>
+			<div class="form-group mt-3 d-flex align-items-start" data-tauri-drag-region>
 				<input
 					type="checkbox"
 					class="form-check-input mt-0"
@@ -376,55 +343,91 @@
 					}}
 				/>
 				<label data-tauri-drag-region class="form-check-label ms-2 sparrow-fs-12" for="tnsCheckbox"
-					>I agree to the <a
+					>I agree to Sparrow's
+
+					<a
 						href={constants.SPARROW_TERMS_OF_SERVICE}
 						target="_blank"
-						class="text-decoration-none text-primaryColor sparrow-fw-500">Terms of Service</a
-					></label
-				>
+						class=" text-primaryColor sparrow-fw-500"
+						>Terms of Service
+					</a>
+
+					and <br />
+
+					<a
+						href={constants.SPARROW_PRIVACY_POLICY}
+						target="_blank"
+						class=" text-primaryColor sparrow-fw-500"
+					>
+						Privacy Policy
+					</a>
+				</label>
 			</div>
-			{#if !userData.tnsCheckbox && isCheckboxTouched}
+			<!-- {#if !userData.tnsCheckbox && isCheckboxTouched}
 				<small class="text-dangerColor form-text"
 					>You will need to agree to the terms of service to create a Sparrow account.</small
 				>
-			{/if}
+			{/if} -->
+
+			<div class="form-group mt-3 d-flex align-items-start" data-tauri-drag-region>
+				<input
+					type="checkbox"
+					class="form-check-input mt-0"
+					id="marketingUpdates"
+					bind:checked={userData.marketingUpdates}
+				/>
+				<label
+					data-tauri-drag-region
+					class="form-check-label ms-2 sparrow-fs-12"
+					for="marketingUpdates"
+					>I agree to receive occasional updates and <br /> helpful resources from Sparrow
+				</label>
+			</div>
 
 			<div class="mb-3 mt-4">
 				<Button
-					disable={registerLoader}
-					title={'Sign Up'}
-					buttonClassProp={'w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16'}
-					type={'primary-gradient'}
-					loader={registerLoader}
+				disable={!isFormValid || registerLoader}
+					title={'Create account'}
+					buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-14'}
+					type={'primary'}
 				/>
 			</div>
 		</form>
-		<Oauth />
-		<PrivacyPolicy/>
 		<SupportHelp />
 	</BgContainer>
-{/if}
 
 <style>
 	.eye-icon {
 		right: 5px;
 		top: 50%;
-    	transform: translateY(-50%);
+		transform: translateY(-50%);
 		background-color: transparent;
 	}
-	input {
+	input:not([type="checkbox"]) {
 		background-color: transparent !important;
+		border: 1px solid #62636c;
 	}
 
+	input:not([type="checkbox"])::placeholder {
+		color: #62636c;
+		font-weight: 400;
+	}
 	.form-check-input {
-		height: 12px;
-		width: 12px;
-		border-radius: 2px;
+		height: 16px;
+		width: 16px;
+		border-radius: 5px;
+		border: 1px solid white !important;
+		background-color: transparent !important;
+		position: relative;
+		top: 3px;
 	}
-	.btn-primary:active {
-		background: var(--button-pressed);
+
+	.form-check-input:checked {
+		background-color: var(--bs-primary) !important;
+		border-color: var(--bs-primary) !important;
 	}
-	input:disabled{
+
+	input:not([type="checkbox"]):disabled {
 		opacity: 0.5;
 	}
 </style>

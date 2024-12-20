@@ -12,6 +12,7 @@
 	import Button from '$lib/components/button/Button.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
 	import AngleUp from '$lib/assets/angle-up.svelte';
+	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
 	export let id = "";
 	export let code = "";
 
@@ -64,37 +65,66 @@
 		}
 	};
 	let resetPasswordLoader = false;
+
+	let confirmPassword = '';
+	let isConfirmPasswordVisible = false;
+	let doPasswordsMatch = false;
+	let isConfirmPasswordTouched = false;
+
+	const validateConfirmPassword = () => {
+		doPasswordsMatch = confirmPassword === resetPasswordCredential.newPassword;
+	};
+
+	const toggleConfirmPasswordVisibility = () => {
+		isConfirmPasswordVisible = !isConfirmPasswordVisible;
+		const confirmPasswordInput = document.getElementById('confirmpassword') as HTMLInputElement | null;
+		if (confirmPasswordInput) {
+			confirmPasswordInput.type = isConfirmPasswordVisible ? 'text' : 'password';
+		}
+	};
 </script>
 
 <BgContainer>
-	<p
-		class="container-header pb-3 sparrow-fs-36 text-whiteColor ms-2 me-2 sparrow-fw-500 w-100 text-left"
-		style="letter-spacing: 0.05em;"
-	>
-		Welcome to Sparrow!
-	</p>
-	<div class="d-flex align-items-center justify-content-start self-left mb-3 me-auto gap-2">
-		<a 
-			class="border-0 bg-transparent font-monospace" 
-			style="transform: rotate(-90deg);"
-			href="/forgot/password"
+
+	<div class="d-flex align-items-start gap-2">
+		<div
+			class="text-white d-flex justify-content-center align-items-center bg-sparrowPrimaryColor"
+			style="height: 23px; width: 23px; border-radius: 6px;"
 		>
-			<AngleUp color="var(--sparrow-text-color)" height={20} width={20} />
-		</a>
-		<p class="text-whiteColor sparrow-fs-14 sparrow-fw-500 mb-0">Reset Password & Sign In</p>
+			<img height="20px" width="20px" src={sparrowicon} alt="" class="" />
+		</div>
+		<p style="font-weight:500;">Sparrow</p>
 	</div>
+
+	<div style="margin-top:20px; display: flex ; flex-direction:column; align-items:center;">
+		<p
+			class="container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
+			style="font-size:24px; font-weight: 400;  line-height:28px; text-align:center;"
+		>
+		New Password
+		</p>
+		<p class="" style="color: lightGray; font-size:14px;">Let’s create new password</p>
+	</div>
+
+
 	<form
 		class="register-form text-whiteColor w-100 ps-1 pe-1 gap-16"
 		novalidate
 		on:submit|preventDefault={async () => {
 			isPasswordTouched = true;
+			isConfirmPasswordTouched = true;
 			validatePassword();
-			if (isPasswordValid1 && isPasswordValid1 && isPasswordValid1) {
+			validateConfirmPassword();
+			if (isPasswordValid1 && isPasswordValid2 && isPasswordValid3 && doPasswordsMatch) {
 				resetPasswordLoader = true;
 				const response = await handleResetPassword(resetPasswordCredential);
 				if (response.isSuccessful) {
 					notifications.success("Password changed successfully");
-					navigate(`/login/${id}`);
+					localStorage.setItem(
+							`timer-reset-password-redirect-${id}`,
+							new Date().getTime()
+						);
+					navigate(`/password-update-redirect/${id}`);
 				} else {
 				if (response.message === "Unauthorized Access") {
 					notifications.error("Old Password and New Password cannot be same");
@@ -107,19 +137,18 @@
 			}
 		}}
 	>
-		<div class="text-lightGray gap-0 line-height-1">
-			<p>{resetPasswordCredential.email}</p>
-		</div>
+		
 
-		<div class="form-group mb-1 text-lightGray">
+		<div class="form-group mb-1 text-colorWhite">
 			<div>
-				<label for="password" class="sparrow-fs-16 d-flex">New Password
+				<label for="password" class=" d-flex" style="font-size: 12px;">Create Password
 					<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p>
 				</label>
 				
 			</div>
-			<div class="d-flex position-relative mt-1">
+			<div class="d-flex position-relative mt-2">
 				<input
+				style="border-radius: 6px; border:1px solid #62636C; padding:8px"
 					class="form-control sparrow-fs-16 pe-5 border:{(!isPasswordValid1 || !isPasswordValid2 || !isPasswordValid3) &&
 						isPasswordTouched
 						? '3px'
@@ -133,7 +162,7 @@
 					autocomplete="off"
 					name="password"
 					id="newpassword"
-					placeholder="Please enter your new password"
+					placeholder="eg: password@123"
 					bind:value={resetPasswordCredential.newPassword}
 					on:blur={() => {
 						isPasswordTouched = true;
@@ -148,9 +177,9 @@
 					class=" border-0 position-absolute eye-icon d-flex align-items-center"
 				>
 					{#if isPasswordVisible}
-						<img src={eyeShow} alt="eye-show" />
+						<img height="18px" width="18px" src={eyeShow} alt="eye-show" />
 					{:else}
-						<img src={eyeHide} alt="eye-hie" />
+							<img height="18px" width="18px" src={eyeHide} alt="eye-hie" />
 					{/if}
 				</button>
 			</div>
@@ -158,7 +187,7 @@
 
 		<div class="row">
 			<div class="col-12 col-md-12 col-lg-12">
-				<div class="d-flex flex-column align-items-start mt-1 text-sm" style="font-size: 13px;">
+				<div class="d-flex gap-1 flex-column align-items-start mt-1 text-sm" style="font-size: 13px;">
 					<div class="d-flex align-items-center mb-0 gap-2">
 						<img
 						src={isPasswordValid1 ? vector2 : isPasswordTouched ? vector3 : vector1}
@@ -211,14 +240,64 @@
 			</div>
 		</div>
 
+
+
+		<div class="form-group mb-1 mt-3 text-colorWhite">
+			<div>
+				<label for="confirmpassword" class="sparrow-fs-12 d-flex">Confirm Password
+					<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p>
+				</label>
+			</div>
+			<div class="d-flex position-relative mt-2">
+				<input
+				    style="border-radius: 6px; border:1px solid #62636C; padding:8px"
+					class="form-control sparrow-fs-16 pe-5 border:{(!doPasswordsMatch && isConfirmPasswordTouched) ? '3px' : '1px'} solid {!doPasswordsMatch && isConfirmPasswordTouched ? 'border-error' : 'border-default'}"
+					type="password"
+					autocorrect="off"
+					autocapitalize="none"
+					autocomplete="off"
+					name="confirmpassword"
+					id="confirmpassword"
+					bind:value={confirmPassword}
+					placeholder="Please confirm your password"
+					on:blur={() => {
+						isConfirmPasswordTouched = true;
+						validateConfirmPassword();
+					}}
+					on:input={validateConfirmPassword}
+					maxlength="32"
+				/>
+				<button
+					type="button"
+					on:click={toggleConfirmPasswordVisibility}
+					class="border-0 position-absolute eye-icon d-flex align-items-center"
+				>
+					{#if isConfirmPasswordVisible}
+							<img height="18px" width="18px" src={eyeShow} alt="eye-show" />
+					{:else}
+							<img height="18px" width="18px" src={eyeHide} alt="eye-hie" />
+					{/if}
+				</button>
+			</div>
+			{#if !doPasswordsMatch && isConfirmPasswordTouched}
+				<small style="color: #FE8C98; font-size: 12px;">Password doesn't match</small>
+			{/if}
+		</div>
+
+
+
 		<div class="mt-4">
 			<Button
 						disable={resetPasswordLoader}
-						title={"Submit"}
+						title={"Update Password"}
 						buttonClassProp={"w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16"}
-						type={"primary-gradient"}
+						type={"primary"}
 						loader={resetPasswordLoader}
 				  	/>
+		</div>
+
+		<div style="margin-top: 24px;">
+			<SupportHelp/>
 		</div>
 	</form>
 </BgContainer>
@@ -269,9 +348,7 @@
     {/if} -->
 
 <style>
-	.btn-primary {
-		background: var(--primary-color);
-	}
+
 	.eye-icon {
 		right: 5px;
 		top: 50%;
@@ -281,4 +358,20 @@
 	input {
 		background-color: transparent;
 	}
+	/* Add these styles for placeholder */
+	input::placeholder {
+		color: #62636C !important;
+		font-size: 14px !important;
+		font-weight: 400 !important;
+		opacity: 1; /* Firefox requires this */
+	}
+	input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+		color: #62636C !important;
+		font-size: 12px !important;
+	}
+	input::-ms-input-placeholder { /* Microsoft Edge */
+		color: #62636C !important;
+		font-size: 12px !important;
+	}
+	
 </style>

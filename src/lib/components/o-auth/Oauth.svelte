@@ -6,23 +6,50 @@
 		navigate(constants.SPARROW_OAUTH);
 	};
 </script>
-<div class="d-flex flex-column align-items-center py-3 justify-content-center">
-    <p class="sparrow-fs-12 mb-2">or continue with</p>
-    <div class="d-flex gap-4">
+<div class="d-flex flex-column w-100 align-items-center mt-4 justify-content-center">
+   
+    <div class="d-flex  d-flex flex-column w-100 gap-4 mb-2 ">
+      
         <button
-            on:click={handleSignInWithGoogle}
-            style="width: 32px; height:32px"
-            class="custom-button  border-0 rounded"
-        >
-            <img src={googleLogo} alt="Google Logo" class="w-100 h-100 p-1" />
-        </button>
+        class="custom-btn d-flex align-items-center justify-content-center gap-2 btn  w-100 text-whiteColor"
+        style="height:44px;"
+        on:click={handleSignInWithGoogle}
+      >
+      <img src={googleLogo} alt="Google Logo" class="" height="14" width="14" />
+
+       <p class="mb-0 sparrow-fs-14"> Continue with Google</p>
+      </button>
     </div>
 </div>
 
 <style>
-    .custom-button {
-    background-color:#1C1D2B; 
-}
+
+
+
+.custom-btn {
+    font-weight: 400;
+    font-size: 14px;
+    background-color: transparent;
+    border: 1px solid #62636C;
+    border-radius: 8px;
+  }
+
+  .custom-btn:hover {
+    border: 1px solid #ffffff;
+
+  }
+
+  .custom-btn:active {
+     border: 1px solid #3670F7;
+    transition: all 100ms ease-in-out;
+  }
+
+  .custom-btn:disabled {
+    background-color: transparent;
+    border: 1px solid rgba(214, 211, 209, 0.9);
+  }
+
+  
 
 .custom-button:hover{
     background-color:#2A2C3C

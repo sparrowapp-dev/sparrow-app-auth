@@ -4,8 +4,8 @@
 
 <div class="parent d-flex align-items-center justify-content-center text-white rounded">
 	<div
-		class="position-relative overflow-hidden p-5 m-4 rounded-4 container d-flex flex-column align-items-center justify-content-center w-100"
-		style="border: 1px solid var(--bg-container-border); max-width: 504px;"
+		class="position-relative overflow-hidden   m-4 rounded-4 container d-flex flex-column align-items-center justify-content-center "
+		style="padding:36px 60px 24px 60px; border: 1px solid var(--bg-container-border); max-width: 420px;"
 	>
 		<div
 			style="position:absolute; top:0;

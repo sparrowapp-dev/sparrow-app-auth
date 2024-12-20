@@ -3,6 +3,7 @@ export interface registerUserPostBody {
   email: string;
   name: string;
   password: string;
+  isUserAcceptedOccasionalUpdates?: boolean;
 }
 
 //------- login Interface ------------//
@@ -20,6 +21,11 @@ export interface verifyPostbody {
   verificationCode: string;
 }
 
+export interface verifyMagicCodePostBody {
+  email: string;
+  magicCode: string;
+}
+
 export interface resetPasswordPostBody {
   email: string;
   newPassword: string;
@@ -31,5 +37,12 @@ export interface RegisterUser {
   firstName: string;
   lastName: string;
   password: string;
+  marketingUpdates?: boolean;
+}
+
+
+export interface OccaisonalUpdatesBody { 
+  email: string;
+  isUserAcceptedOccasionalUpdates: boolean;
 }
 //i will create different interface here
