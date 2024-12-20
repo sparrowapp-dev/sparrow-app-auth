@@ -355,7 +355,7 @@
 					and <br />
 
 					<a
-						href={constants.SPARROW_TERMS_OF_SERVICE}
+						href={constants.SPARROW_PRIVACY_POLICY}
 						target="_blank"
 						class=" text-primaryColor sparrow-fw-500"
 					>
