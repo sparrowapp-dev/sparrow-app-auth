@@ -9,15 +9,11 @@
 	import ResetPassword from './pages/Auth/reset-password/ResetPassword.svelte';
 	import ForgotPassword from './pages/Auth/forgot-password/ForgotPassword.svelte';
 	import OauthRedirect from './pages/Auth/oauth-redirect/OauthRedirect.svelte';
-	import AuthSuccess from './pages/Auth/auth-success/AuthSuccess.svelte';
 	import EntryPoint from './pages/Auth/entry-point/EntryPoint.svelte';
-	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
-	import bg from '$lib/assets/sparrowLogoBackground.svg';
 	import SparrowBackgroundV2 from '$lib/assets/SparrowBackgroundV2.svg';
 	import ExternalNavigation from './routing/ExternalNavigation.svelte';
 	import constants from '$lib/utils/constants';
 	import VerifyEmail from './pages/Auth/verify-email/VerifyEmail.svelte';
-	import { onMount } from 'svelte';
 	import VerifyMagicCode from './pages/Auth/verify-magic-code/VerifyMagicCode.svelte';
 	import CoolDownPage from './pages/Auth/cool-down-page/CoolDownPage.svelte';
 	import PasswordLogin from './pages/Auth/password-login/PasswordLogin.svelte';
@@ -27,24 +23,63 @@
 </script>
 
 <Router {url}>
-	<Route path="/forgot/password" component={ForgotPassword} />
+
+	<!-- MagicCodeOriginPage
+	Initial page shown when the app starts -->
+	<Route path="/init" component={EntryPoint} />
+
+	<!-- MagicCodeVerificationPage (OTP)
+	OTP verification page for authenticating with a magic code -->
+	<Route path="/verify-magic-code/:id" component={VerifyMagicCode} />
+
+	<!-- EmailEntryPage
+	Page where the user enters their email, redirecting to login or registration based on context -->
+	<Route path="/password-login" component={PasswordLogin} />
+
+	<!-- LoginPage
+	User login page with an optional ID parameter for specific login contexts -->
 	<Route path="/login/:id" component={LoginPage} />
 	<Route path="/login" component={LoginPage} />
-	<Route path="/init" component={EntryPoint} />
+	
+	<!-- RegisterPage
+	User registration page with an optional ID parameter for specific registration contexts -->
 	<Route path="/register/:id" component={RegisterPage} />
 	<Route path="/register" component={RegisterPage} />
-	<Route path="/update/password/:id" component={UpdatePassword} />
-	<Route path="/reset/password/:id/:code" component={ResetPassword} />
+
+	<!-- EmailVerificationPage (OTP)
+	OTP verification page for email verification during registration -->
 	<Route path="/verify/email/:id" component={VerifyEmail} />
+
+	<!-- ForgotPasswordPage
+	Page where the user enters their email to initiate the password reset process -->
+	<Route path="/forgot/password" component={ForgotPassword} />
+
+	<!-- UpdatePasswordVerificationPage (OTP)
+	OTP verification page for updating the user's password -->
+	<Route path="/update/password/:id" component={UpdatePassword} />
+
+	<!-- UpdatePasswordOriginPage 
+	Page where the user sets a new password -->
+	<Route path="/reset/password/:id/:code" component={ResetPassword} />
+
+	<!-- UpdatePasswordRedirectPage
+	Redirect page to the login page after a successful password change -->
+	<Route path="/password-update-redirect/:id" component={PasswordUpdateRedirect} />
+
+	<!-- OauthRedirectPage 
+	Redirect page that listens for oAuth tokens -->
 	<Route path="/redirect" component={OauthRedirect} />
+
+	<!-- CooldownPage
+	Page displayed when the user has triggered too many requests, enforcing a cooldown period -->
+	<Route path="/cool-down-active" component={CoolDownPage} />
+	
+	<!-- Support page that opens the user's default email client with a pre-filled support email -->
 	<Route path="/support">
 		<ExternalNavigation to={`mailto:${constants.SPARROW_SUPPORT_EMAIL}`}/>
 	</Route>
-	<!-- <Route path="/success" component={AuthSuccess} /> -->
-	<Route path="/verify-magic-code/:id" component={VerifyMagicCode} />
-	<Route path="/cool-down-active" component={CoolDownPage} />
-	<Route path="/password-login" component={PasswordLogin} />
-	<Route path="/password-update-redirect/:id" component={PasswordUpdateRedirect} />
+
+	<!-- Wildcard route that redirects any unmatched paths to the entry point page -->
 	<Route path="/*"><Navigate to="/init" /></Route>
 </Router>
 <Toast/>
