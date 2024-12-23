@@ -21,7 +21,7 @@
 	const verifyString = writable('');
 	let verifyLength: string = '';
 	let isRegistered = false;
-	let maxlength = 40;
+	let MAX_LENGTH = 100;
 	let redirectRules = {
 		title: 'Welcome to Sparrow!',
 		description: 'Bridging Frontend and Backend Development.',
@@ -225,13 +225,13 @@
 		handleVerificationCode();
 	}
 	// This function will reduce the email size if it is too long.
-	function handleEmail(text:string,maxlength:number){
-		if(text.length > maxlength){
-			return text.slice(0, maxlength) + "..."
+	const handleEmail=(text:string,MAX_LENGTH:number) :string =>{
+		if(text.length > MAX_LENGTH){
+			return text.slice(0, MAX_LENGTH) + "..."
 		}
 		return text
 	}
-	$: EmailText = handleEmail(emailText, maxlength);
+	$: updatedEmailText = handleEmail(emailText, MAX_LENGTH);
 
 	let selectedInput = '';
 	const handleFocus = (inputId) => {
@@ -280,7 +280,7 @@
 				<div class="text-center sparrow-fs-14 sparrow-fs-300 mt-5">
 					<p class="sparrow-fs-12">
 						We have sent a magic code at <br />
-						<span class="email-text">{EmailText}</span>
+						<span class="email-text">{updatedEmailText}</span>
 					</p>
 					<div>
 						<div class="d-flex flex-column">
