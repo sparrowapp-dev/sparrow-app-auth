@@ -36,9 +36,9 @@
 	</div>
 
 	<div class="" style="margin-top:20px ;">
-		<p style="font-size:11px;  text-align:center; letter-spacing:-4%; line-height:18px" >
+		<p style="font-size:12px;  text-align:center; letter-spacing:-4%; line-height:18px ;" >
             We are committed to protecting your privacy. <br>
-Sparrow may send product updates and marketing emails <br> if you opt in. You can unsubscribe from these communications at any time.
+Sparrow may send product updates and marketing emails if you opt in. You can unsubscribe from these communications at any time.
         </p>
 
 		
