@@ -205,7 +205,7 @@
 				>
 					{#if entryLoader}
 						<Spinner size={'16px'} />
-					{:else if emailExists}
+					{:else if emailExists && entryCredentials.email.trim().length > 0 }
 						<CircleTick height={'16px'} width={'16px'} />
 					{/if}
 				</button>
