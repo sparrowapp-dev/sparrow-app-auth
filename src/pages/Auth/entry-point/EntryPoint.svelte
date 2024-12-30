@@ -50,7 +50,10 @@
 	let emailExists = false;
 
 	const checkEmailExistenceOnInput = async (email) => {
-		if (!email) return;
+		if (!email) {
+			entryLoader = false;
+			return;
+		}
 
 		isEmailTouched = true;
 		entryLoader = true;
@@ -189,6 +192,7 @@
 						);
 					}}
 					on:input={async () => {
+						entryLoader = true;
 						validationErrors = await handleEntryValidation(entryCredentials);
 						clearTimeout(checkTimeout);
 						checkTimeout = setTimeout(
@@ -205,7 +209,7 @@
 				>
 					{#if entryLoader}
 						<Spinner size={'16px'} />
-					{:else if emailExists}
+					{:else if emailExists && entryCredentials.email.trim().length > 0 }
 						<CircleTick height={'16px'} width={'16px'} />
 					{/if}
 				</button>
@@ -218,8 +222,8 @@
 
 		<div>
 			<Button
-				disable={entryLoader || isSubmitting}
-				title={!emailExists && showContinueButton ? 'Continue' : 'Send magic code'}
+				disable={ !(emailExists && entryCredentials.email.trim().length > 0) || isSubmitting || entryLoader}
+				title={'Send magic code'}
 				buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-16'}
 				type={'primary'}
 			/>
