@@ -52,23 +52,33 @@
 	const checkEmailExistenceOnInput = async (email) => {
 		if (!email) {
 			entryLoader = false;
+
 			return;
 		}
 
 		isEmailTouched = true;
 		entryLoader = true;
-		showContinueButton = false;
 		emailExists = false; // Reset before the check starts
 		try {
 			const response = await handleEntry({ email }); // Reuse the same `handleEntry` function
 			if (response.isSuccessful) {
 				// Check if the email is registered
-				showContinueButton = true;
-				emailExists =
-					response?.data?.registeredWith === 'email' || response?.data?.registeredWith === 'google';
-			} else {
-				showContinueButton = false;
-				emailExists = false; // Email not registered
+				if (
+					response?.data?.registeredWith === 'email' ||
+					response?.data?.registeredWith === 'google'
+				) {
+					emailExists = true;
+					showContinueButton = false;
+				} else {
+					console.log('email not registered');
+					emailExists = false; // Email not registered
+					if (validationErrors.email === undefined) {
+						showContinueButton = true;
+					}
+					// else{
+					// 	showContinueButton = false;
+					// }
+				}
 			}
 		} catch (error) {
 			showContinueButton = false;
@@ -209,7 +219,7 @@
 				>
 					{#if entryLoader}
 						<Spinner size={'16px'} />
-					{:else if emailExists && entryCredentials.email.trim().length > 0 }
+					{:else if emailExists && entryCredentials.email.trim().length > 0}
 						<CircleTick height={'16px'} width={'16px'} />
 					{/if}
 				</button>
@@ -222,8 +232,8 @@
 
 		<div>
 			<Button
-				disable={ !(emailExists && entryCredentials.email.trim().length > 0) || isSubmitting || entryLoader}
-				title={'Send magic code'}
+				disable={validationErrors?.email || !entryCredentials?.email || isSubmitting || entryLoader}
+				title={!emailExists && showContinueButton ? 'Continue' : 'Send magic code'}
 				buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-16'}
 				type={'primary'}
 			/>
@@ -238,7 +248,7 @@
 			We will email you a magic code for password free Sign in or you can <span
 				on:click={() => {
 					navigate('/password-login');
-					MixpanelEvent("Continue_with_password");
+					MixpanelEvent('Continue_with_password');
 				}}
 				style="color:#3760F7; cursor:pointer;">continue with password</span
 			>
