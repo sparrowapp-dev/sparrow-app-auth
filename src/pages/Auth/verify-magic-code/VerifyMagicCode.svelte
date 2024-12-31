@@ -602,7 +602,7 @@
 							if (userFromDesktop === 'true') {
 								setTimeout(() => {
 									let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
-									redirectRules.title = `Welcome ${data.name.split(' ')[0]}`;
+									redirectRules.title = `Welcome Back ${data.name.split(' ')[0]}`;
 									redirectRules.description = `Redirecting you to desktop app...`;
 									redirectRules.message = `the token if you are facing any issue in redirecting to the login page`;
 									redirectRules.loadingMessage = '';
