@@ -52,7 +52,6 @@
 	const checkEmailExistenceOnInput = async (email) => {
 		if (!email) {
 			entryLoader = false;
-
 			return;
 		}
 
@@ -70,14 +69,10 @@
 					emailExists = true;
 					showContinueButton = false;
 				} else {
-					console.log('email not registered');
 					emailExists = false; // Email not registered
 					if (validationErrors.email === undefined) {
 						showContinueButton = true;
 					}
-					// else{
-					// 	showContinueButton = false;
-					// }
 				}
 			}
 		} catch (error) {
