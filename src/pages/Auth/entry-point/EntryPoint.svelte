@@ -209,7 +209,7 @@
 				>
 					{#if entryLoader}
 						<Spinner size={'16px'} />
-					{:else if emailExists && entryCredentials.email.trim().length > 0 }
+					{:else if emailExists && entryCredentials.email.trim().length > 0}
 						<CircleTick height={'16px'} width={'16px'} />
 					{/if}
 				</button>
@@ -222,8 +222,8 @@
 
 		<div>
 			<Button
-				disable={ !(emailExists && entryCredentials.email.trim().length > 0) || isSubmitting || entryLoader}
-				title={'Send magic code'}
+				disable={entryLoader || isSubmitting}
+				title={!emailExists && showContinueButton ? 'Continue' : 'Send magic code'}
 				buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-16'}
 				type={'primary'}
 			/>
@@ -238,7 +238,7 @@
 			We will email you a magic code for password free Sign in or you can <span
 				on:click={() => {
 					navigate('/password-login');
-					MixpanelEvent("Continue_with_password");
+					MixpanelEvent('Continue_with_password');
 				}}
 				style="color:#3760F7; cursor:pointer;">continue with password</span
 			>
