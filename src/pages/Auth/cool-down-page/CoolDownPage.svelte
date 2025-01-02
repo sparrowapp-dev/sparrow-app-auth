@@ -41,16 +41,14 @@
 				title={'Try Sparrow Edge'}
 				buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-16'}
 				type={'primary'}/>
-
-				<div class="d-flex align-items-start ms-1 " style="margin-top: 18px;">
-					<div style="height: 24px; width:24px; ">
-						<AiSparkle height={'24px'} width={'24px'} />
+				
+				<div class="d-flex align-items-start" style="margin-top: 18px;">
+					<div style="height: 30px; width:30px; ">
+						<AiSparkle height={'30px'} width={'30px'} />
 					</div>
-					<p class="text-center sparrow-fs-12 pt-1" style="margin-left:-24px; color: #CCCCCCE5; line-height:15px;">
-						Instantly test APIs without signing up-just the essentials to get started fast.				</p>
+					<p class="text-center sparrow-fs-12 pt-1" style="color: #CCCCCCE5; line-height:15px;">
+						Instantly test APIs without signing up-just the <br> essentials to get started fast.				</p>
 					</div>
-					
-					
 				</div>
 				{/if}
 
