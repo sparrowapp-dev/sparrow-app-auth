@@ -50,7 +50,10 @@
 	let emailExists = false;
 
 	const checkEmailExistenceOnInput = async (email) => {
-		if (!email) return;
+		if (!email) {
+			entryLoader = false;
+			return;
+		}
 
 		isEmailTouched = true;
 		entryLoader = true;
@@ -189,6 +192,7 @@
 						);
 					}}
 					on:input={async () => {
+						entryLoader = true;
 						validationErrors = await handleEntryValidation(entryCredentials);
 						clearTimeout(checkTimeout);
 						checkTimeout = setTimeout(
@@ -205,7 +209,7 @@
 				>
 					{#if entryLoader}
 						<Spinner size={'16px'} />
-					{:else if emailExists}
+					{:else if emailExists && entryCredentials.email.trim().length > 0}
 						<CircleTick height={'16px'} width={'16px'} />
 					{/if}
 				</button>
@@ -234,7 +238,7 @@
 			We will email you a magic code for password free Sign in or you can <span
 				on:click={() => {
 					navigate('/password-login');
-					MixpanelEvent("Continue_with_password");
+					MixpanelEvent('Continue_with_password');
 				}}
 				style="color:#3760F7; cursor:pointer;">continue with password</span
 			>

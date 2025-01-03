@@ -57,7 +57,7 @@ export const entrySchema = yup.object().shape({
 		.matches(
 			emailRegex,'Please enter a valid email address'
 			)
-			.required('Please enter a valid email address')
+			.required('Email is required')
 		,
 });
 
