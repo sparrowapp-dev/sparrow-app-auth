@@ -245,8 +245,7 @@
 					<small class="form-text text-dangerColor">{validationErrors?.password}</small>
 				{:else if authenticationError}
 					<small class="form-text text-dangerColor"
-						>The email and password combination you entered appears to be incorrect. Please try
-						again.</small
+						>Invalid email or password. Please try again.</small
 					>
 				{/if}
 			</div>
