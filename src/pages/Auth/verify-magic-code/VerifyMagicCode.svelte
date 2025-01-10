@@ -15,7 +15,15 @@
 
 	import CircleCheck from '$lib/assets/CircleCheck.svelte';
 	import { handleVerifyUserEmail, isSuccessfulResponseMagicCode } from './verify-magic-code';
+	import { string } from 'yup';
 	export let id: string;
+	export let name = string;
+	
+	 let firstName = name.split(' ')[0];
+	 
+	 console.log(firstName);
+	 
+
 
 	let seconds = 300; // Changed from 600 to 300 (5 minutes)
 	const verifyString = writable('');
@@ -265,7 +273,7 @@
 				class="container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
 				style="font-size:24px; font-weight: 400;  line-height:28px; text-align:center;"
 			>
-				Welcome!
+				Welcome {firstName}
 			</p>
 			<p class="" style="color: lightGray; font-size:14px;">Just one more step</p>
 		</div>
