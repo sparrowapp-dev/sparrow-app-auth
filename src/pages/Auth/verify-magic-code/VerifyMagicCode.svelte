@@ -20,8 +20,6 @@
 	
 	 let firstName = name.split(' ')[0];
 
-	 
-
 
 	let seconds = 300; // Changed from 600 to 300 (5 minutes)
 	const verifyString = writable('');
