@@ -32,7 +32,7 @@
 			if(userFromDesktop === "true"){
 				let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
 				    let firstName  = data.name;
-					firstName =firstName.split(' ')[0] + "finfbgrubgfrbeuyreu";
+					firstName =firstName.split(' ')[0];
 					firstName = firstName.length >11 ? firstName.substring(0, 5) + "..." : firstName;
 
 					redirectRules.title = `Welcome Back ${firstName}`;
