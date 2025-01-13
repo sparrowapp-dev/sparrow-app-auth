@@ -244,7 +244,7 @@
 				{#if validationErrors?.password && isPasswordTouched}
 					<small class="form-text text-dangerColor ">{validationErrors?.password}</small>
 				{:else if authenticationError}
-					<small class="form-text text-dangerColor email_and_password_error"
+					<small class="form-text text-dangerColor"
 						>The email and password combination you entered appears to be incorrect. Please try
 						again.</small
 					>
@@ -294,9 +294,6 @@
 {/if}
 
 <style>
-    .email_and_password_error{
-		font-size: 0.75rem;
-	}
 	.eye-icon {
 		right: 5px;
 		top: 50%;
