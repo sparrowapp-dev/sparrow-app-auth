@@ -17,13 +17,9 @@
 	import { handleVerifyUserEmail, isSuccessfulResponseMagicCode } from './verify-magic-code';
 	import { string } from 'yup';
 	export let id: string;
-	export let name = string;
+	export let name: string;
 	
 	 let firstName = name.split(' ')[0];
-	 
-	 console.log(firstName);
-	 
-
 
 	let seconds = 300; // Changed from 600 to 300 (5 minutes)
 	const verifyString = writable('');
