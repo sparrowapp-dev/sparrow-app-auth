@@ -30,7 +30,7 @@
 
 	<!-- MagicCodeVerificationPage (OTP)
 	OTP verification page for authenticating with a magic code -->
-	<Route path="/verify-magic-code/:id/:name" component={VerifyMagicCode} />
+	<Route path="/verify-magic-code/:id" component={VerifyMagicCode} />
 
 	<!-- EmailEntryPage
 	Page where the user enters their email, redirecting to login or registration based on context -->
