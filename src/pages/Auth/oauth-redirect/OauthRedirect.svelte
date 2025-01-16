@@ -29,12 +29,9 @@
 			showRegisterComponent = false;
 			if (accessToken && refreshToken) {
 			if(userFromDesktop === "true"){
-				let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
-				 let firstName = data.name;
-				 firstName = firstName.split(' ')[0];
-				 firstName = firstName.length > 11 ? firstName.substring(0, 5) + "..." : firstName;
-					redirectRules.title = `Welcome Back ${firstName}`;
 				setTimeout(() => {
+					let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
+					redirectRules.title = `Welcome Back ${data.name}`;
 					redirectRules.description = `Redirecting you to desktop app...`;
 					redirectRules.message = `the token if you are facing any issue in redirecting to the login page`;
 					
