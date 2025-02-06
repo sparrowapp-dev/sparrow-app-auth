@@ -88,7 +88,7 @@
 				class="container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
 				style="font-size:24px; font-weight: 400; padding-top:20px; line-height:28px; text-align:center;"
 			>
-				Welcome Back User
+				Welcome Back!
 			</p>
 			<p class="" style="color: lightGray; font-size:12px; margin-bottom:15%;">
 				Let’s get back to work
