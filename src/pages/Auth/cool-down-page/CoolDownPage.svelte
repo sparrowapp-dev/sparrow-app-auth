@@ -5,16 +5,21 @@
 	import sparrowicon from '$lib/assets/logoSparrowSquare.svg';
 	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
 	import AiSparkle from '$lib/assets/AiSparkle.svelte';
-
-
-	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
-	const sparrowRedirect = `sparrow://?accessToken=&refreshToken=&response=&event=login&method=email&isSparrowEdge=true`;
-    
-
+	import constants from '$lib/utils/constants';
+	import { onMount } from 'svelte';
+	let userFromDesktop;
+	let sparrowRedirect;
+	onMount(async () => {
+		userFromDesktop = await localStorage.getItem('isUserFromDesktop');
+		if (userFromDesktop === 'true') {
+			sparrowRedirect = `sparrow://?accessToken=&refreshToken=&response=&event=login&method=email&isSparrowEdge=true`;
+		} else {
+			sparrowRedirect = constants.SPARROW_WEB_URL;
+		}
+	});
 </script>
 
 <BgContainer>
-
 	<div class="w-100 d-flex flex-column justify-content-center align-items-center">
 		<div class="d-flex align-items-start gap-2">
 			<div
@@ -25,36 +30,43 @@
 			</div>
 			<p style="font-weight:500;">Sparrow</p>
 		</div>
-		<div class="d-flex flex-column  align-items-center" style="margin-top: 20px;">
+		<div class="d-flex flex-column align-items-center" style="margin-top: 20px;">
 			<h1 class="" style="font-size:24px; font-weight: 600;">Cooldown Active</h1>
 			<p class="" style="font-size: 14px;">Too many requests</p>
 		</div>
-	
-		<div style="margin:44px 0px;">
-			<p class="mb-0  text-center " style="font-size:12px; color:#CCCCCCE5; font-weight: 400; line-height:15px; margin-bottom:44px; ">Your account is in a 30-minute cooldown. You can log in again after this period. Meanwhile, try accessing the Sparrow Edge.</p>
-		</div>
-	
-		{#if userFromDesktop}
-		<div class="w-100 mb-5">
 
-			<Button onClick={() => navigate(sparrowRedirect)}
-				title={'Try Sparrow Edge'}
-				buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-16'}
-				type={'primary'}/>
-				
+		<div style="margin:44px 0px;">
+			<p
+				class="mb-0 text-center"
+				style="font-size:12px; color:#CCCCCCE5; font-weight: 400; line-height:15px; margin-bottom:44px; "
+			>
+				Your account is in a 30-minute cooldown. You can log in again after this period. Meanwhile,
+				try accessing the Sparrow Edge.
+			</p>
+		</div>
+
+		{#if userFromDesktop}
+			<div class="w-100 mb-5">
+				<Button
+					onClick={() => navigate(sparrowRedirect)}
+					title={'Try Sparrow Edge'}
+					buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-16'}
+					type={'primary'}
+				/>
+
 				<div class="d-flex align-items-start" style="margin-top: 18px;">
 					<div style="height: 30px; width:30px; ">
 						<AiSparkle height={'30px'} width={'30px'} />
 					</div>
 					<p class="text-center sparrow-fs-12 pt-1" style="color: #CCCCCCE5; line-height:15px;">
-						Instantly test APIs without signing up-just the <br> essentials to get started fast.				</p>
-					</div>
+						Instantly test APIs without signing up-just the <br /> essentials to get started fast.
+					</p>
 				</div>
-				{/if}
-
+			</div>
+		{/if}
 
 		<div class="mt-4">
-			<SupportHelp/>
+			<SupportHelp />
 		</div>
 	</div>
 </BgContainer>
