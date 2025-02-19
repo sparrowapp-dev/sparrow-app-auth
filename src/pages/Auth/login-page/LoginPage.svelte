@@ -117,7 +117,10 @@
 							if (userFromDesktop === 'true') {
 								setTimeout(() => {
 									let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
-									redirectRules.title = `Welcome Back ${data.name}`;
+									let firstName = data.name;
+									firstName = firstName.split(' ')[0];
+									firstName = firstName.length > 11 ? firstName.substring(0,5) + "...": firstName;
+									redirectRules.title = `Welcome Back ${firstName}`;
 									redirectRules.description = `Redirecting you to desktop app...`;
 									redirectRules.message = `If the application does not open automatically,
 							please click below.`;
