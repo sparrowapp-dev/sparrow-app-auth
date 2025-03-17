@@ -119,7 +119,7 @@
 				resetPasswordLoader = true;
 				const response = await handleResetPassword(resetPasswordCredential);
 				if (response.isSuccessful) {
-					notifications.success("Password changed successfully");
+					notifications.success("Password changed successfully.");
 					localStorage.setItem(
 							`timer-reset-password-redirect-${id}`,
 							new Date().getTime()
@@ -127,7 +127,7 @@
 					navigate(`/password-update-redirect/${id}`);
 				} else {
 				if (response.message === "Unauthorized Access") {
-					notifications.error("Old Password and New Password cannot be same");
+					notifications.error("Old Password and New Password cannot be same.");
 				}
 				else{
 					notifications.error(response.message);

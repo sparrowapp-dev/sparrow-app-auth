@@ -132,7 +132,7 @@
 		const response = await forgotPassword({ email: id });
 		if (response.isSuccessful) {
 			showResendSuccess = true;
-			notifications.success('Verification code sent successfully');
+			notifications.success('Verification code sent successfully.');
 			localStorage.setItem(`timer-${id}`, new Date().getTime());
 			startTimer();
 			verificationCode1 = '';
