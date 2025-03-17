@@ -2,6 +2,8 @@ import * as yup from 'yup';
 const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+)$/;
 const firstNameRegex = /^[A-Za-z\s]+$/;
 const lastNameRegex = /^[A-Za-z\s]*$/;
+const firstNameSpaceCheck = /^[^\s].*$/;
+
 
 //----------------------------- Check Validation ---------------------//
 export const checkValidation = async (validationSchema, val) => {
@@ -25,7 +27,11 @@ export const registrationSchema = yup.object().shape({
 		.email()
 		.matches(emailRegex, 'Please enter a valid Email ID')
 		.required('Please enter a valid Email ID'),
-	firstName: yup.string().trim().matches(firstNameRegex, "Your first name cannot have numbers or special characters.").required('Please enter your first name.'),
+	firstName:yup
+		.string()
+		.matches(firstNameRegex, "Your first name cannot have numbers or special characters.")
+		.matches(firstNameSpaceCheck , 'Your first name cannot start with spaces.')
+		.required('Please enter your first name.'),
 	lastName: yup.string().matches(lastNameRegex, "Your last name cannot have numbers or special characters."),
 	password: yup
 		.string()
