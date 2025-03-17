@@ -130,7 +130,7 @@
 					notifications.error("Old Password and New Password cannot be same.");
 				}
 				else{
-					notifications.error(response.message);
+					notifications.error(response.message +".");
 				}
 				}
 				resetPasswordLoader = false;
