@@ -38,6 +38,9 @@ export { default as ShowMoreIcon } from "$lib/assets/showmore.svelte";
 export { default as EditIcon } from "$lib/assets/edit.svelte";
 export { default as UploadIcon } from "$lib/assets/upload.svelte";
 export { default as DeleteIcon } from "$lib/assets/delete.svelte";
+export { default as CloudCube} from "$lib/assets/CloudCube.svelte";
+export {default as LockedIcon} from "$lib/assets/Locked.svelte";
+export {default as CopyIcon2} from "$lib/assets/Copy.svelte";
 export default {
   closeIcon,
   resizeIcon,
