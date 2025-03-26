@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import Locked from "$lib/assets/Locked.svelte";
 
     interface TeamCard {
@@ -36,7 +36,76 @@
             {/each}
         </div>
     </div>    
+</div> -->
+<script lang="ts">
+	import Locked from "$lib/assets/Locked.svelte";
+
+	interface TeamDetails {
+		teamName: string;
+		teamMembers: number;
+		teamLogo?: TeamLogo;
+		secondLevelAuth?: boolean;
+	}
+
+	interface TeamLogo {
+		bufferString?: string;
+		encoding?: string;
+		mimetype?: string;
+		size?: number;
+	}
+
+	interface TeamCard {
+		teamName: string;
+		teamMembers: number;
+		secondLevelAuth?: boolean;
+		teamIcon?: string;
+	}
+
+	export let userTeams: TeamDetails[] = [];
+
+	// Convert teamLogo to image URL before passing to ListCard
+	let Teams: TeamCard[] = [];
+
+	function getImageUrl(logo?: TeamLogo): string {
+		return logo?.bufferString ? `data:${logo.mimetype};base64,${logo.bufferString}` : '';
+	}
+
+	$: Teams = userTeams.map((team) => ({
+		teamName: team.teamName,
+		teamMembers: team.teamMembers,
+		teamIcon: getImageUrl(team.teamLogo), 
+		secondLevelAuth: team.secondLevelAuth
+	}));
+    console.log("--------->This is the Team.",Teams,userTeams);
+</script>
+
+<div class="team-container">
+	<div class="team-card-container">
+		<div class="team-card-main">
+			{#each Teams as card}
+				<div class="team-card d-flex justify-content-between align-items-center">
+					<div class="d-flex align-items-center team-content-container">
+						<div class="team-icon d-flex justify-content-center align-items-center"> 
+							{#if card.teamIcon}
+								<img src="{card.teamIcon}" alt="Team Icon" class="profile-img" />
+							{:else}
+								<span class="team-initial">{card.teamName[0]}</span>
+							{/if}
+						</div>
+						<div class="team-info">
+							<p class="team-name">{card.teamName}</p>
+							<p class="team-members">{card.teamMembers} Members</p>
+						</div>
+					</div>
+					{#if card.secondLevelAuth}
+						<Locked />
+					{/if}
+				</div>
+			{/each}
+		</div>
+	</div>    
 </div>
+
 
 <style>
     .team-container {

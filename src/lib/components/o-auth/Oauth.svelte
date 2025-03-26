@@ -35,12 +35,6 @@
   background-color: #31353F;
 }
 
-.custom-btn:active {
-  background-color: #222630;
-  border: 1px solid #3670F7;
-  transition: all 100ms ease-in-out;
-}
-
 .custom-btn:focus-visible {
   background-color: #272935;
   border: 2px solid #6894F9;

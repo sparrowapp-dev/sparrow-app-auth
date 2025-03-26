@@ -11,6 +11,13 @@
 	interface TeamDetails {
 		teamName: string;
 		teamMembers: number;
+		teamLogo?: TeamLogo;
+	}
+	interface TeamLogo {
+		bufferString?: string;
+		encoding?: string;
+		mimetype?: string;
+		size?: number;
 	}
 
 	export let title="Title";
@@ -52,12 +59,12 @@
 			<span class="sparrow-fs-14" style="font-weight:400; color:#9B9DA1;">To Sparrow Hubs</span>
 		</p>
 
-		{#if  !isSpinner}
+		<!-- {#if  !isSpinner}
 			<div class="mt-3 d-flex justify-content-center align-items-center flex-column">
 				<p class="hubspot-help-text">View and manage hubs in the desktop app.</p>
 				<ListCard TeamDetails={userTeams} />
 			</div>
-		{/if}
+		{/if} -->
 
 		{#if isSpinner}
 			<div
