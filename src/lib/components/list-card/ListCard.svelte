@@ -76,7 +76,6 @@
 		teamIcon: getImageUrl(team.teamLogo), 
 		secondLevelAuth: team.secondLevelAuth
 	}));
-    console.log("--------->This is the Team.",Teams,userTeams);
 </script>
 
 <div class="team-container">
