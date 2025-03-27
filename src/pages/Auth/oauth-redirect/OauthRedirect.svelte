@@ -30,17 +30,17 @@
 			if (accessToken && refreshToken) {
 			if(userFromDesktop === "true"){
 				let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
-				 let firstName = data.name;
-				 firstName = firstName.split(' ')[0];
-				 firstName = firstName.length > 11 ? firstName.substring(0, 5) + "..." : firstName;
-					redirectRules.title = `Welcome Back ${firstName}`;
+				let firstName = data.name;
+				firstName = firstName.split(' ')[0];
+				firstName = firstName.length > 11 ? firstName.substring(0, 5) + "..." : firstName;
+				redirectRules.title = `Welcome Back ${firstName}`;
+				redirectRules.description = `Redirecting you to desktop app...`;
+				redirectRules.message = `the token if you are facing any issue in redirecting to the login page`;
+				redirectRules.loadingMessage = '';
+				
 				setTimeout(() => {
-					redirectRules.description = `Redirecting you to desktop app...`;
-					redirectRules.message = `the token if you are facing any issue in redirecting to the login page`;
-					
-					redirectRules.loadingMessage = '';
-					redirectRules.isSpinner = false;
 					window.location.href = sparrowRedirect;
+					redirectRules.isSpinner = false;
 				}, constants.API_REDIRECT_TIMEOUT);
 			} else {
 				navigate(sparrowWebRedirect);
@@ -80,13 +80,14 @@
 			if(userFromDesktop === "true"){ 
 				let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
                 let firstName = data.name;
-		            firstName = firstName.split(' ')[0];
-				    firstName = firstName.length > 11 ? firstName.substring(0, 5) + "..." : firstName;
-					redirectRules.title = `Welcome ${firstName}`;
+				firstName = firstName.split(' ')[0];
+				firstName = firstName.length > 11 ? firstName.substring(0, 5) + "..." : firstName;
+				redirectRules.title = `Welcome ${firstName}`;
+				redirectRules.description = `Redirecting you to desktop app...`;
+				redirectRules.message = `the token if you are facing any issue in redirecting to the login page`;
+				redirectRules.loadingMessage = '';
+				
 				setTimeout(() => {		
-					redirectRules.description = `Redirecting you to desktop app...`;
-					redirectRules.message = `the token if you are facing any issue in redirecting to the login page`;
-					redirectRules.loadingMessage = '';
 					redirectRules.isSpinner = false;
 					window.location.href = sparrowRedirect;
 				}, constants.API_REDIRECT_TIMEOUT);
