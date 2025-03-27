@@ -5,7 +5,20 @@
 	import Button from '$lib/components/button/Button.svelte';
 	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
 	import Spinner from '$lib/components/transition/Spinner.svelte';
+	import ListCard from '$lib/components/list-card/ListCard.svelte';
 	import { onMount } from 'svelte';
+	import { CopyIcon2 } from '$lib/assets/app.asset';
+	interface TeamDetails {
+		teamName: string;
+		teamMembers: number;
+		teamLogo?: TeamLogo;
+	}
+	interface TeamLogo {
+		bufferString?: string;
+		encoding?: string;
+		mimetype?: string;
+		size?: number;
+	}
 
 	export let title="Title";
 	export let description= "Description";
@@ -15,6 +28,8 @@
 	export let buttonClick = () => {} ;
 	export let copyLink = () => {} ;
 	export let loadingMessage = "";
+	export let userTeams:TeamDetails[] = [];
+	
 	let userFromDesktop = true;
 	onMount(() => { 
 		userFromDesktop = localStorage.getItem('isUserFromDesktop');
@@ -37,13 +52,19 @@
 	<div class="" style="margin-top:20px ;">
 		<p
 			class=" text-transparent text-center ms-2 me-2 ellipsis"
-			style="font-weight:600; font-size:24px; line-height:22px;"
+			style="font-weight: 600; font-size: 24px; line-height: 1.2; font-family: 'Inter', sans-serif;"
 		>
 			{title}
 			<br />
-			<span class="sparrow-fs-14" style="font-weight:400;">To your Sparrow Space</span>
+			<span class="sparrow-fs-14" style="font-weight:400; color:#9B9DA1;">To Sparrow Hubs</span>
 		</p>
 
+		<!-- {#if  !isSpinner}
+			<div class="mt-3 d-flex justify-content-center align-items-center flex-column">
+				<p class="hubspot-help-text">View and manage hubs in the desktop app.</p>
+				<ListCard TeamDetails={userTeams} />
+			</div>
+		{/if} -->
 
 		{#if isSpinner}
 			<div
@@ -59,40 +80,45 @@
 			
 		<div style="margin-top: 40px;">
 			<div
-				style="font-size: 14px;text-align:center"
+				style="font-size: 14px;text-align:center;"
 				class="text-lightGray d-flex align-items-center justify-content-center mt-3"
 			>
+			<div class="" style="width: 300px;">
 				<Button
 					title={buttonText}
 					disable={isSpinner}
 					buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-14'}
+					textStyleProp={"font-family: 'Inter', sans-serif; font-weight:500; line-height:143%;"}
 					type={'primary'}
 					onClick={buttonClick}
 				/>
+			</div>
 			</div>
 		</div>
 		{/if}
 
 
-		<div class="sparrow-fw-400 sparrow-fs-16" style="margin-top: 6px;">
-			<div
-				style="text-align:center; max-width: 370px;"
-				class="text-lightGray mt-4 sparrow-fw-300 sparrow-fs-14"
+		<div class="sparrow-fw-400" style="margin-top: 6px;">
+			<div class="d-flex align-items-center justify-content-center">
+				<div
+				style="text-align:center; max-width: 300px; color:#9B9DA1; font-family: 'Inter', sans-serif;"
+				class="mt-4 sparrow-fw-400 sparrow-fs-12"
 			>
 				<p>
 					<span role="button" on:click={()=>{
 						copyLink();
 					}}>
-						<CopyIcon height={'16px'} width={'16px'} color={'#CCCCCCE5'} />
+						<CopyIcon2 />
 						<span
-							style="text-decoration: underline; color:#CCCCCCE5;  text-underline-offset: 4px;"
-							>copy</span
+							style="text-decoration: underline; color:#B6B7B9;  text-underline-offset: 4px; font-wight:500;"
+							>Copy</span
 						>
 
 					</span>
 					{message}
 				</p>
-			</div>
+			   </div>
+		     </div>
 		</div>
 	</div>
 
@@ -100,3 +126,17 @@
 		<SupportHelp />
 	</div>
 </BgContainer>
+
+
+<style>
+	.hubspot-help-text{
+		font-family: "Inter", sans-serif;
+		font-weight: 500;
+		font-size: 12px;
+		line-height: 1.3; 
+		letter-spacing: 0;
+		margin: 0px;
+		color: #9B9DA1;
+		margin-bottom: 8px;
+	}
+</style>
