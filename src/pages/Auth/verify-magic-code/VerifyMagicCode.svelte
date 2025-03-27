@@ -33,7 +33,8 @@
 		buttonText: 'Open Desktop App',
 		buttonClick: () => {},
 		copyLink: () => {},
-		loadingMessage: 'Please wait while we sign you in....'
+		loadingMessage: 'Please wait while we sign you in....',
+		teamDetails: []
 	};
 
 	let timer: number;
@@ -251,6 +252,7 @@
 		buttonClick={redirectRules.buttonClick}
 		copyLink={redirectRules.copyLink}
 		loadingMessage={redirectRules.loadingMessage}
+		userTeams={redirectRules.teamDetails}
 	/>
 {:else}
 	<BgContainer>
@@ -611,6 +613,7 @@
 									redirectRules.message = `the token if you are facing any issue in redirecting to the login page`;
 									redirectRules.loadingMessage = '';
 									redirectRules.isSpinner = false;
+									redirectRules.teamDetails = response.data.userTeams;
 									navigate(sparrowRedirect);
 									redirectRules.buttonClick = () => {
 										navigate(sparrowRedirect);

@@ -8,8 +8,11 @@
 </div>
 <style>
     a{
-        text-decoration: none;
-        color: var(--editor-angle-bracket);
+        text-decoration: underline;
+        color: #B6B7B9;
+        font-family: "Inter", sans-serif;
+        font-weight: 500;
+        font-size: 12px;
     }
     a:hover {
     color: var( --primary-btn-color);
