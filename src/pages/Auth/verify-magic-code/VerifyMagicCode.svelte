@@ -606,12 +606,13 @@
 								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=code`;
 
 							if (userFromDesktop === 'true') {
+								let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
+								redirectRules.title = `Welcome Back ${data.name.split(' ')[0]}`;
+								redirectRules.description = `Redirecting you to desktop app...`;
+								redirectRules.message = `the token if you are facing any issue in redirecting to the login page`;
+								redirectRules.loadingMessage = '';
+								
 								setTimeout(() => {
-									let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
-									redirectRules.title = `Welcome Back ${data.name.split(' ')[0]}`;
-									redirectRules.description = `Redirecting you to desktop app...`;
-									redirectRules.message = `the token if you are facing any issue in redirecting to the login page`;
-									redirectRules.loadingMessage = '';
 									redirectRules.isSpinner = false;
 									redirectRules.teamDetails = response.data.userTeams;
 									navigate(sparrowRedirect);
