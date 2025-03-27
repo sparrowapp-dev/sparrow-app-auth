@@ -56,7 +56,7 @@
 		>
 			{title}
 			<br />
-			<span class="sparrow-fs-14" style="font-weight:400; color:#9B9DA1;">To Sparrow Hubs</span>
+			<span class="sparrow-fs-14" style="font-weight:400; color:#9B9DA1;">To your Sparrow Space</span>
 		</p>
 
 		<!-- {#if  !isSpinner}
