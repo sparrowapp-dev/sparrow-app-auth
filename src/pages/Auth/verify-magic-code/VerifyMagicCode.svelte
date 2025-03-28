@@ -269,7 +269,7 @@
 		<div style="margin-top:20px; display: flex ; flex-direction:column; align-items:center;">
 			<p
 				class="container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
-				style="font-size:24px; font-weight: 400;  line-height:28px; text-align:center;"
+				style="font-size:24px; font-weight: 400;  line-height:28px; text-align:center; max-width:300px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"
 			>
 				Welcome {firstName}
 			</p>
