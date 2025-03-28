@@ -132,7 +132,7 @@
 		const response = await sendUserEmailVerification({ email: id });
 		if (response.isSuccessful) {
 			showResendSuccess = true;
-			notifications.success('Verification code sent successfully');
+			notifications.success('Verification code sent successfully.');
 			localStorage.setItem(`timer-verify-${id}`, new Date().getTime());
 			startTimer();
 			verificationCode1 = '';
@@ -593,9 +593,12 @@
 								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=register&method=email`;
 
 							if (userFromDesktop === 'true') {
+								let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
+								let firstName = data.name;
+				                    firstName = firstName.split(' ')[0];
+				                    firstName = firstName.length > 11 ? firstName.substring(0, 5) + "..." : firstName;
+									redirectRules.title = `Welcome Back ${firstName}`;
 								setTimeout(() => {
-									let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
-									redirectRules.title = `Welcome ${data.name.split(' ')[0]}`;
 									redirectRules.description = `Redirecting you to desktop app...`;
 									redirectRules.message = `the token if you are facing any issue in redirecting to the login page`;
 									redirectRules.loadingMessage = '';
