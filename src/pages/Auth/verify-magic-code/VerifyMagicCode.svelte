@@ -33,7 +33,8 @@
 		buttonText: 'Open Desktop App',
 		buttonClick: () => {},
 		copyLink: () => {},
-		loadingMessage: 'Please wait while we sign you in....'
+		loadingMessage: 'Please wait while we sign you in....',
+		teamDetails: []
 	};
 
 	let timer: number;
@@ -251,6 +252,7 @@
 		buttonClick={redirectRules.buttonClick}
 		copyLink={redirectRules.copyLink}
 		loadingMessage={redirectRules.loadingMessage}
+		userTeams={redirectRules.teamDetails}
 	/>
 {:else}
 	<BgContainer>
@@ -267,7 +269,7 @@
 		<div style="margin-top:20px; display: flex ; flex-direction:column; align-items:center;">
 			<p
 				class="container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
-				style="font-size:24px; font-weight: 400;  line-height:28px; text-align:center;"
+				style="font-size:24px; font-weight: 400;  line-height:28px; text-align:center; max-width:300px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"
 			>
 				Welcome {firstName}
 			</p>
@@ -578,7 +580,7 @@
 								Code will expire in {formatTime(seconds)}
 							</p>
 						{:else}
-							<p class="mt-5 text-dangerColor">Code Expired</p>
+							<p class="mt-5 text-dangerColor">Code Expired.</p>
 						{/if}
 						</div>
 					</div>
@@ -611,6 +613,7 @@
 									redirectRules.message = `the token if you are facing any issue in redirecting to the login page`;
 									redirectRules.loadingMessage = '';
 									redirectRules.isSpinner = false;
+									redirectRules.teamDetails = response.data.userTeams;
 									navigate(sparrowRedirect);
 									redirectRules.buttonClick = () => {
 										navigate(sparrowRedirect);

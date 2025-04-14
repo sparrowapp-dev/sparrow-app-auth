@@ -13,6 +13,8 @@
 	import Spinner from '$lib/components/transition/Spinner.svelte';
 	import CircleTick from '$lib/assets/CircleTick.svelte';
 	import MixpanelEvent from '$lib/utils/mixpanel/MixpanelEvent';
+	import Tabs from '$lib/components/tabs/Tabs.svelte';
+	import CloudCube from '$lib/assets/CloudCube.svelte';
 	let isEmailTouched = false;
 	//---------------- Login Validation --------------------//
 	let validationErrors: any = {};
@@ -118,16 +120,10 @@
 		<p class="" style="color: lightGray; font-size:12px;">The only API Sidekick you need</p>
 	</div>
 
-	<Oauth />
-
-	<div class="divider w-100">
-		<span class="line"></span>
-		<span class="text" style="color:var(--editor-angle-bracket)">Or</span>
-		<span class="line"></span>
-	</div>
-
-	<form
-		class="login-form w-100 text-whiteColor ps-1 pe-1 mb-2"
+	<Tabs  variant="primary" >
+	<div slot="managed">
+		<form
+		class="login-form w-100 text-whiteColor ps-1 pe-1 mb-2 mt-4"
 		novalidate
 		on:submit|preventDefault={async () => {
 			isSubmitting = true;
@@ -223,13 +219,20 @@
 		<div>
 			<Button
 				disable={entryLoader || isSubmitting}
-				title={!emailExists && showContinueButton ? 'Continue' : 'Send magic code'}
+				title={!emailExists && showContinueButton ? 'Continue' : 'Send Magic Code'}
 				buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-16'}
 				type={'primary'}
 			/>
 		</div>
 	</form>
 
+	<div class="divider w-100">
+		<span class="line"></span>
+		<span class="text" style="color:var(--editor-angle-bracket)">Or</span>
+		<span class="line"></span>
+	</div>
+
+	<Oauth />
 	<div class="d-flex align-items-start ms-1">
 		<div style="height: 24px; width:24px;">
 			<AiSparkle height={'24px'} width={'24px'} />
@@ -244,6 +247,17 @@
 			>
 		</p>
 	</div>
+    </div>
+	<div slot="self-hosted">
+		<div class="d-flex justify-content-center mt-4">
+			<CloudCube />
+		</div>
+		<div class="self-hosting-container">
+			<p class="d-flex justify-content-center text-center" style="margin: 0px; color:#ffffff;">Self Hosting is Coming Soon!</p>
+			<p class="d-flex justify-content-center text-center" style="margin: 0px; color:#9B9DA1; font-size:12px;">Gain full control of your deployment with our upcoming self-hosting feature. Stay tuned!</p>
+		</div>
+    </div>				
+    </Tabs>
 	<div style="margin-top: 24px;">
 		<SupportHelp />
 	</div>
@@ -283,5 +297,8 @@
 		margin: 0 3px;
 		color: #bfc0d2;
 		font-size: 14px;
+	}
+	.self-hosting-container{
+		width: 310px;
 	}
 </style>
