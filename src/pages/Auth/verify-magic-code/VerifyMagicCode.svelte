@@ -568,7 +568,7 @@
 							style=" display:flex; align-items:center; justify-content:center; background-color: #272E34; border-radius:6px; width:fit-content; padding:8px 16px; margin:30px auto;"
 						>
 							<CircleCheck height={'16px'} width={'16px'} color={'#00DF80'} />
-							<p class="mb-0 ms-2">Code Resend successfully.</p>
+							<p class="mb-0 ms-2">Code resent successfully.</p>
 						</div>
 					{/if}
 
@@ -638,7 +638,7 @@
 			<div class="d-flex gap-3 align-items-center justify-content-center " style="margin-top: 18px;">
 				<p style="font-size: 13px; text-align:center; line-height:15px;" class="mb-0">
 					If you haven't received the code, <br />
-					click on the link in the mail or
+					click
 					<span
 						on:click={handleResend}
 						style="font-size: 13px; color:#3670F7;"

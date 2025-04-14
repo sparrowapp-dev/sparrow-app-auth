@@ -46,13 +46,9 @@ export const loginSchema = yup.object().shape({
 	email: yup
 		.string()
 		.email()
-		.matches(
-			emailRegex,
-			'Please enter a valid Email ID'
-			)
-			.required('Please enter a valid Email ID')
-		,
-	password: yup.string().required('Please enter a password.')
+		.matches(emailRegex, 'Please enter a valid Email ID')
+		.required('Please enter a valid Email ID'),
+	password: yup.string().required('Please enter your password.')
 });
 
 //------------------- Entry Schema ---------------------------//
@@ -60,11 +56,8 @@ export const entrySchema = yup.object().shape({
 	email: yup
 		.string()
 		.email()
-		.matches(
-			emailRegex,'Please enter a valid email address'
-			)
-			.required('Email is required')
-		,
+		.matches(emailRegex, 'Please enter a valid email ID.')
+		.required('Please enter your email ID.')
 });
 
 export const forgotPasswordSchema = yup.object().shape({
@@ -72,11 +65,8 @@ export const forgotPasswordSchema = yup.object().shape({
 		.string()
 		.email()
 		.required('Please enter an Email ID')
-		.matches(
-			emailRegex,
-			'Please enter a valid email address'
-		)
-		.required('Please enter a valid email address')
+		.matches(emailRegex, 'Please enter a valid email ID.')
+		.required('Please enter your registered email ID.')
 });
 
 export const resetPasswordSchema = yup.object().shape({
