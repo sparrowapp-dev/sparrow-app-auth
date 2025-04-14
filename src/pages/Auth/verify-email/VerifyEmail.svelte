@@ -568,7 +568,7 @@
 								Code will expire in {formatTime(seconds)}
 							</p>
 						{:else}
-							<p class="mt-5 text-dangerColor">Code Expired</p>
+							<p class="mt-5 text-dangerColor">Code Expired.</p>
 						{/if}
 					</div>
 				</div>

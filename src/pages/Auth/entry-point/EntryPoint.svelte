@@ -219,7 +219,7 @@
 		<div>
 			<Button
 				disable={entryLoader || isSubmitting}
-				title={!emailExists && showContinueButton ? 'Continue' : 'Send magic code'}
+				title={!emailExists && showContinueButton ? 'Continue' : 'Send Magic Code'}
 				buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-16'}
 				type={'primary'}
 			/>
