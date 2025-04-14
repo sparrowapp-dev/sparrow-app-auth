@@ -18,6 +18,7 @@
 	import CoolDownPage from './pages/Auth/cool-down-page/CoolDownPage.svelte';
 	import PasswordLogin from './pages/Auth/password-login/PasswordLogin.svelte';
 	import PasswordUpdateRedirect from './pages/Auth/password-update-redirect/PasswordUpdateRedirect.svelte';
+	import TeamInviteAcceptance from './pages/Auth/team-invite-acceptance/TeamInviteAcceptance.svelte';
 	export let url = '/';
 
 </script>
@@ -70,10 +71,14 @@
 	Redirect page that listens for oAuth tokens -->
 	<Route path="/redirect" component={OauthRedirect} />
 
+	<!-- Team invite acceptance page that accepts teams invite -->
+	<Route path="/accept-team-invite/:teamId/:inviteId/:email" component={TeamInviteAcceptance}/>
+
 	<!-- CooldownPage
 	Page displayed when the user has triggered too many requests, enforcing a cooldown period -->
 	<Route path="/cool-down-active" component={CoolDownPage} />
 	
+
 	<!-- Support page that opens the user's default email client with a pre-filled support email -->
 	<Route path="/support">
 		<ExternalNavigation to={`mailto:${constants.SPARROW_SUPPORT_EMAIL}`}/>
