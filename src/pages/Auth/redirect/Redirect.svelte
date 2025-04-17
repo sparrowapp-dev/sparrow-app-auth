@@ -101,7 +101,7 @@
 		<div class="sparrow-fw-400" style="margin-top: 6px;">
 			<div class="d-flex align-items-center justify-content-center">
 				<div
-				style="text-align:center; max-width: 300px; color:#9B9DA1; font-family: 'Inter', sans-serif;"
+				style="text-align:center; max-width: 400px; color:#9B9DA1; font-family: 'Inter', sans-serif;"
 				class="mt-4 sparrow-fw-400 sparrow-fs-12"
 			>
 				<p>
