@@ -83,7 +83,7 @@
 					<div class="" style="width: 300px;">
 						<Button
 							title={buttonText}
-							disable={isSpinner}
+							disable={isSpinner || !openSparrowApp}
 							buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-14'}
 							textStyleProp={"font-family: 'Inter', sans-serif; font-weight:500; line-height:143%;"}
 							type={'primary'}
