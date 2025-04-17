@@ -4,7 +4,7 @@
 <div class="w-100 d-flex align-items-center justify-content-center">
     <a href={`mailto:${constants.SPARROW_SUPPORT_EMAIL}`} class="sparrow-fs-12">Need Help?</a>
     <span class="px-2 text-textColor mb-1" >|</span>
-    <a href={`https://sparrowapp.canny.io/feedback`} class="sparrow-fs-12">Report Issue</a>
+    <a href={constants.CANNY_FEEBACK_URL} class="sparrow-fs-12">Report Issue</a>
 </div>
 <style>
     a{

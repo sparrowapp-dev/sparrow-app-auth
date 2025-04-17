@@ -13,13 +13,7 @@
 	export let email;
 
 	onMount(async () => {
-		const response=await handleAcceptTeamInvite(teamId, inviteId, email);
-        if (response) {
-            
-        } else {
-            isSpinner = false;
-            console.error('Failed to accept team invite.');
-        }
+		await handleAcceptTeamInvite(teamId, inviteId);
         isSpinner = false;
 	});
 
