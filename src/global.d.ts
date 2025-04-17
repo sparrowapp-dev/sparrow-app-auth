@@ -8,5 +8,6 @@ interface Window {
 		VITE_TERMS_OF_SERVICE?: string;
 		VITE_SPARROW_WEB_URL?: string;
 		VITE_SPARROW_PRIVACY_POLICY?: string;
+		VITE_CANNY_FEEDBACK_URL?: string;
 	};
 }
