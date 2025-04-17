@@ -11,21 +11,18 @@
 	export let teamId;
 	export let inviteId;
 	export let email;
+	let openSparrowApp = false;
 
 	onMount(async () => {
-		await handleAcceptTeamInvite(teamId, inviteId);
-        isSpinner = false;
+		const response= await handleAcceptTeamInvite(teamId, inviteId);
+		console.log('response', response);
+		if(response) {
+			openSparrowApp = true;
+		}
+		isSpinner = false;
 	});
-
-	 let title = 'Title';
-	 let description = 'Description';
-	 let message = 'Detailed Message';
 	 let isSpinner = true;
 	 let buttonText = 'Open Sparrow App';
-
-	 let copyLink = () => {};
-	 let loadingMessage = '';
-	 let userTeams: TeamDetails[] = [];
 
      const sparrowRedirect = `sparrow://`;
   
