@@ -4,7 +4,6 @@ const firstNameRegex = /^[A-Za-z\s]+$/;
 const lastNameRegex = /^[A-Za-z\s]*$/;
 const firstNameSpaceCheck = /^[^\s].*$/;
 
-
 //----------------------------- Check Validation ---------------------//
 export const checkValidation = async (validationSchema, val) => {
 	let validationErrors = {};
@@ -29,10 +28,12 @@ export const registrationSchema = yup.object().shape({
 		.required('Please enter a valid Email ID'),
 	firstName:yup
 		.string()
-		.matches(firstNameRegex, "Your first name cannot have numbers or special characters.")
-		.matches(firstNameSpaceCheck , 'Your first name cannot start with spaces.')
+		.matches(firstNameRegex, 'Your first name cannot have numbers or special characters.')
+		.matches(firstNameSpaceCheck, 'Your first name cannot start with spaces.')
 		.required('Please enter your first name.'),
-	lastName: yup.string().matches(lastNameRegex, "Your last name cannot have numbers or special characters."),
+	lastName: yup
+		.string()
+		.matches(lastNameRegex, 'Your last name cannot have numbers or special characters.'),
 	password: yup
 		.string()
 		.required()
@@ -46,7 +47,7 @@ export const loginSchema = yup.object().shape({
 	email: yup
 		.string()
 		.email()
-		.matches(emailRegex, 'Please enter a valid Email ID')
+		.matches(emailRegex, 'Please enter a valid Email ID.')
 		.required('Please enter your email ID.'),
 	password: yup.string().required('Please enter your password.')
 });
@@ -64,9 +65,8 @@ export const forgotPasswordSchema = yup.object().shape({
 	email: yup
 		.string()
 		.email()
-		.required('Please enter an Email ID')
-		.matches(emailRegex, 'Please enter a valid email ID.')
 		.required('Please enter your registered email ID.')
+		.matches(emailRegex, 'Please enter a valid email ID.')
 });
 
 export const resetPasswordSchema = yup.object().shape({
