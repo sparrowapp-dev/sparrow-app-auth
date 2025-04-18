@@ -173,7 +173,7 @@
 						: 'border-default'}"
 					id="exampleInputEmail1"
 					aria-describedby="emailHelp"
-					placeholder="Enter your email address"
+					placeholder="Enter your email ID"
 					autocorrect="off"
 					autocapitalize="none"
 					autocomplete="off"

@@ -38,7 +38,7 @@
 			class="container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
 			style="font-size:24px; font-weight: 400; padding-top:20px; line-height:28px; text-align:center;"
 		>
-			Forgot Password ?
+			Forgot Password?
 		</p>
 		<p class="" style="color: lightGray; font-size:12px;">Let us help you</p>
 	</div>
@@ -79,7 +79,7 @@
 					: '1px'} solid {validationErrors?.email && isEmailTouched ? 'border-error' : 'border-default'}"
 				id="exampleInputEmail1"
 				aria-describedby="emailHelp"
-				placeholder="Please enter your registered Email ID"
+				placeholder="Enter your registered email ID"
 				autocorrect="off"
 				autocapitalize="none"
 				autocomplete="off"

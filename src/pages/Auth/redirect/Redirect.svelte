@@ -51,8 +51,8 @@
 
 	<div class="" style="margin-top:20px ;">
 		<p
-			class=" text-transparent text-center ms-2 me-2 ellipsis"
-			style="font-weight: 600; font-size: 24px; line-height: 1.2; font-family: 'Inter', sans-serif;"
+			class=" container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
+			style="font-size:24px; font-weight: 400;  line-height:28px; text-align:center; max-width:300px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"
 		>
 			{title}
 			<br />
@@ -101,7 +101,7 @@
 		<div class="sparrow-fw-400" style="margin-top: 6px;">
 			<div class="d-flex align-items-center justify-content-center">
 				<div
-				style="text-align:center; max-width: 300px; color:#9B9DA1; font-family: 'Inter', sans-serif;"
+				style="text-align:center; max-width: 400px; color:#9B9DA1; font-family: 'Inter', sans-serif;"
 				class="mt-4 sparrow-fw-400 sparrow-fs-12"
 			>
 				<p>

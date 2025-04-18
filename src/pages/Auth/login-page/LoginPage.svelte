@@ -123,8 +123,7 @@
 								setTimeout(() => {
 									
 									redirectRules.description = `Redirecting you to desktop app...`;
-									redirectRules.message = `If the application does not open automatically,
-							please click below.`;
+									redirectRules.message = `the link if the application does not open automatically.`;
 									redirectRules.loadingMessage = '';
 									redirectRules.isSpinner = false;
 									navigate(sparrowRedirect);
@@ -210,7 +209,7 @@
 						type="password"
 						autocomplete="off"
 						id="exampleInputPassword1"
-						placeholder="Please enter your password"
+						placeholder="Enter your password"
 						autocorrect="off"
 						autocapitalize="none"
 						bind:value={loginCredentials.password}
@@ -249,7 +248,7 @@
 					<small class="form-text text-dangerColor">{validationErrors?.password}</small>
 				{:else if authenticationError}
 					<small class="form-text text-dangerColor"
-						>Invalid email or password. Please try again.</small
+						>Invalid email ID or password. Please enter your valid email ID and password.</small
 					>
 				{/if}
 			</div>

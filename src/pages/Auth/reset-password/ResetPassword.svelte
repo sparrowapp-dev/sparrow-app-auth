@@ -162,7 +162,7 @@
 					autocomplete="off"
 					name="password"
 					id="newpassword"
-					placeholder="eg: password@123"
+					placeholder="Enter your password"
 					bind:value={resetPasswordCredential.newPassword}
 					on:blur={() => {
 						isPasswordTouched = true;
@@ -259,7 +259,7 @@
 					name="confirmpassword"
 					id="confirmpassword"
 					bind:value={confirmPassword}
-					placeholder="Please confirm your password"
+					placeholder="Enter your password once again"
 					on:blur={() => {
 						isConfirmPasswordTouched = true;
 						validateConfirmPassword();
@@ -280,7 +280,7 @@
 				</button>
 			</div>
 			{#if !doPasswordsMatch && isConfirmPasswordTouched}
-				<small style="color: #FE8C98; font-size: 12px;">Password doesn't match</small>
+				<small style="color: #FE8C98; font-size: 12px;">Passwords do not match. Please make sure both password fields match.</small>
 			{/if}
 		</div>
 

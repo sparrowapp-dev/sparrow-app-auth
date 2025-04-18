@@ -100,6 +100,18 @@ const updateOccaisonalUpdatesStatus = async (occaisonalUpdates: OccaisonalUpdate
 	return response;
 }
 
+const acceptTeamInvite = async (teamId: string, inviteId: string) => { 
+	const response = await makeRequest('POST', `${apiUrl}/api/team/${teamId}/invite/user/accept/${inviteId}`, { 
+		body: {}
+	})
+	return response;
+}
+
+const resendInviteTeam = async (teamId:string, inviteId:string)=>{
+	const response = await makeRequest('POST',`${apiUrl}/api/team/${teamId}/resend-invite/${inviteId}`,{})
+	return response;
+}
+
  
 export { 
 	registerUser, 
@@ -113,5 +125,7 @@ export {
 	verifyUserEmail,
 	sendMagicCodeEmail,
 	verifyMagicCode,
-	updateOccaisonalUpdatesStatus
+	updateOccaisonalUpdatesStatus,
+	acceptTeamInvite,
+	resendInviteTeam
 };

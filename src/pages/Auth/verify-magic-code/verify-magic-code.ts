@@ -14,11 +14,15 @@ export const handleVerifyUserEmail = async (verifyCodeCredential: verifyMagicCod
 	} else { 
 		isSuccessfulResponseMagicCode.set(true);
 		if (response.message === 'magicCode should not be empty' || response.message === "magicCode must be longer than or equal to 6 characters") {
-			errorMessageTextMagicCode.set('Please enter the 6-digit verification code.');
+			errorMessageTextMagicCode.set(
+				'Please enter the 6-character alphanumeric code sent to your email ID.'
+			);
 		}
 
 		if (response.message === 'Wrong Code') {
-			errorMessageTextMagicCode.set('Please check the code again');
+			errorMessageTextMagicCode.set(
+				'Entered verification code is incorrect. Please enter the 6-character alphanumeric code sent to your email ID.'
+			);
 		}
 	}
 	return response;
