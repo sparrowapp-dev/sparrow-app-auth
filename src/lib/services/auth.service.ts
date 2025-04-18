@@ -107,6 +107,11 @@ const acceptTeamInvite = async (teamId: string, inviteId: string) => {
 	return response;
 }
 
+const resendInviteTeam = async (teamId:string, inviteId:string)=>{
+	const response = await makeRequest('POST',`${apiUrl}/api/team/${teamId}/resend-invite/${inviteId}`,{})
+	return response;
+}
+
  
 export { 
 	registerUser, 
@@ -121,5 +126,6 @@ export {
 	sendMagicCodeEmail,
 	verifyMagicCode,
 	updateOccaisonalUpdatesStatus,
-	acceptTeamInvite
+	acceptTeamInvite,
+	resendInviteTeam
 };
