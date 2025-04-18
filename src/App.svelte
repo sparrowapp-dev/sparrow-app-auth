@@ -19,6 +19,7 @@
 	import PasswordLogin from './pages/Auth/password-login/PasswordLogin.svelte';
 	import PasswordUpdateRedirect from './pages/Auth/password-update-redirect/PasswordUpdateRedirect.svelte';
 	import TeamInviteAcceptance from './pages/Auth/team-invite-acceptance/TeamInviteAcceptance.svelte';
+	import ResendInviteTeam from './pages/Auth/resend-invite-team/ResendInviteTeam.svelte';
 	export let url = '/';
 
 </script>
@@ -73,6 +74,9 @@
 
 	<!-- Team invite acceptance page that accepts teams invite -->
 	<Route path="/accept-team-invite/:teamId/:inviteId/:email" component={TeamInviteAcceptance}/>
+
+	<!-- Team invite acceptance page that accepts teams invite -->
+	<Route path="/resend-invite/:teamId/:inviteId" component={ResendInviteTeam}/>
 
 	<!-- CooldownPage
 	Page displayed when the user has triggered too many requests, enforcing a cooldown period -->
