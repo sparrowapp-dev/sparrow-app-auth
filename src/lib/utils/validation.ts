@@ -65,8 +65,8 @@ export const forgotPasswordSchema = yup.object().shape({
 	email: yup
 		.string()
 		.email()
-		.required('Please enter your registered email ID.')
 		.matches(emailRegex, 'Please enter a valid email ID.')
+		.required('Please enter your registered email ID.')
 });
 
 export const resetPasswordSchema = yup.object().shape({
