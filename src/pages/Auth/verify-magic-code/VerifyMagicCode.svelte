@@ -263,7 +263,7 @@
 			>
 				<img height="20px" width="20px" src={sparrowicon} alt="" class="" />
 			</div>
-			<p style="font-weight:500;">Sparrow</p>
+			<p style="font-weight:500; margin-bottom: 0px;">Sparrow</p>
 		</div>
 
 		<div style="margin-top:20px; display: flex ; flex-direction:column; align-items:center;">
@@ -273,12 +273,12 @@
 			>
 				Welcome {firstName}
 			</p>
-			<p class="" style="color: lightGray; font-size:14px;">Just one more step</p>
+			<p class="" style="color: lightGray; font-size:14px;">Just one more step.</p>
 		</div>
 
 		<div class="login-form text-lightGray ps-1 pe-1 gap-16">
 			<div class="d-flex flex-column align-items-left mb-2">
-				<div class="text-center sparrow-fs-14 sparrow-fs-300 mt-5">
+				<div class="text-center sparrow-fs-14 sparrow-fs-300 mt-2">
 					<p class="sparrow-fs-12">
 						We have sent a magic code at <br />
 						<span class="email-text">{emailText}</span>
@@ -573,14 +573,14 @@
 					{/if}
 
 
-						<div class="" style="margin-top:64px; margin-bottom:24px;">
+						<div class="" style="margin-bottom:16px;">
 
 						{#if seconds > 0}
-							<p class="mt-5 sparrow-fs-12" style="color: #CCCCCC; font-weight:400; ">
+							<p class="mt-2 sparrow-fs-12" style="color: #CCCCCC; font-weight:400; ">
 								Code will expire in {formatTime(seconds)}
 							</p>
 						{:else}
-							<p class="mt-5 text-dangerColor">Code Expired.</p>
+							<p class="mt-2 text-dangerColor">Code Expired.</p>
 						{/if}
 						</div>
 					</div>

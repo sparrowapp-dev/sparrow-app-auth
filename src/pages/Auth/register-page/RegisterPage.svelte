@@ -99,12 +99,12 @@
 		<div class="" style=" display: flex ; flex-direction:column; align-items:center;">
 			<p
 				class="container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
-				style=" font-size:24px; font-weight: 600; padding-top:20px; line-height:28px; text-align:center;"
+				style=" font-size:24px; font-weight: 600; line-height:28px; text-align:center;"
 			>
 				Create Profile
 			</p>
 			<p class="" style=" line-height:28px; color: lightGray; font-size:14px;">
-				Let's get to know you better
+				Let's get to know you better.
 			</p>
 		</div>
 
@@ -152,7 +152,7 @@
 				} 
 			}}
 		>
-			<div style="margin-top:44px;">
+			<div style="">
 				<div class="form-group mb-3">
 					<div>
 						<label for="name" class="sparrow-fs-14 text-colorWhite d-flex"
