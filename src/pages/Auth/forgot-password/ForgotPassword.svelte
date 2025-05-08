@@ -40,7 +40,7 @@
 		>
 			Forgot Password?
 		</p>
-		<p class="" style="color: lightGray; font-size:12px;">Let us help you</p>
+		<p class="" style="color: lightGray; font-size:12px;">Let us help you.</p>
 	</div>
 
 	<form
