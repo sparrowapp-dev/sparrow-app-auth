@@ -111,7 +111,7 @@
 		>
 			Welcome to Sparrow
 		</p>
-		<p class="" style="color: lightGray; font-size:12px; margin-bottom:15%;">Your API Sidekick</p>
+		<p class="" style="color: lightGray; font-size:12px; margin-bottom:15%;">The only API Sidekick you need.</p>
 	</div>
 
 	<!-- <Oauth /> -->
@@ -221,12 +221,12 @@
 		</div>
 	</form>
 
-	<div class="d-flex align-items-start ms-1">
+	<div class="d-flex align-items-start">
 		<div style="height: 24px; width:24px;">
 			<AiSparkle height={'24px'} width={'24px'} />
 		</div>
-		<p class="text-center sparrow-fs-12 pt-1 mb-0" style="margin-left:-10px; color: #CCCCCCE5;">
-			Looking for a password less Login? <span
+		<p class="text-center sparrow-fs-12 pt-1 mb-0" style="color: #CCCCCCE5;">
+			Looking for password less Login? <br> <span
 				on:click={() => {
 					const isDesktopUser = localStorage.getItem('isUserFromDesktop');
 					if (isDesktopUser === "true") {
@@ -235,7 +235,7 @@
 						navigate('/init?source=web');
 					}
 				}}
-				style="color:#3760F7; cursor:pointer;">continue with magic code</span
+				style="color:#3760F7; cursor:pointer;">Continue with magic code.</span
 			>
 		</p>
 	</div>
