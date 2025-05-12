@@ -119,7 +119,7 @@
 		>
 			Welcome to Sparrow!
 		</p>
-		<p class="" style="color: lightGray; font-size:12px;">The only API Sidekick you need</p>
+		<p class="" style="color: lightGray; font-size:12px;">The only API Sidekick you need.</p>
 	</div>
 
 	<Tabs variant="primary">

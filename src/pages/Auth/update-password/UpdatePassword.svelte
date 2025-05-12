@@ -15,6 +15,7 @@
 	import SupportHelp from '$lib/components/help/SupportHelp.svelte';
 
 	import CircleCheck from '$lib/assets/CircleCheck.svelte';
+	import AiSparkle from '$lib/assets/AiSparkle.svelte';
 	export let id: string;
 
 	let seconds = 300; // Changed from 600 to 300 (5 minutes)
@@ -253,22 +254,22 @@
 			>
 				<img height="20px" width="20px" src={sparrowicon} alt="" class="" />
 			</div>
-			<p style="font-weight:500;">Sparrow</p>
+			<p style="font-weight:500; margin-bottom: 0px;">Sparrow</p>
 		</div>
 
-		<div style="margin-top:20px; display: flex ; flex-direction:column; align-items:center;">
+		<div style="margin-top:16px; display: flex ; flex-direction:column; align-items:center;">
 			<p
 				class="container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
 				style="font-size:24px; font-weight: 400;  line-height:28px; text-align:center;"
 			>
 				Complete Verification
 			</p>
-			<p class="" style="color: lightGray; font-size:14px;">We are almost there</p>
+			<p class="" style="color: lightGray; font-size:14px;">We are almost there.</p>
 		</div>
 
 		<div class="login-form text-lightGray ps-1 pe-1 gap-16">
 			<div class="d-flex flex-column align-items-left mb-2">
-				<div class="text-center sparrow-fs-14 sparrow-fs-300 mt-5">
+				<div class="text-center sparrow-fs-14 sparrow-fs-300 mt-1">
 					<p class="sparrow-fs-12">
 						We have sent a verification code at <br />
 						<span class="email-text">{emailText}</span>
@@ -561,11 +562,11 @@
 						{/if}
 
 						{#if seconds > 0}
-							<p class="mt-5 sparrow-fs-12" style="color: #CCCCCC; font-weight:400; ">
+							<p class="mt-2 sparrow-fs-12" style="color: #CCCCCC; font-weight:400; ">
 								Code will expire in {formatTime(seconds)}
 							</p>
 						{:else}
-							<p class="mt-5 text-dangerColor">Code Expired.</p>
+							<p class="mt-2 text-dangerColor">Code Expired.</p>
 						{/if}
 					</div>
 				</div>
@@ -626,10 +627,16 @@
 				/>
 			</div>
 
-			<div class="d-flex gap-3 align-items-center justify-content-center mt-3">
-				<p style="font-size: 13px; text-align:center; line-height:15px;" class="mb-0">
-					If you haven't received the code, <br />
-					click
+			<div class="d-flex align-items-start mt-3">
+				<div style="height: 24px; width:24px;">
+					<AiSparkle height={'24px'} width={'24px'} />
+				</div>
+				<p
+					class="text-center sparrow-fs-12 pt-1 mb-0"
+					style="color: #CCCCCCE5;"
+				>
+					If you haven’t received the code, click on the link <br />
+					in the mail or
 					<span
 						on:click={handleResend}
 						style="font-size: 13px; color:#3670F7;"
