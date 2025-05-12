@@ -44,6 +44,8 @@
 		const source = urlParams.get('source'); // Get 'source' from query param
 		if (source === 'web') {
 			localStorage.setItem('isUserFromDesktop', 'false');
+		} else if (source === 'admin') {
+			localStorage.setItem('isUserFromDesktop', 'admin');
 		} else {
 			localStorage.setItem('isUserFromDesktop', 'true');
 		}
@@ -120,144 +122,152 @@
 		<p class="" style="color: lightGray; font-size:12px;">The only API Sidekick you need</p>
 	</div>
 
-	<Tabs  variant="primary" >
-	<div slot="managed">
-		<form
-		class="login-form w-100 text-whiteColor ps-1 pe-1 mb-2 mt-4"
-		novalidate
-		on:submit|preventDefault={async () => {
-			isSubmitting = true;
-			isEmailTouched = true;
-			validationErrors = await handleEntryValidation(entryCredentials);
-			if (!validationErrors?.email) {
-				entryLoader = true;
-				const response = await handleEntry(entryCredentials);
-				if (response.isSuccessful) {
-					if (
-						response?.data?.registeredWith === 'email' ||
-						response?.data?.registeredWith === 'google'
-					) {
-						// Send magic code before redirecting
-						localStorage.setItem(
-							`timer-verify-magic-code-${entryCredentials.email}`,
-							new Date().getTime()
-						);
-
-						await handleMagicCodeAndRedirect(entryCredentials?.email);
-					} else {
-						// New user - redirect to registration
-						navigate(`/register/${entryCredentials?.email}`);
-					}
-				} else {
-					notifications.error(response?.message);
-				}
-				entryLoader = false;
-			}
-			isSubmitting = false;
-		}}
-	>
-		<!-- <p class="card-subtitle sparrow-fs-20 sparrow-fw-500 mb-3">Sign In or Create an Account</p> -->
-		<div class="mb-3">
-			<label for="exampleInputEmail1" class="form-label text-Gray sparrow-fs-14 d-flex"
-				>Email ID
-				<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label
-			>
-
-			<div class="d-flex position-relative mt-1">
-				<input
-					type="email"
-					class="form-control pe-5 sparrow-fs-16 border:{validationErrors?.email && isEmailTouched
-						? '3px'
-						: '1px'} solid {validationErrors?.email && isEmailTouched
-						? 'border-error'
-						: 'border-default'}"
-					id="exampleInputEmail1"
-					aria-describedby="emailHelp"
-					placeholder="Enter your email ID"
-					autocorrect="off"
-					autocapitalize="none"
-					autocomplete="off"
-					bind:value={entryCredentials.email}
-					on:blur={async () => {
-						isEmailTouched = true;
-						validationErrors = await handleEntryValidation(entryCredentials);
-						clearTimeout(checkTimeout);
-						checkTimeout = setTimeout(
-							() => checkEmailExistenceOnInput(entryCredentials.email),
-							1000
-						);
-					}}
-					on:input={async () => {
+	<Tabs variant="primary">
+		<div slot="managed">
+			<form
+				class="login-form w-100 text-whiteColor ps-1 pe-1 mb-2 mt-4"
+				novalidate
+				on:submit|preventDefault={async () => {
+					isSubmitting = true;
+					isEmailTouched = true;
+					validationErrors = await handleEntryValidation(entryCredentials);
+					if (!validationErrors?.email) {
 						entryLoader = true;
-						validationErrors = await handleEntryValidation(entryCredentials);
-						clearTimeout(checkTimeout);
-						checkTimeout = setTimeout(
-							() => checkEmailExistenceOnInput(entryCredentials.email),
-							1000
-						);
-					}}
-				/>
+						const response = await handleEntry(entryCredentials);
+						if (response.isSuccessful) {
+							if (
+								response?.data?.registeredWith === 'email' ||
+								response?.data?.registeredWith === 'google'
+							) {
+								// Send magic code before redirecting
+								localStorage.setItem(
+									`timer-verify-magic-code-${entryCredentials.email}`,
+									new Date().getTime()
+								);
 
-				<button
-					type="button"
-					on:click={() => {}}
-					class=" border-0 position-absolute eye-icon d-flex align-items-center"
-				>
-					{#if entryLoader}
-						<Spinner size={'16px'} />
-					{:else if emailExists && entryCredentials.email.trim().length > 0}
-						<CircleTick height={'16px'} width={'16px'} />
+								await handleMagicCodeAndRedirect(entryCredentials?.email);
+							} else {
+								// New user - redirect to registration
+								navigate(`/register/${entryCredentials?.email}`);
+							}
+						} else {
+							notifications.error(response?.message);
+						}
+						entryLoader = false;
+					}
+					isSubmitting = false;
+				}}
+			>
+				<!-- <p class="card-subtitle sparrow-fs-20 sparrow-fw-500 mb-3">Sign In or Create an Account</p> -->
+				<div class="mb-3">
+					<label for="exampleInputEmail1" class="form-label text-Gray sparrow-fs-14 d-flex"
+						>Email ID
+						<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label
+					>
+
+					<div class="d-flex position-relative mt-1">
+						<input
+							type="email"
+							class="form-control pe-5 sparrow-fs-16 border:{validationErrors?.email &&
+							isEmailTouched
+								? '3px'
+								: '1px'} solid {validationErrors?.email && isEmailTouched
+								? 'border-error'
+								: 'border-default'}"
+							id="exampleInputEmail1"
+							aria-describedby="emailHelp"
+							placeholder="Enter your email ID"
+							autocorrect="off"
+							autocapitalize="none"
+							autocomplete="off"
+							bind:value={entryCredentials.email}
+							on:blur={async () => {
+								isEmailTouched = true;
+								validationErrors = await handleEntryValidation(entryCredentials);
+								clearTimeout(checkTimeout);
+								checkTimeout = setTimeout(
+									() => checkEmailExistenceOnInput(entryCredentials.email),
+									1000
+								);
+							}}
+							on:input={async () => {
+								entryLoader = true;
+								validationErrors = await handleEntryValidation(entryCredentials);
+								clearTimeout(checkTimeout);
+								checkTimeout = setTimeout(
+									() => checkEmailExistenceOnInput(entryCredentials.email),
+									1000
+								);
+							}}
+						/>
+
+						<button
+							type="button"
+							on:click={() => {}}
+							class=" border-0 position-absolute eye-icon d-flex align-items-center"
+						>
+							{#if entryLoader}
+								<Spinner size={'16px'} />
+							{:else if emailExists && entryCredentials.email.trim().length > 0}
+								<CircleTick height={'16px'} width={'16px'} />
+							{/if}
+						</button>
+					</div>
+
+					{#if validationErrors?.email && isEmailTouched}
+						<small class="form-text text-dangerColor"> {validationErrors?.email}</small>
 					{/if}
-				</button>
+				</div>
+
+				<div>
+					<Button
+						disable={entryLoader || isSubmitting}
+						title={!emailExists && showContinueButton ? 'Continue' : 'Send Magic Code'}
+						buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-16'}
+						type={'primary'}
+					/>
+				</div>
+			</form>
+
+			<div class="divider w-100">
+				<span class="line"></span>
+				<span class="text" style="color:var(--editor-angle-bracket)">Or</span>
+				<span class="line"></span>
 			</div>
 
-			{#if validationErrors?.email && isEmailTouched}
-				<small class="form-text text-dangerColor"> {validationErrors?.email}</small>
-			{/if}
+			<Oauth />
+			<div class="d-flex align-items-start ms-1">
+				<div style="height: 24px; width:24px;">
+					<AiSparkle height={'24px'} width={'24px'} />
+				</div>
+				<p class="text-center sparrow-fs-12 pt-1 mb-0" style="margin-left:-10px; color: #CCCCCCE5;">
+					We will email you a magic code for password free Sign in or you can <span
+						on:click={() => {
+							navigate('/password-login');
+							MixpanelEvent('Continue_with_password');
+						}}
+						style="color:#3760F7; cursor:pointer;">continue with password</span
+					>
+				</p>
+			</div>
 		</div>
-
-		<div>
-			<Button
-				disable={entryLoader || isSubmitting}
-				title={!emailExists && showContinueButton ? 'Continue' : 'Send Magic Code'}
-				buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-16'}
-				type={'primary'}
-			/>
+		<div slot="self-hosted">
+			<div class="d-flex justify-content-center mt-4">
+				<CloudCube />
+			</div>
+			<div class="self-hosting-container">
+				<p class="d-flex justify-content-center text-center" style="margin: 0px; color:#ffffff;">
+					Self Hosting is Coming Soon!
+				</p>
+				<p
+					class="d-flex justify-content-center text-center"
+					style="margin: 0px; color:#9B9DA1; font-size:12px;"
+				>
+					Gain full control of your deployment with our upcoming self-hosting feature. Stay tuned!
+				</p>
+			</div>
 		</div>
-	</form>
-
-	<div class="divider w-100">
-		<span class="line"></span>
-		<span class="text" style="color:var(--editor-angle-bracket)">Or</span>
-		<span class="line"></span>
-	</div>
-
-	<Oauth />
-	<div class="d-flex align-items-start ms-1">
-		<div style="height: 24px; width:24px;">
-			<AiSparkle height={'24px'} width={'24px'} />
-		</div>
-		<p class="text-center sparrow-fs-12 pt-1 mb-0" style="margin-left:-10px; color: #CCCCCCE5;">
-			We will email you a magic code for password free Sign in or you can <span
-				on:click={() => {
-					navigate('/password-login');
-					MixpanelEvent('Continue_with_password');
-				}}
-				style="color:#3760F7; cursor:pointer;">continue with password</span
-			>
-		</p>
-	</div>
-    </div>
-	<div slot="self-hosted">
-		<div class="d-flex justify-content-center mt-4">
-			<CloudCube />
-		</div>
-		<div class="self-hosting-container">
-			<p class="d-flex justify-content-center text-center" style="margin: 0px; color:#ffffff;">Self Hosting is Coming Soon!</p>
-			<p class="d-flex justify-content-center text-center" style="margin: 0px; color:#9B9DA1; font-size:12px;">Gain full control of your deployment with our upcoming self-hosting feature. Stay tuned!</p>
-		</div>
-    </div>				
-    </Tabs>
+	</Tabs>
 	<div style="margin-top: 24px;">
 		<SupportHelp />
 	</div>
@@ -298,7 +308,7 @@
 		color: #bfc0d2;
 		font-size: 14px;
 	}
-	.self-hosting-container{
+	.self-hosting-container {
 		width: 310px;
 	}
 </style>

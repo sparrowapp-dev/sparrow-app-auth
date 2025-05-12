@@ -139,7 +139,6 @@
 					) {
 						// Send magic code before redirecting
 						navigate(`/login/${entryCredentials?.email}`);
-
 					} else {
 						// New user - redirect to registration
 						navigate(`/register/${entryCredentials?.email}`);
@@ -229,8 +228,10 @@
 			Looking for a password less Login? <span
 				on:click={() => {
 					const isDesktopUser = localStorage.getItem('isUserFromDesktop');
-					if (isDesktopUser === "true") {
+					if (isDesktopUser === 'true') {
 						navigate('/init?source=desktop');
+					} else if (isDesktopUser === 'admin') {
+						navigate('/init?source=admin');
 					} else {
 						navigate('/init?source=web');
 					}

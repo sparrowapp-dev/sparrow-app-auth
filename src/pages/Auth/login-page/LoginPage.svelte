@@ -114,14 +114,16 @@
 							const sparrowWebRedirect =
 								constants.SPARROW_WEB_URL +
 								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
+							const sparrowAdminRedirect =
+								constants.SPARROW_ADMIN_URL +
+								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
 							if (userFromDesktop === 'true') {
 								let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
-									let firstName = data.name;
-				                        firstName = firstName.split(' ')[0];
-				                        firstName = firstName.length > 11 ? firstName.substring(0, 5) + "..." : firstName;
-									redirectRules.title = `Welcome Back ${firstName}`;
+								let firstName = data.name;
+								firstName = firstName.split(' ')[0];
+								firstName = firstName.length > 11 ? firstName.substring(0, 5) + '...' : firstName;
+								redirectRules.title = `Welcome Back ${firstName}`;
 								setTimeout(() => {
-									
 									redirectRules.description = `Redirecting you to desktop app...`;
 									redirectRules.message = `the link if the application does not open automatically.`;
 									redirectRules.loadingMessage = '';
@@ -132,11 +134,13 @@
 									};
 									redirectRules.copyLink = () => {
 										if (navigator.clipboard) {
-											notifications.success("Link copied to clipboard.");
+											notifications.success('Link copied to clipboard.');
 											return navigator.clipboard.writeText(sparrowRedirect);
-										} 
+										}
 									};
 								}, 1000);
+							} else if (userFromDesktop === 'admin') {
+								navigate(sparrowAdminRedirect);
 							} else {
 								navigate(sparrowWebRedirect);
 							}
@@ -280,6 +284,8 @@
 						const isDesktopUser = localStorage.getItem('isUserFromDesktop');
 						if (isDesktopUser === 'true') {
 							navigate('/init?source=desktop');
+						} else if (isDesktopUser === 'admin') {
+							navigate('/init?source=admin');
 						} else {
 							navigate('/init?source=web');
 						}

@@ -261,7 +261,7 @@
 				class="container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
 				style="font-size:24px; font-weight: 400;  line-height:28px; text-align:center;"
 			>
-			Complete Verification
+				Complete Verification
 			</p>
 			<p class="" style="color: lightGray; font-size:14px;">We are almost there</p>
 		</div>
@@ -416,8 +416,7 @@
 										? 'selected'
 										: ''} {verificationCodeError ? 'error' : ''}"
 								>
-							
-								<input
+									<input
 										type="text"
 										autocorrect="off"
 										autocapitalize="none"
@@ -544,8 +543,6 @@
 										</div>
 									{/if}
 								</div>
-
-								
 							</div>
 							{#if verificationCodeError === true}
 								<small class="form-text" style="color: #FE8C98;">
@@ -574,7 +571,7 @@
 				</div>
 
 				<Button
-				buttonStyleProp={"height:44px;"}
+					buttonStyleProp={'height:44px;'}
 					disable={!seconds}
 					title={'Verify Code'}
 					buttonClassProp={'w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16'}
@@ -591,13 +588,15 @@
 							const sparrowWebRedirect =
 								constants.SPARROW_WEB_URL +
 								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=register&method=email`;
-
+							const sparrowAdminRedirect =
+								constants.SPARROW_ADMIN_URL +
+								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=code`;
 							if (userFromDesktop === 'true') {
 								let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
 								let firstName = data.name;
-				                    firstName = firstName.split(' ')[0];
-				                    firstName = firstName.length > 11 ? firstName.substring(0, 5) + "..." : firstName;
-									redirectRules.title = `Welcome Back ${firstName}`;
+								firstName = firstName.split(' ')[0];
+								firstName = firstName.length > 11 ? firstName.substring(0, 5) + '...' : firstName;
+								redirectRules.title = `Welcome Back ${firstName}`;
 								setTimeout(() => {
 									redirectRules.description = `Redirecting you to desktop app...`;
 									redirectRules.message = `the token if you are facing any issue in redirecting to the login page`;
@@ -609,11 +608,13 @@
 									};
 									redirectRules.copyLink = () => {
 										if (navigator.clipboard) {
-											notifications.success("Link copied to clipboard.");
+											notifications.success('Link copied to clipboard.');
 											return navigator.clipboard.writeText(sparrowRedirect);
-										} 
+										}
 									};
 								}, 5000);
+							} else if (userFromDesktop === 'admin') {
+								navigate(sparrowAdminRedirect);
 							} else {
 								navigate(sparrowWebRedirect);
 							}
@@ -627,7 +628,7 @@
 			<div class="d-flex gap-3 align-items-center justify-content-center mt-3">
 				<p style="font-size: 13px; text-align:center; line-height:15px;" class="mb-0">
 					If you haven't received the code, <br />
-					click 
+					click
 					<span
 						on:click={handleResend}
 						style="font-size: 13px; color:#3670F7;"

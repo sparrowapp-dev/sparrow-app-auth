@@ -13,6 +13,8 @@
 		userFromDesktop = await localStorage.getItem('isUserFromDesktop');
 		if (userFromDesktop === 'true') {
 			sparrowRedirect = `sparrow://?accessToken=&refreshToken=&response=&event=login&method=email&isSparrowEdge=true`;
+		} else if (userFromDesktop === 'admin') {
+			sparrowRedirect = constants.SPARROW_ADMIN_URL;
 		} else {
 			sparrowRedirect = constants.SPARROW_WEB_URL;
 		}

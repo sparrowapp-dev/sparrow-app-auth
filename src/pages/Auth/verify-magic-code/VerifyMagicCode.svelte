@@ -16,10 +16,9 @@
 	import CircleCheck from '$lib/assets/CircleCheck.svelte';
 	import { handleVerifyUserEmail, isSuccessfulResponseMagicCode } from './verify-magic-code';
 	export let id: string;
-	export let name: string ="";
-	
-	 let firstName = name.split(' ')[0];
+	export let name: string = '';
 
+	let firstName = name.split(' ')[0];
 
 	let seconds = 300; // Changed from 600 to 300 (5 minutes)
 	const verifyString = writable('');
@@ -148,7 +147,7 @@
 			verificationCode6 = '';
 			onCodeInput();
 		} else {
-			if (response.message === 'Cooldown Active') { 
+			if (response.message === 'Cooldown Active') {
 				navigate('/cool-down-active');
 			} else {
 				notifications.error(response.message);
@@ -426,8 +425,7 @@
 										? 'selected'
 										: ''} {verificationCodeError ? 'error' : ''}"
 								>
-							
-								<input
+									<input
 										type="text"
 										autocorrect="off"
 										autocapitalize="none"
@@ -562,32 +560,29 @@
 							{/if}
 						</div>
 
-
 						{#if showResendSuccess && seconds > 0}
-						<div
-							style=" display:flex; align-items:center; justify-content:center; background-color: #272E34; border-radius:6px; width:fit-content; padding:8px 16px; margin:30px auto;"
-						>
-							<CircleCheck height={'16px'} width={'16px'} color={'#00DF80'} />
-							<p class="mb-0 ms-2">Code resent successfully.</p>
-						</div>
-					{/if}
-
+							<div
+								style=" display:flex; align-items:center; justify-content:center; background-color: #272E34; border-radius:6px; width:fit-content; padding:8px 16px; margin:30px auto;"
+							>
+								<CircleCheck height={'16px'} width={'16px'} color={'#00DF80'} />
+								<p class="mb-0 ms-2">Code resent successfully.</p>
+							</div>
+						{/if}
 
 						<div class="" style="margin-top:64px; margin-bottom:24px;">
-
-						{#if seconds > 0}
-							<p class="mt-5 sparrow-fs-12" style="color: #CCCCCC; font-weight:400; ">
-								Code will expire in {formatTime(seconds)}
-							</p>
-						{:else}
-							<p class="mt-5 text-dangerColor">Code Expired.</p>
-						{/if}
+							{#if seconds > 0}
+								<p class="mt-5 sparrow-fs-12" style="color: #CCCCCC; font-weight:400; ">
+									Code will expire in {formatTime(seconds)}
+								</p>
+							{:else}
+								<p class="mt-5 text-dangerColor">Code Expired.</p>
+							{/if}
 						</div>
 					</div>
 				</div>
 
 				<Button
-				buttonStyleProp={"height:44px;"}
+					buttonStyleProp={'height:44px;'}
 					disable={!seconds}
 					title={'Verify Code'}
 					buttonClassProp={'w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16'}
@@ -603,6 +598,9 @@
 							const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=login&method=code`;
 							const sparrowWebRedirect =
 								constants.SPARROW_WEB_URL +
+								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=code`;
+							const sparrowAdminRedirect =
+								constants.SPARROW_ADMIN_URL +
 								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=code`;
 
 							if (userFromDesktop === 'true') {
@@ -620,11 +618,13 @@
 									};
 									redirectRules.copyLink = () => {
 										if (navigator.clipboard) {
-											notifications.success("Link copied to clipboard.");
+											notifications.success('Link copied to clipboard.');
 											return navigator.clipboard.writeText(sparrowRedirect);
-										} 
+										}
 									};
 								}, 5000);
+							} else if (userFromDesktop === 'admin') {
+								navigate(sparrowAdminRedirect);
 							} else {
 								navigate(sparrowWebRedirect);
 							}
@@ -635,7 +635,7 @@
 				/>
 			</div>
 
-			<div class="d-flex gap-3 align-items-center justify-content-center " style="margin-top: 18px;">
+			<div class="d-flex gap-3 align-items-center justify-content-center" style="margin-top: 18px;">
 				<p style="font-size: 13px; text-align:center; line-height:15px;" class="mb-0">
 					If you haven't received the code, <br />
 					click
