@@ -84,7 +84,7 @@
 
 	let emailText: string = id || '';
 
-	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
+	let redirctSource = localStorage.getItem('source');
 
 	let showResendSuccess = false;
 	let isResendDisabled = false;
@@ -589,8 +589,11 @@
 							const sparrowWebRedirect =
 								constants.SPARROW_WEB_URL +
 								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=register&method=email`;
+							const sparrowAdminRedirect =
+								constants.SPARROW_ADMIN_URL +
+								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=register&method=email`;
 
-							if (userFromDesktop === 'true') {
+							if (redirctSource === 'desktop') {
 								let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
 								let firstName = data.name;
 								firstName = firstName.split(' ')[0];
@@ -612,6 +615,8 @@
 										}
 									};
 								}, 5000);
+							} else if (redirctSource === 'admin') {
+								navigate(sparrowAdminRedirect);
 							} else {
 								navigate(sparrowWebRedirect);
 							}
@@ -626,10 +631,7 @@
 				<div style="height: 24px; width:24px;">
 					<AiSparkle height={'24px'} width={'24px'} />
 				</div>
-				<p
-					class="text-center sparrow-fs-12 pt-1 mb-0"
-					style="color: #CCCCCCE5;"
-				>
+				<p class="text-center sparrow-fs-12 pt-1 mb-0" style="color: #CCCCCCE5;">
 					If you haven’t received the code, click on the link <br />
 					in the mail or
 					<span

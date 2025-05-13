@@ -7,12 +7,14 @@
 	import AiSparkle from '$lib/assets/AiSparkle.svelte';
 	import constants from '$lib/utils/constants';
 	import { onMount } from 'svelte';
-	let userFromDesktop;
+	let redirctSource;
 	let sparrowRedirect;
 	onMount(async () => {
-		userFromDesktop = await localStorage.getItem('isUserFromDesktop');
-		if (userFromDesktop === 'true') {
+		redirctSource = await localStorage.getItem('source');
+		if (redirctSource === 'desktop') {
 			sparrowRedirect = `sparrow://?accessToken=&refreshToken=&response=&event=login&method=email&isSparrowEdge=true`;
+		} else if (redirctSource === 'admin') {
+			sparrowRedirect = constants.SPARROW_ADMIN_URL;
 		} else {
 			sparrowRedirect = constants.SPARROW_WEB_URL;
 		}
@@ -45,7 +47,7 @@
 			</p>
 		</div>
 
-		{#if userFromDesktop}
+		{#if redirctSource}
 			<div class="w-100 mb-5">
 				<Button
 					onClick={() => navigate(sparrowRedirect)}

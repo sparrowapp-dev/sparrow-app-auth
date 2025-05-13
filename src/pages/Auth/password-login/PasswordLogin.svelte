@@ -40,9 +40,9 @@
 	// 	const urlParams = new URLSearchParams(window.location.search);
 	// 	const source = urlParams.get('source'); // Get 'source' from query param
 	// 	if (source === 'web') {
-	// 		localStorage.setItem('isUserFromDesktop', 'false');
+	// 		localStorage.setItem('source', 'web');
 	// 	} else {
-	// 		localStorage.setItem('isUserFromDesktop', 'true');
+	// 		localStorage.setItem('source', 'desktop');
 	// 	}
 	// });
 
@@ -111,7 +111,9 @@
 		>
 			Welcome to Sparrow
 		</p>
-		<p class="" style="color: lightGray; font-size:12px; margin-bottom:15%;">The only API Sidekick you need.</p>
+		<p class="" style="color: lightGray; font-size:12px; margin-bottom:15%;">
+			The only API Sidekick you need.
+		</p>
 	</div>
 
 	<!-- <Oauth /> -->
@@ -139,7 +141,6 @@
 					) {
 						// Send magic code before redirecting
 						navigate(`/login/${entryCredentials?.email}`);
-
 					} else {
 						// New user - redirect to registration
 						navigate(`/register/${entryCredentials?.email}`);
@@ -226,11 +227,14 @@
 			<AiSparkle height={'24px'} width={'24px'} />
 		</div>
 		<p class="text-center sparrow-fs-12 pt-1 mb-0" style="color: #CCCCCCE5;">
-			Looking for password less Login? <br> <span
+			Looking for password less Login? <br />
+			<span
 				on:click={() => {
-					const isDesktopUser = localStorage.getItem('isUserFromDesktop');
-					if (isDesktopUser === "true") {
+					const isDesktopUser = localStorage.getItem('source');
+					if (isDesktopUser === 'desktop') {
 						navigate('/init?source=desktop');
+					} else if (isDesktopUser === 'admin') {
+						navigate('/init?source=admin');
 					} else {
 						navigate('/init?source=web');
 					}

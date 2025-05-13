@@ -20,20 +20,20 @@
 		size?: number;
 	}
 
-	export let title="Title";
-	export let description= "Description";
-	export let message="Detailed Message";
-	export let isSpinner= true;
-	export let buttonText="Button";
-	export let buttonClick = () => {} ;
-	export let copyLink = () => {} ;
-	export let loadingMessage = "";
-	export let userTeams:TeamDetails[] = [];
-	
-	let userFromDesktop = true;
-	onMount(() => { 
-		userFromDesktop = localStorage.getItem('isUserFromDesktop');
-	})
+	export let title = 'Title';
+	export let description = 'Description';
+	export let message = 'Detailed Message';
+	export let isSpinner = true;
+	export let buttonText = 'Button';
+	export let buttonClick = () => {};
+	export let copyLink = () => {};
+	export let loadingMessage = '';
+	export let userTeams: TeamDetails[] = [];
+
+	let redirctSource = true;
+	onMount(() => {
+		redirctSource = localStorage.getItem('source');
+	});
 </script>
 
 <!-- <Header /> -->
@@ -56,7 +56,9 @@
 		>
 			{title}
 			<br />
-			<span class="sparrow-fs-14" style="font-weight:400; color:#9B9DA1;">To your Sparrow Space</span>
+			<span class="sparrow-fs-14" style="font-weight:400; color:#9B9DA1;"
+				>To your Sparrow Space</span
+			>
 		</p>
 
 		<!-- {#if  !isSpinner}
@@ -69,56 +71,54 @@
 		{#if isSpinner}
 			<div
 				style="font-size: 14px;text-align:center"
-				class="mt-3  text-lightGray d-flex align-items-center justify-content-center mt-4"
+				class="mt-3 text-lightGray d-flex align-items-center justify-content-center mt-4"
 			>
 				<Spinner size={'40px'} />
 			</div>
-		
-
-			{/if}
-		{#if userFromDesktop}
-			
-		<div style="margin-top: 40px;">
-			<div
-				style="font-size: 14px;text-align:center;"
-				class="text-lightGray d-flex align-items-center justify-content-center mt-3"
-			>
-			<div class="" style="width: 300px;">
-				<Button
-					title={buttonText}
-					disable={isSpinner}
-					buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-14'}
-					textStyleProp={"font-family: 'Inter', sans-serif; font-weight:500; line-height:143%;"}
-					type={'primary'}
-					onClick={buttonClick}
-				/>
-			</div>
-			</div>
-		</div>
 		{/if}
-
+		{#if redirctSource}
+			<div style="margin-top: 40px;">
+				<div
+					style="font-size: 14px;text-align:center;"
+					class="text-lightGray d-flex align-items-center justify-content-center mt-3"
+				>
+					<div class="" style="width: 300px;">
+						<Button
+							title={buttonText}
+							disable={isSpinner}
+							buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-14'}
+							textStyleProp={"font-family: 'Inter', sans-serif; font-weight:500; line-height:143%;"}
+							type={'primary'}
+							onClick={buttonClick}
+						/>
+					</div>
+				</div>
+			</div>
+		{/if}
 
 		<div class="sparrow-fw-400" style="margin-top: 6px;">
 			<div class="d-flex align-items-center justify-content-center">
 				<div
-				style="text-align:center; max-width: 400px; color:#9B9DA1; font-family: 'Inter', sans-serif;"
-				class="mt-4 sparrow-fw-400 sparrow-fs-12"
-			>
-				<p>
-					<span role="button" on:click={()=>{
-						copyLink();
-					}}>
-						<CopyIcon2 />
+					style="text-align:center; max-width: 400px; color:#9B9DA1; font-family: 'Inter', sans-serif;"
+					class="mt-4 sparrow-fw-400 sparrow-fs-12"
+				>
+					<p>
 						<span
-							style="text-decoration: underline; color:#B6B7B9;  text-underline-offset: 4px; font-wight:500;"
-							>Copy</span
+							role="button"
+							on:click={() => {
+								copyLink();
+							}}
 						>
-
-					</span>
-					{message}
-				</p>
-			   </div>
-		     </div>
+							<CopyIcon2 />
+							<span
+								style="text-decoration: underline; color:#B6B7B9;  text-underline-offset: 4px; font-wight:500;"
+								>Copy</span
+							>
+						</span>
+						{message}
+					</p>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -127,16 +127,15 @@
 	</div>
 </BgContainer>
 
-
 <style>
-	.hubspot-help-text{
-		font-family: "Inter", sans-serif;
+	.hubspot-help-text {
+		font-family: 'Inter', sans-serif;
 		font-weight: 500;
 		font-size: 12px;
-		line-height: 1.3; 
+		line-height: 1.3;
 		letter-spacing: 0;
 		margin: 0px;
-		color: #9B9DA1;
+		color: #9b9da1;
 		margin-bottom: 8px;
 	}
 </style>

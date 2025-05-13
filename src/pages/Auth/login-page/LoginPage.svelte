@@ -57,7 +57,7 @@
 	};
 	let loginLoader = false;
 
-	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
+	let redirctSource = localStorage.getItem('source');
 </script>
 
 {#if isLogin}
@@ -114,14 +114,16 @@
 							const sparrowWebRedirect =
 								constants.SPARROW_WEB_URL +
 								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
-							if (userFromDesktop === 'true') {
+							const sparrowAdminRedirect =
+								constants.SPARROW_ADMIN_URL +
+								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
+							if (redirctSource === 'desktop') {
 								let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
-									let firstName = data.name;
-				                        firstName = firstName.split(' ')[0];
-				                        firstName = firstName.length > 11 ? firstName.substring(0, 5) + "..." : firstName;
-									redirectRules.title = `Welcome Back ${firstName}`;
+								let firstName = data.name;
+								firstName = firstName.split(' ')[0];
+								firstName = firstName.length > 11 ? firstName.substring(0, 5) + '...' : firstName;
+								redirectRules.title = `Welcome Back ${firstName}`;
 								setTimeout(() => {
-									
 									redirectRules.description = `Redirecting you to desktop app...`;
 									redirectRules.message = `the link if the application does not open automatically.`;
 									redirectRules.loadingMessage = '';
@@ -132,11 +134,13 @@
 									};
 									redirectRules.copyLink = () => {
 										if (navigator.clipboard) {
-											notifications.success("Link copied to clipboard.");
+											notifications.success('Link copied to clipboard.');
 											return navigator.clipboard.writeText(sparrowRedirect);
-										} 
+										}
 									};
 								}, 1000);
+							} else if (redirctSource === 'admin') {
+								navigate(sparrowAdminRedirect);
 							} else {
 								navigate(sparrowWebRedirect);
 							}
@@ -275,11 +279,14 @@
 				<AiSparkle height={'24px'} width={'24px'} />
 			</div>
 			<p class="text-center sparrow-fs-12 pt-1 mb-0" style="color: #CCCCCCE5;">
-				Looking for password less Login? <br> <span
+				Looking for password less Login? <br />
+				<span
 					on:click={() => {
-						const isDesktopUser = localStorage.getItem('isUserFromDesktop');
-						if (isDesktopUser === 'true') {
+						const isDesktopUser = localStorage.getItem('source');
+						if (isDesktopUser === 'desktop') {
 							navigate('/init?source=desktop');
+						} else if (isDesktopUser === 'admin') {
+							navigate('/init?source=admin');
 						} else {
 							navigate('/init?source=web');
 						}

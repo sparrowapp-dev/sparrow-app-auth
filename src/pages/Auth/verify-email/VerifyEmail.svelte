@@ -84,7 +84,7 @@
 
 	let emailText: string = id || '';
 
-	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
+	let redirctSource = localStorage.getItem('source');
 
 	let showResendSuccess = false;
 	let isResendDisabled = false;
@@ -262,7 +262,7 @@
 				class="container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
 				style="font-size:24px; font-weight: 400;  line-height:28px; text-align:center;"
 			>
-				Complete Verification
+				Complete Verification Complete Verification
 			</p>
 			<p class="" style="color: lightGray; font-size:14px;">We are almost there.</p>
 		</div>
@@ -589,8 +589,10 @@
 							const sparrowWebRedirect =
 								constants.SPARROW_WEB_URL +
 								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=register&method=email`;
-
-							if (userFromDesktop === 'true') {
+							const sparrowAdminRedirect =
+								constants.SPARROW_ADMIN_URL +
+								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=code`;
+							if (redirctSource === 'desktop') {
 								let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
 								let firstName = data.name;
 								firstName = firstName.split(' ')[0];
@@ -612,6 +614,8 @@
 										}
 									};
 								}, 5000);
+							} else if (redirctSource === 'admin') {
+								navigate(sparrowAdminRedirect);
 							} else {
 								navigate(sparrowWebRedirect);
 							}
