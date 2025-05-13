@@ -43,11 +43,11 @@
 		const urlParams = new URLSearchParams(window.location.search);
 		const source = urlParams.get('source'); // Get 'source' from query param
 		if (source === 'web') {
-			localStorage.setItem('isUserFromDesktop', 'false');
+			localStorage.setItem('source', 'web');
 		} else if (source === 'admin') {
-			localStorage.setItem('isUserFromDesktop', 'admin');
+			localStorage.setItem('source', 'admin');
 		} else {
-			localStorage.setItem('isUserFromDesktop', 'true');
+			localStorage.setItem('source', 'desktop');
 		}
 	});
 

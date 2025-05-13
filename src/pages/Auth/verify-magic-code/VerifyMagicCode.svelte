@@ -87,7 +87,7 @@
 
 	let emailText: string = id || '';
 
-	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
+	let redirctSource = localStorage.getItem('source');
 
 	let showResendSuccess = false;
 	let isResendDisabled = false;
@@ -570,14 +570,13 @@
 						{/if}
 
 						<div class="" style="margin-bottom:16px;">
-
-						{#if seconds > 0}
-							<p class="mt-2 sparrow-fs-12" style="color: #CCCCCC; font-weight:400; ">
-								Code will expire in {formatTime(seconds)}
-							</p>
-						{:else}
-							<p class="mt-2 text-dangerColor">Code Expired.</p>
-						{/if}
+							{#if seconds > 0}
+								<p class="mt-2 sparrow-fs-12" style="color: #CCCCCC; font-weight:400; ">
+									Code will expire in {formatTime(seconds)}
+								</p>
+							{:else}
+								<p class="mt-2 text-dangerColor">Code Expired.</p>
+							{/if}
 						</div>
 					</div>
 				</div>
@@ -604,7 +603,7 @@
 								constants.SPARROW_ADMIN_URL +
 								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=code`;
 
-							if (userFromDesktop === 'true') {
+							if (redirctSource === 'desktop') {
 								setTimeout(() => {
 									let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
 									redirectRules.title = `Welcome Back ${data.name.split(' ')[0]}`;
@@ -624,7 +623,7 @@
 										}
 									};
 								}, 5000);
-							} else if (userFromDesktop === 'admin') {
+							} else if (redirctSource === 'admin') {
 								navigate(sparrowAdminRedirect);
 							} else {
 								navigate(sparrowWebRedirect);

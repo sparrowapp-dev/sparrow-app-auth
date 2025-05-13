@@ -57,7 +57,7 @@
 	};
 	let loginLoader = false;
 
-	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
+	let redirctSource = localStorage.getItem('source');
 </script>
 
 {#if isLogin}
@@ -117,7 +117,7 @@
 							const sparrowAdminRedirect =
 								constants.SPARROW_ADMIN_URL +
 								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
-							if (userFromDesktop === 'true') {
+							if (redirctSource === 'desktop') {
 								let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
 								let firstName = data.name;
 								firstName = firstName.split(' ')[0];
@@ -139,7 +139,7 @@
 										}
 									};
 								}, 1000);
-							} else if (userFromDesktop === 'admin') {
+							} else if (redirctSource === 'admin') {
 								navigate(sparrowAdminRedirect);
 							} else {
 								navigate(sparrowWebRedirect);
@@ -279,10 +279,11 @@
 				<AiSparkle height={'24px'} width={'24px'} />
 			</div>
 			<p class="text-center sparrow-fs-12 pt-1 mb-0" style="color: #CCCCCCE5;">
-				Looking for password less Login? <br> <span
+				Looking for password less Login? <br />
+				<span
 					on:click={() => {
-						const isDesktopUser = localStorage.getItem('isUserFromDesktop');
-						if (isDesktopUser === 'true') {
+						const isDesktopUser = localStorage.getItem('source');
+						if (isDesktopUser === 'desktop') {
 							navigate('/init?source=desktop');
 						} else if (isDesktopUser === 'admin') {
 							navigate('/init?source=admin');

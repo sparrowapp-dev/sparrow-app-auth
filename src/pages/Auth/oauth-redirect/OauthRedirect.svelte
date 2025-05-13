@@ -6,7 +6,7 @@
 	import RegisterRedirectComponent from '../redirect/RegisterRedirectComponent.svelte';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 
-	let userFromDesktop = localStorage.getItem('isUserFromDesktop');
+	let redirctSource = localStorage.getItem('source');
 
 	let accessToken = '';
 	let refreshToken = '';
@@ -33,7 +33,7 @@
 		} else {
 			showRegisterComponent = false;
 			if (accessToken && refreshToken) {
-				if (userFromDesktop === 'true') {
+				if (redirctSource === 'desktop') {
 					let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
 					let firstName = data.name;
 					firstName = firstName.split(' ')[0];
@@ -47,15 +47,15 @@
 						redirectRules.isSpinner = false;
 						window.location.href = sparrowRedirect;
 					}, constants.API_REDIRECT_TIMEOUT);
-				} else if (userFromDesktop === 'admin') {
+				} else if (redirctSource === 'admin') {
 					navigate(sparrowAdminRedirect);
 				} else {
 					navigate(sparrowWebRedirect);
 				}
 			} else {
-				if (userFromDesktop === 'true') {
+				if (redirctSource === 'desktop') {
 					navigate('/init');
-				} else if (userFromDesktop === 'admin') {
+				} else if (redirctSource === 'admin') {
 					navigate('/init?source=admin');
 				} else {
 					navigate('/init?source=web');
@@ -85,7 +85,7 @@
 	function handleContinueButtonClick() {
 		showRegisterComponent = false;
 		if (accessToken && refreshToken) {
-			if (userFromDesktop === 'true') {
+			if (redirctSource === 'desktop') {
 				let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
 				let firstName = data.name;
 				firstName = firstName.split(' ')[0];
@@ -98,15 +98,15 @@
 					redirectRules.isSpinner = false;
 					window.location.href = sparrowRedirect;
 				}, constants.API_REDIRECT_TIMEOUT);
-			} else if (userFromDesktop === 'admin') {
+			} else if (redirctSource === 'admin') {
 				navigate(sparrowAdminRedirect);
 			} else {
 				navigate(sparrowWebRedirect);
 			}
 		} else {
-			if (userFromDesktop === 'true') {
+			if (redirctSource === 'desktop') {
 				navigate('/init');
-			} else if (userFromDesktop === 'admin') {
+			} else if (redirctSource === 'admin') {
 				navigate('/init?source=admin');
 			} else {
 				navigate('/init?source=web');
