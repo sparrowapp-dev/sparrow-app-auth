@@ -9,12 +9,12 @@
 	const REDIRECT_FLAG = 'currentRegistrationRedirectShown';
 
 	const wrappedHandleContinue = () => {
-		sessionStorage.setItem(REDIRECT_FLAG, 'desktop');
+		sessionStorage.setItem(REDIRECT_FLAG, 'true');
 		handleContinueButtonClick();
 	};
 
 	onMount(() => {
-		if (sessionStorage.getItem(REDIRECT_FLAG) === 'desktop') {
+		if (sessionStorage.getItem(REDIRECT_FLAG) === 'true') {
 			handleContinueButtonClick();
 		}
 	});
