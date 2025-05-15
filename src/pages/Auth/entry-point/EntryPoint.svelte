@@ -236,7 +236,7 @@
 			</div>
 
 			<Oauth />
-			<div class="d-flex align-items-start ms-1">
+			<div class="d-flex align-items-start ms-1" style="gap: 4px;">
 				<div style="height: 24px; width:24px;">
 					<AiSparkle height={'24px'} width={'24px'} />
 				</div>

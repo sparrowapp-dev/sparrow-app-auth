@@ -54,6 +54,7 @@
 					title={'Try Sparrow Edge'}
 					buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-16'}
 					type={'primary'}
+					disable={redirctSource === 'admin'}
 				/>
 
 				<div class="d-flex align-items-start" style="margin-top: 18px;">
