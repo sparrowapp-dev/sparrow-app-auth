@@ -102,6 +102,10 @@ button {
     transition: all 300ms ease-in-out;
 }
 
+button:disabled {
+        cursor: not-allowed; 
+}
+
     .sparrow-icon-btn {
       background-color: transparent;
       border: 0px;
