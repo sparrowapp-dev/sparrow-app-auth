@@ -42,12 +42,16 @@
 		// Check the query parameters in the URL
 		const urlParams = new URLSearchParams(window.location.search);
 		const source = urlParams.get('source'); // Get 'source' from query param
+		const flow = urlParams.get('flow'); // Get 'flow' from query param
 		if (source === 'web') {
 			localStorage.setItem('source', 'web');
 		} else if (source === 'admin') {
 			localStorage.setItem('source', 'admin');
 		} else {
 			localStorage.setItem('source', 'desktop');
+		}
+		if (flow === "standard") { 
+			localStorage.setItem('flow', 'standard');
 		}
 	});
 
