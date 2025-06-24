@@ -91,6 +91,7 @@
 
 	let showResendSuccess = false;
 	let isResendDisabled = false;
+	let show = false;
 
 	const handleVerificationCode = () => {
 		verifyCode =
@@ -239,6 +240,12 @@
 	const handleBlur = () => {
 		selectedInput = '';
 	};
+
+	onMount(() => {
+		requestAnimationFrame(() => {
+		show = true;
+		});
+	});
 </script>
 
 {#if isRegistered}
@@ -255,403 +262,405 @@
 	/>
 {:else}
 	<BgContainer>
-		<div class="d-flex align-items-start gap-2">
-			<div
-				class="text-white d-flex justify-content-center align-items-center bg-sparrowPrimaryColor"
-				style="height: 23px; width: 23px; border-radius: 6px;"
-			>
-				<img height="20px" width="20px" src={sparrowicon} alt="" class="" />
+		<div class="d-flex flex-column animate-enter {show ? 'show' : ''}">
+			<div class="d-flex align-items-start justify-content-center gap-2">
+				<div
+					class="text-white d-flex justify-content-center align-items-center bg-sparrowPrimaryColor"
+					style="height: 23px; width: 23px; border-radius: 6px;"
+				>
+					<img height="20px" width="20px" src={sparrowicon} alt="" class="" />
+				</div>
+				<p style="font-weight:500; margin-bottom: 0px;">Sparrow</p>
 			</div>
-			<p style="font-weight:500; margin-bottom: 0px;">Sparrow</p>
-		</div>
 
-		<div style="margin-top:20px; display: flex ; flex-direction:column; align-items:center;">
-			<p
-				class="container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
-				style="font-size:24px; font-weight: 400;  line-height:28px; text-align:center; max-width:300px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"
-			>
-				Welcome {firstName}
-			</p>
-			<p class="" style="color: lightGray; font-size:14px;">Just one more step.</p>
-		</div>
+			<div style="margin-top:20px; display: flex ; flex-direction:column; align-items:center;">
+				<p
+					class="container-header sparrow-fw-600 text-whiteColor text-center ms-2 me-2 mb-1"
+					style="font-size:24px; font-weight: 400;  line-height:28px; text-align:center; max-width:300px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"
+				>
+					Welcome {firstName}
+				</p>
+				<p class="" style="color: lightGray; font-size:14px;">Just one more step.</p>
+			</div>
 
-		<div class="login-form text-lightGray ps-1 pe-1 gap-16">
-			<div class="d-flex flex-column align-items-left mb-2">
-				<div class="text-center sparrow-fs-14 sparrow-fs-300 mt-2">
-					<p class="sparrow-fs-12">
-						We have sent a magic code at <br />
-						<span class="email-text">{emailText}</span>
-					</p>
-					<div>
-						<div class="d-flex flex-column">
-							<div class="d-flex mb-2 align-items-center justify-content-start" style="gap: 6px;">
-								<div
-									class="input-container {selectedInput === 'verificationCode1'
-										? 'selected'
-										: ''} {verificationCodeError ? 'error' : ''}"
-								>
-									<input
-										type="text"
-										autocorrect="off"
-										autocapitalize="none"
-										autocomplete="off"
-										id="verificationCode1"
-										disabled={seconds === 0}
-										bind:value={verificationCode1}
-										on:focus={() => handleFocus('verificationCode1')}
-										on:blur={handleBlur}
-										on:click={(e) => e.target.select()}
-										on:input={(e) => {
-											if (verificationCode1.length === 1) {
-												document.getElementById('verificationCode2')?.focus();
-												document.getElementById('verificationCode2')?.select();
-											} else if (e.inputType === 'insertText' && verificationCode1.length > 1) {
-												verificationCode1 = verificationCode1.charAt(1);
-												document.getElementById('verificationCode2')?.focus();
-												document.getElementById('verificationCode2')?.select();
-											}
-											onCodeInput();
-										}}
-										on:input={handleVerificationCode}
-										on:paste={handlePaste}
-									/>
-									{#if selectedInput === 'verificationCode1'}
-										<div class="line-icon">
-											<img
-												src={lineIcon}
-												alt=""
-												style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);"
-											/>
-										</div>
-									{/if}
+			<div class="login-form text-lightGray ps-1 pe-1 gap-16">
+				<div class="d-flex flex-column align-items-left mb-2">
+					<div class="text-center sparrow-fs-14 sparrow-fs-300 mt-2">
+						<p class="sparrow-fs-12">
+							We have sent a magic code at <br />
+							<span class="email-text">{emailText}</span>
+						</p>
+						<div>
+							<div class="d-flex flex-column">
+								<div class="d-flex mb-2 align-items-center justify-content-start" style="gap: 6px;">
+									<div
+										class="input-container {selectedInput === 'verificationCode1'
+											? 'selected'
+											: ''} {verificationCodeError ? 'error' : ''}"
+									>
+										<input
+											type="text"
+											autocorrect="off"
+											autocapitalize="none"
+											autocomplete="off"
+											id="verificationCode1"
+											disabled={seconds === 0}
+											bind:value={verificationCode1}
+											on:focus={() => handleFocus('verificationCode1')}
+											on:blur={handleBlur}
+											on:click={(e) => e.target.select()}
+											on:input={(e) => {
+												if (verificationCode1.length === 1) {
+													document.getElementById('verificationCode2')?.focus();
+													document.getElementById('verificationCode2')?.select();
+												} else if (e.inputType === 'insertText' && verificationCode1.length > 1) {
+													verificationCode1 = verificationCode1.charAt(1);
+													document.getElementById('verificationCode2')?.focus();
+													document.getElementById('verificationCode2')?.select();
+												}
+												onCodeInput();
+											}}
+											on:input={handleVerificationCode}
+											on:paste={handlePaste}
+										/>
+										{#if selectedInput === 'verificationCode1'}
+											<div class="line-icon">
+												<img
+													src={lineIcon}
+													alt=""
+													style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);"
+												/>
+											</div>
+										{/if}
+									</div>
+
+									<div
+										class="input-container {selectedInput === 'verificationCode2'
+											? 'selected'
+											: ''} {verificationCodeError ? 'error' : ''}"
+									>
+										<input
+											type="text"
+											autocorrect="off"
+											autocapitalize="none"
+											autocomplete="off"
+											id="verificationCode2"
+											bind:value={verificationCode2}
+											disabled={seconds === 0}
+											on:focus={() => handleFocus('verificationCode2')}
+											on:blur={handleBlur}
+											on:click={(e) => e.target.select()}
+											on:input={(e) => {
+												if (verificationCode2.length === 1) {
+													document.getElementById('verificationCode3')?.focus();
+													document.getElementById('verificationCode3')?.select();
+												} else if (e.inputType === 'insertText' && verificationCode2.length > 1) {
+													verificationCode2 = verificationCode2.charAt(1);
+													document.getElementById('verificationCode3')?.focus();
+													document.getElementById('verificationCode3')?.select();
+												}
+												onCodeInput();
+											}}
+											on:keydown={(e) => {
+												if (e.key === 'Backspace' && verificationCode2.length === 0) {
+													document.getElementById('verificationCode1')?.focus();
+												}
+											}}
+											on:input={handleVerificationCode}
+											on:paste={handlePaste}
+										/>
+										{#if selectedInput === 'verificationCode2'}
+											<div class="line-icon">
+												<img
+													src={lineIcon}
+													alt=""
+													style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);"
+												/>
+											</div>
+										{/if}
+									</div>
+
+									<div
+										class="input-container {selectedInput === 'verificationCode3'
+											? 'selected'
+											: ''} {verificationCodeError ? 'error' : ''}"
+									>
+										<input
+											type="text"
+											autocorrect="off"
+											autocapitalize="none"
+											autocomplete="off"
+											id="verificationCode3"
+											bind:value={verificationCode3}
+											disabled={seconds === 0}
+											on:focus={() => handleFocus('verificationCode3')}
+											on:blur={handleBlur}
+											on:click={(e) => e.target.select()}
+											on:input={(e) => {
+												if (verificationCode3.length === 1) {
+													document.getElementById('verificationCode4')?.focus();
+													document.getElementById('verificationCode4')?.select();
+												} else if (e.inputType === 'insertText' && verificationCode3.length > 1) {
+													verificationCode3 = verificationCode3.charAt(1);
+													document.getElementById('verificationCode4')?.focus();
+													document.getElementById('verificationCode4')?.select();
+												}
+												onCodeInput();
+											}}
+											on:keydown={(e) => {
+												if (e.key === 'Backspace' && verificationCode3.length === 0) {
+													document.getElementById('verificationCode2')?.focus();
+												}
+											}}
+											on:input={handleVerificationCode}
+											on:paste={handlePaste}
+										/>
+										{#if selectedInput === 'verificationCode3'}
+											<div class="line-icon">
+												<img
+													src={lineIcon}
+													alt=""
+													style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);"
+												/>
+											</div>
+										{/if}
+									</div>
+
+									<img src={lineIcon} alt="" />
+
+									<div
+										class="input-container {selectedInput === 'verificationCode4'
+											? 'selected'
+											: ''} {verificationCodeError ? 'error' : ''}"
+									>
+										<input
+											type="text"
+											autocorrect="off"
+											autocapitalize="none"
+											autocomplete="off"
+											id="verificationCode4"
+											bind:value={verificationCode4}
+											disabled={seconds === 0}
+											on:focus={() => handleFocus('verificationCode4')}
+											on:blur={handleBlur}
+											on:click={(e) => e.target.select()}
+											on:input={(e) => {
+												if (verificationCode4.length === 1) {
+													document.getElementById('verificationCode5')?.focus();
+													document.getElementById('verificationCode5')?.select();
+												} else if (e.inputType === 'insertText' && verificationCode4.length > 1) {
+													verificationCode4 = verificationCode4.charAt(1);
+													document.getElementById('verificationCode5')?.focus();
+													document.getElementById('verificationCode5')?.select();
+												}
+												onCodeInput();
+											}}
+											on:keydown={(e) => {
+												if (e.key === 'Backspace' && verificationCode4.length === 0) {
+													document.getElementById('verificationCode3')?.focus();
+												}
+											}}
+											on:input={handleVerificationCode}
+											on:paste={handlePaste}
+										/>
+										{#if selectedInput === 'verificationCode4'}
+											<div class="line-icon">
+												<img
+													src={lineIcon}
+													alt=""
+													style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);"
+												/>
+											</div>
+										{/if}
+									</div>
+
+									<div
+										class="input-container {selectedInput === 'verificationCode5'
+											? 'selected'
+											: ''} {verificationCodeError ? 'error' : ''}"
+									>
+										<input
+											type="text"
+											autocorrect="off"
+											autocapitalize="none"
+											autocomplete="off"
+											id="verificationCode5"
+											bind:value={verificationCode5}
+											disabled={seconds === 0}
+											on:focus={() => handleFocus('verificationCode5')}
+											on:blur={handleBlur}
+											on:click={(e) => e.target.select()}
+											on:input={(e) => {
+												if (verificationCode5.length === 1) {
+													document.getElementById('verificationCode6')?.focus();
+													document.getElementById('verificationCode6')?.select();
+												} else if (e.inputType === 'insertText' && verificationCode5.length > 1) {
+													verificationCode5 = verificationCode5.charAt(1);
+													document.getElementById('verificationCode6')?.focus();
+													document.getElementById('verificationCode6')?.select();
+												}
+												onCodeInput();
+											}}
+											on:keydown={(e) => {
+												if (e.key === 'Backspace' && verificationCode5.length === 0) {
+													document.getElementById('verificationCode4')?.focus();
+												}
+											}}
+											on:input={handleVerificationCode}
+											on:paste={handlePaste}
+										/>
+										{#if selectedInput === 'verificationCode5'}
+											<div class="line-icon">
+												<img
+													src={lineIcon}
+													alt=""
+													style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);"
+												/>
+											</div>
+										{/if}
+									</div>
+
+									<div
+										class="input-container {selectedInput === 'verificationCode6'
+											? 'selected'
+											: ''} {verificationCodeError ? 'error' : ''}"
+									>
+										<input
+											type="text"
+											autocorrect="off"
+											autocapitalize="none"
+											autocomplete="off"
+											id="verificationCode6"
+											bind:value={verificationCode6}
+											disabled={seconds === 0}
+											on:focus={() => handleFocus('verificationCode6')}
+											on:blur={handleBlur}
+											on:click={(e) => e.target.select()}
+											on:input={(e) => {
+												if (verificationCode6.length > 1) {
+													verificationCode6 = verificationCode6.charAt(1);
+												}
+												onCodeInput();
+											}}
+											on:keydown={(e) => {
+												if (e.key === 'Backspace' && verificationCode6.length === 0) {
+													document.getElementById('verificationCode5')?.focus();
+												}
+											}}
+											on:input={handleVerificationCode}
+											on:paste={handlePaste}
+										/>
+										{#if selectedInput === 'verificationCode6'}
+											<div class="line-icon">
+												<img
+													src={lineIcon}
+													alt=""
+													style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);"
+												/>
+											</div>
+										{/if}
+									</div>
 								</div>
-
-								<div
-									class="input-container {selectedInput === 'verificationCode2'
-										? 'selected'
-										: ''} {verificationCodeError ? 'error' : ''}"
-								>
-									<input
-										type="text"
-										autocorrect="off"
-										autocapitalize="none"
-										autocomplete="off"
-										id="verificationCode2"
-										bind:value={verificationCode2}
-										disabled={seconds === 0}
-										on:focus={() => handleFocus('verificationCode2')}
-										on:blur={handleBlur}
-										on:click={(e) => e.target.select()}
-										on:input={(e) => {
-											if (verificationCode2.length === 1) {
-												document.getElementById('verificationCode3')?.focus();
-												document.getElementById('verificationCode3')?.select();
-											} else if (e.inputType === 'insertText' && verificationCode2.length > 1) {
-												verificationCode2 = verificationCode2.charAt(1);
-												document.getElementById('verificationCode3')?.focus();
-												document.getElementById('verificationCode3')?.select();
-											}
-											onCodeInput();
-										}}
-										on:keydown={(e) => {
-											if (e.key === 'Backspace' && verificationCode2.length === 0) {
-												document.getElementById('verificationCode1')?.focus();
-											}
-										}}
-										on:input={handleVerificationCode}
-										on:paste={handlePaste}
-									/>
-									{#if selectedInput === 'verificationCode2'}
-										<div class="line-icon">
-											<img
-												src={lineIcon}
-												alt=""
-												style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);"
-											/>
-										</div>
-									{/if}
-								</div>
-
-								<div
-									class="input-container {selectedInput === 'verificationCode3'
-										? 'selected'
-										: ''} {verificationCodeError ? 'error' : ''}"
-								>
-									<input
-										type="text"
-										autocorrect="off"
-										autocapitalize="none"
-										autocomplete="off"
-										id="verificationCode3"
-										bind:value={verificationCode3}
-										disabled={seconds === 0}
-										on:focus={() => handleFocus('verificationCode3')}
-										on:blur={handleBlur}
-										on:click={(e) => e.target.select()}
-										on:input={(e) => {
-											if (verificationCode3.length === 1) {
-												document.getElementById('verificationCode4')?.focus();
-												document.getElementById('verificationCode4')?.select();
-											} else if (e.inputType === 'insertText' && verificationCode3.length > 1) {
-												verificationCode3 = verificationCode3.charAt(1);
-												document.getElementById('verificationCode4')?.focus();
-												document.getElementById('verificationCode4')?.select();
-											}
-											onCodeInput();
-										}}
-										on:keydown={(e) => {
-											if (e.key === 'Backspace' && verificationCode3.length === 0) {
-												document.getElementById('verificationCode2')?.focus();
-											}
-										}}
-										on:input={handleVerificationCode}
-										on:paste={handlePaste}
-									/>
-									{#if selectedInput === 'verificationCode3'}
-										<div class="line-icon">
-											<img
-												src={lineIcon}
-												alt=""
-												style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);"
-											/>
-										</div>
-									{/if}
-								</div>
-
-								<img src={lineIcon} alt="" />
-
-								<div
-									class="input-container {selectedInput === 'verificationCode4'
-										? 'selected'
-										: ''} {verificationCodeError ? 'error' : ''}"
-								>
-									<input
-										type="text"
-										autocorrect="off"
-										autocapitalize="none"
-										autocomplete="off"
-										id="verificationCode4"
-										bind:value={verificationCode4}
-										disabled={seconds === 0}
-										on:focus={() => handleFocus('verificationCode4')}
-										on:blur={handleBlur}
-										on:click={(e) => e.target.select()}
-										on:input={(e) => {
-											if (verificationCode4.length === 1) {
-												document.getElementById('verificationCode5')?.focus();
-												document.getElementById('verificationCode5')?.select();
-											} else if (e.inputType === 'insertText' && verificationCode4.length > 1) {
-												verificationCode4 = verificationCode4.charAt(1);
-												document.getElementById('verificationCode5')?.focus();
-												document.getElementById('verificationCode5')?.select();
-											}
-											onCodeInput();
-										}}
-										on:keydown={(e) => {
-											if (e.key === 'Backspace' && verificationCode4.length === 0) {
-												document.getElementById('verificationCode3')?.focus();
-											}
-										}}
-										on:input={handleVerificationCode}
-										on:paste={handlePaste}
-									/>
-									{#if selectedInput === 'verificationCode4'}
-										<div class="line-icon">
-											<img
-												src={lineIcon}
-												alt=""
-												style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);"
-											/>
-										</div>
-									{/if}
-								</div>
-
-								<div
-									class="input-container {selectedInput === 'verificationCode5'
-										? 'selected'
-										: ''} {verificationCodeError ? 'error' : ''}"
-								>
-									<input
-										type="text"
-										autocorrect="off"
-										autocapitalize="none"
-										autocomplete="off"
-										id="verificationCode5"
-										bind:value={verificationCode5}
-										disabled={seconds === 0}
-										on:focus={() => handleFocus('verificationCode5')}
-										on:blur={handleBlur}
-										on:click={(e) => e.target.select()}
-										on:input={(e) => {
-											if (verificationCode5.length === 1) {
-												document.getElementById('verificationCode6')?.focus();
-												document.getElementById('verificationCode6')?.select();
-											} else if (e.inputType === 'insertText' && verificationCode5.length > 1) {
-												verificationCode5 = verificationCode5.charAt(1);
-												document.getElementById('verificationCode6')?.focus();
-												document.getElementById('verificationCode6')?.select();
-											}
-											onCodeInput();
-										}}
-										on:keydown={(e) => {
-											if (e.key === 'Backspace' && verificationCode5.length === 0) {
-												document.getElementById('verificationCode4')?.focus();
-											}
-										}}
-										on:input={handleVerificationCode}
-										on:paste={handlePaste}
-									/>
-									{#if selectedInput === 'verificationCode5'}
-										<div class="line-icon">
-											<img
-												src={lineIcon}
-												alt=""
-												style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);"
-											/>
-										</div>
-									{/if}
-								</div>
-
-								<div
-									class="input-container {selectedInput === 'verificationCode6'
-										? 'selected'
-										: ''} {verificationCodeError ? 'error' : ''}"
-								>
-									<input
-										type="text"
-										autocorrect="off"
-										autocapitalize="none"
-										autocomplete="off"
-										id="verificationCode6"
-										bind:value={verificationCode6}
-										disabled={seconds === 0}
-										on:focus={() => handleFocus('verificationCode6')}
-										on:blur={handleBlur}
-										on:click={(e) => e.target.select()}
-										on:input={(e) => {
-											if (verificationCode6.length > 1) {
-												verificationCode6 = verificationCode6.charAt(1);
-											}
-											onCodeInput();
-										}}
-										on:keydown={(e) => {
-											if (e.key === 'Backspace' && verificationCode6.length === 0) {
-												document.getElementById('verificationCode5')?.focus();
-											}
-										}}
-										on:input={handleVerificationCode}
-										on:paste={handlePaste}
-									/>
-									{#if selectedInput === 'verificationCode6'}
-										<div class="line-icon">
-											<img
-												src={lineIcon}
-												alt=""
-												style="filter: invert(36%) sepia(70%) saturate(747%) hue-rotate(189deg) brightness(96%) contrast(101%);"
-											/>
-										</div>
-									{/if}
-								</div>
+								{#if verificationCodeError === true}
+									<small class="form-text" style="color: #FE8C98;">
+										{errorMessage}
+									</small>
+								{/if}
 							</div>
-							{#if verificationCodeError === true}
-								<small class="form-text" style="color: #FE8C98;">
-									{errorMessage}
-								</small>
-							{/if}
-						</div>
 
-						{#if showResendSuccess && seconds > 0}
-							<div
-								style=" display:flex; align-items:center; justify-content:center; background-color: #272E34; border-radius:6px; width:fit-content; padding:8px 16px; margin:30px auto;"
-							>
-								<CircleCheck height={'16px'} width={'16px'} color={'#00DF80'} />
-								<p class="mb-0 ms-2">Code resent successfully.</p>
+							{#if showResendSuccess && seconds > 0}
+								<div
+									style=" display:flex; align-items:center; justify-content:center; background-color: #272E34; border-radius:6px; width:fit-content; padding:8px 16px; margin:30px auto;"
+								>
+									<CircleCheck height={'16px'} width={'16px'} color={'#00DF80'} />
+									<p class="mb-0 ms-2">Code resent successfully.</p>
+								</div>
+							{/if}
+
+							<div class="" style="margin-bottom:16px;">
+								{#if seconds > 0}
+									<p class="mt-2 sparrow-fs-12" style="color: #CCCCCC; font-weight:400; ">
+										Code will expire in {formatTime(seconds)}
+									</p>
+								{:else}
+									<p class="mt-2 text-dangerColor">Code Expired.</p>
+								{/if}
 							</div>
-						{/if}
-
-						<div class="" style="margin-bottom:16px;">
-							{#if seconds > 0}
-								<p class="mt-2 sparrow-fs-12" style="color: #CCCCCC; font-weight:400; ">
-									Code will expire in {formatTime(seconds)}
-								</p>
-							{:else}
-								<p class="mt-2 text-dangerColor">Code Expired.</p>
-							{/if}
 						</div>
 					</div>
+
+					<Button
+						buttonStyleProp={'height:44px;'}
+						disable={!seconds}
+						title={'Verify Code'}
+						buttonClassProp={'w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16'}
+						type={'primary'}
+						loader={verifyCodeLoader}
+						onClick={async () => {
+							verifyCodeLoader = true;
+							let response = await handleVerifyUserEmail(verifyCodeCredential);
+							if (response?.isSuccessful) {
+								isRegistered = true;
+								const accessToken = response?.data.accessToken?.token;
+								const refreshToken = response?.data.refreshToken?.token;
+								const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=login&method=code`;
+								const sparrowWebRedirect =
+									constants.SPARROW_WEB_URL +
+									`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=code`;
+								const sparrowAdminRedirect =
+									constants.SPARROW_ADMIN_URL +
+									`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=code`;
+
+								if (redirctSource === 'desktop') {
+									setTimeout(() => {
+										let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
+										redirectRules.title = `Welcome Back ${data.name.split(' ')[0]}`;
+										redirectRules.description = `Redirecting you to desktop app...`;
+										redirectRules.message = `the token if you are facing any issue in redirecting to the login page`;
+										redirectRules.loadingMessage = '';
+										redirectRules.isSpinner = false;
+										redirectRules.teamDetails = response.data.userTeams;
+										navigate(sparrowRedirect);
+										redirectRules.buttonClick = () => {
+											navigate(sparrowRedirect);
+										};
+										redirectRules.copyLink = () => {
+											if (navigator.clipboard) {
+												notifications.success('Link copied to clipboard.');
+												return navigator.clipboard.writeText(sparrowRedirect);
+											}
+										};
+									}, 5000);
+								} else if (redirctSource === 'admin') {
+									navigate(sparrowAdminRedirect);
+								} else {
+									navigate(sparrowWebRedirect);
+								}
+							}
+
+							verifyCodeLoader = false;
+						}}
+					/>
 				</div>
 
-				<Button
-					buttonStyleProp={'height:44px;'}
-					disable={!seconds}
-					title={'Verify Code'}
-					buttonClassProp={'w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16'}
-					type={'primary'}
-					loader={verifyCodeLoader}
-					onClick={async () => {
-						verifyCodeLoader = true;
-						let response = await handleVerifyUserEmail(verifyCodeCredential);
-						if (response?.isSuccessful) {
-							isRegistered = true;
-							const accessToken = response?.data.accessToken?.token;
-							const refreshToken = response?.data.refreshToken?.token;
-							const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=login&method=code`;
-							const sparrowWebRedirect =
-								constants.SPARROW_WEB_URL +
-								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=code`;
-							const sparrowAdminRedirect =
-								constants.SPARROW_ADMIN_URL +
-								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=code`;
-
-							if (redirctSource === 'desktop') {
-								setTimeout(() => {
-									let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
-									redirectRules.title = `Welcome Back ${data.name.split(' ')[0]}`;
-									redirectRules.description = `Redirecting you to desktop app...`;
-									redirectRules.message = `the token if you are facing any issue in redirecting to the login page`;
-									redirectRules.loadingMessage = '';
-									redirectRules.isSpinner = false;
-									redirectRules.teamDetails = response.data.userTeams;
-									navigate(sparrowRedirect);
-									redirectRules.buttonClick = () => {
-										navigate(sparrowRedirect);
-									};
-									redirectRules.copyLink = () => {
-										if (navigator.clipboard) {
-											notifications.success('Link copied to clipboard.');
-											return navigator.clipboard.writeText(sparrowRedirect);
-										}
-									};
-								}, 5000);
-							} else if (redirctSource === 'admin') {
-								navigate(sparrowAdminRedirect);
-							} else {
-								navigate(sparrowWebRedirect);
-							}
-						}
-
-						verifyCodeLoader = false;
-					}}
-				/>
+				<div class="d-flex gap-3 align-items-center justify-content-center" style="margin-top: 18px;">
+					<p style="font-size: 13px; text-align:center; line-height:15px;" class="mb-0">
+						If you haven't received the code, <br />
+						click
+						<span
+							on:click={handleResend}
+							style="font-size: 13px; color:#3670F7;"
+							class="cursor-pointer text-decoration-none"
+							class:disabled={isResendDisabled}
+						>
+							Resend code
+						</span>
+					</p>
+				</div>
 			</div>
-
-			<div class="d-flex gap-3 align-items-center justify-content-center" style="margin-top: 18px;">
-				<p style="font-size: 13px; text-align:center; line-height:15px;" class="mb-0">
-					If you haven't received the code, <br />
-					click
-					<span
-						on:click={handleResend}
-						style="font-size: 13px; color:#3670F7;"
-						class="cursor-pointer text-decoration-none"
-						class:disabled={isResendDisabled}
-					>
-						Resend code
-					</span>
-				</p>
+			<div class="mt-4">
+				<SupportHelp />
 			</div>
-		</div>
-		<div class="mt-4">
-			<SupportHelp />
 		</div>
 	</BgContainer>
 {/if}
@@ -712,5 +721,14 @@
 	.disabled {
 		pointer-events: none;
 		opacity: 0.5;
+	}
+	.animate-enter {
+	   opacity: 0;
+	   transform: translateY(20px);
+	   transition: all 200ms ease-out;
+	}
+	.animate-enter.show {
+		opacity: 1;
+		transform: translateY(0);
 	}
 </style>
