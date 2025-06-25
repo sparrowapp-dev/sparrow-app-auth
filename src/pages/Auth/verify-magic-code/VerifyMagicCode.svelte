@@ -91,7 +91,6 @@
 
 	let showResendSuccess = false;
 	let isResendDisabled = false;
-	let show = false;
 
 	const handleVerificationCode = () => {
 		verifyCode =
@@ -240,12 +239,6 @@
 	const handleBlur = () => {
 		selectedInput = '';
 	};
-
-	onMount(() => {
-		requestAnimationFrame(() => {
-		show = true;
-		});
-	});
 </script>
 
 {#if isRegistered}
@@ -262,7 +255,7 @@
 	/>
 {:else}
 	<BgContainer>
-		<div class="d-flex flex-column animate-enter {show ? 'show' : ''}">
+		<div class="d-flex flex-column animate-fade-in-up">
 			<div class="d-flex align-items-start justify-content-center gap-2">
 				<div
 					class="text-white d-flex justify-content-center align-items-center bg-sparrowPrimaryColor"
@@ -722,13 +715,16 @@
 		pointer-events: none;
 		opacity: 0.5;
 	}
-	.animate-enter {
-	   opacity: 0;
-	   transform: translateY(20px);
-	   transition: all 200ms ease-out;
-	}
-	.animate-enter.show {
+	@keyframes fadeInUp {
+		from {
+		opacity: 0;
+		}
+		to {
 		opacity: 1;
-		transform: translateY(0);
+		}
+	}
+
+	.animate-fade-in-up {
+		animation: fadeInUp 200ms ease-out forwards;
 	}
 </style>

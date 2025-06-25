@@ -1,6 +1,5 @@
 <script lang="ts">
   import { tick } from 'svelte';
-  import { onMount } from 'svelte';
   export let variant: 'primary' = "primary";
 
   export let tabs = [
@@ -10,25 +9,14 @@
 
   let selected: string = "managed";
   let previous: string = selected;
-  let show = false;
 
   async function handleClick(value: string) {
     if (value !== selected) {
       previous = selected;
       selected = value;
-      show = false;
-      await tick(); 
-      requestAnimationFrame(() => {
-        show = true; 
-      });
+      await tick();
     }
   }
-
-  onMount(() => {
-    requestAnimationFrame(() => {
-      show = true;
-    });
-  });
 </script>
 
 <div class="tabs">
@@ -46,7 +34,7 @@
 
   <div class="tab-content-wrapper">
     {#key selected}
-      <div class="tab-content animate-enter {show ? 'show' : ''}">
+      <div class="tab-content animate-fade-in-up">
         {#if selected === "managed"}
           <slot name="managed" />
         {:else}
@@ -126,15 +114,22 @@
     overflow: hidden;
   }
 
-  .animate-enter {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 200ms ease-out;
+  .tab-content {
+    position: relative;
   }
-  .animate-enter.show {
-    opacity: 1;
-    transform: translateY(0);
-   }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 120ms ease-out forwards;
+  }
 </style>
 
 
