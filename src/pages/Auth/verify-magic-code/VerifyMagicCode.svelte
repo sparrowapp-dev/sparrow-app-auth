@@ -727,6 +727,6 @@
 	}
 
   .animate-fade-in-up {
-    animation: fadeInUp 300ms ease-out forwards;
+    animation: fadeInUp 450ms ease-out forwards;
   }
 </style>
