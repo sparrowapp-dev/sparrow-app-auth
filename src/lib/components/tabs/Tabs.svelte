@@ -7,6 +7,8 @@
     { title: "Self Hosted", value: "self-hosted" }
   ];
 
+  export let onClick: any;
+
   let selected: string = "managed";
   let previous: string = selected;
 
@@ -15,6 +17,7 @@
       previous = selected;
       selected = value;
       await tick();
+      onClick(value);
     }
   }
 </script>

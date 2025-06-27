@@ -99,9 +99,10 @@
 	};
 
 	let checkTimeout;
+	let recalculateHeight;
 </script>
 
-<BgContainer>
+<BgContainer bind:recalculateHeight>
 	<div class="d-flex align-items-start gap-2">
 		<div
 			class="text-white d-flex justify-content-center align-items-center bg-sparrowPrimaryColor"
@@ -122,7 +123,9 @@
 		<p class="" style="color: lightGray; font-size:12px;">The only API Sidekick you need.</p>
 	</div>
 
-	<Tabs variant="primary">
+	<Tabs variant="primary" onClick={(value) => {
+		recalculateHeight();
+	}}>
 		<div slot="managed">
 			<form
 				class="login-form w-100 text-whiteColor ps-1 pe-1 mb-2 mt-4"
