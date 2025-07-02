@@ -43,6 +43,7 @@
 		const urlParams = new URLSearchParams(window.location.search);
 		const source = urlParams.get('source'); // Get 'source' from query param
 		const flow = urlParams.get('flow'); // Get 'flow' from query param
+		const trial_id = urlParams.get('trialId'); // Get 'trial_id' from query param
 		if (source === 'web') {
 			localStorage.setItem('source', 'web');
 		} else if (source === 'admin') {
@@ -50,9 +51,13 @@
 		} else {
 			localStorage.setItem('source', 'desktop');
 		}
-		if (flow === "standard") { 
-			localStorage.setItem('flow', 'standard');
+		if (trial_id && flow === "trial_standard") { 
+			localStorage.setItem('flow', 'trial_standard');
+			localStorage.setItem('trial_id', trial_id);
+			const email = urlParams.get('email'); // Get 'email' from query param
+			navigate(`/register/${email}`);
 		}
+		
 	});
 
 	let emailExists = false;
