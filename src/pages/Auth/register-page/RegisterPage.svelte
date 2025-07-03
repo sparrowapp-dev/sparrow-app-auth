@@ -150,9 +150,10 @@
 					if (response.isSuccessful) {
 						const accessToken = response?.data.accessToken?.token;
 						const refreshToken = response?.data.refreshToken?.token;
+						const firstName = userData?.firstName;
 						const sparrowAdminRedirect =
 							constants.SPARROW_ADMIN_URL +
-							`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=code&trialId=${trialId}`;
+							`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=code&trialId=${trialId}&name=${firstName}`;
 						navigate(sparrowAdminRedirect);
 					} else {
 						if (
