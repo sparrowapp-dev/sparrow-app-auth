@@ -24,6 +24,14 @@ const registerUser = async (userInfo: registerUserPostBody) => {
 	return response;
 };
 
+const registerVerifiedUser = async (userInfo: registerUserPostBody) => {
+	const response = await makeRequest('POST', `${apiUrl}/api/user/verified`, {
+		body: userInfo
+	});
+
+	return response;
+};
+
 const loginUser = async (userInfo: loginUserPostBody) => {
 	const response = await makeRequest('POST', `${apiUrl}/api/auth/login`, {
 		body: userInfo
@@ -127,5 +135,6 @@ export {
 	verifyMagicCode,
 	updateOccaisonalUpdatesStatus,
 	acceptTeamInvite,
-	resendInviteTeam
+	resendInviteTeam,
+	registerVerifiedUser
 };
