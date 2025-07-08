@@ -197,7 +197,7 @@
 				<div class="form-group mb-3">
 					<div>
 						<label for="name" class="sparrow-fs-14 text-colorWhite d-flex"
-							>Email
+							>Email ID
 							<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label
 						>
 					</div>
@@ -455,7 +455,7 @@
 		<div class="mb-3 mt-4">
 			<Button
 				disable={!isFormValid || registerLoader}
-				title={'Create account'}
+				title={trailFlow && trialId ? 'Get Started' : 'Create account'}
 				buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-14'}
 				type={'primary'}
 			/>
