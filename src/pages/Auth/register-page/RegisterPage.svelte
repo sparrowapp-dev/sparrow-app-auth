@@ -154,6 +154,9 @@
 						const sparrowAdminRedirect =
 							constants.SPARROW_ADMIN_URL +
 							`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=code&trialId=${trialId}&name=${firstName}`;
+						// Clear flow and trial_id before navigating
+						localStorage.removeItem('flow');
+						localStorage.removeItem('trial_id');
 						navigate(sparrowAdminRedirect);
 					} else {
 						if (
