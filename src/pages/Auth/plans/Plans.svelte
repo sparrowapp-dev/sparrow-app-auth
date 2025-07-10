@@ -149,10 +149,7 @@
 		firstName = firstName.split(' ')[0];
 		firstName = firstName.length > 11 ? firstName.substring(0, 5) + '...' : firstName;
 		if (plan.title === 'Enterprise') {
-			window.open(
-				'https://outlook.office.com/owa/calendar/LearnhowSparrowcanhelpyourstartuporenterprise@techdome.net.in/bookings/',
-				'_blank'
-			);
+			window.open(constants.SPARROW_CONTACT_SALES_URL, '_blank');
 			return;
 		} else if (plan.title === 'Community') {
 			isRegistered = true;
@@ -200,7 +197,7 @@
 	}
 
 	function handleCompareClick() {
-		window.open('https://sparrowapp.dev/pricing/#pricing-comparison', '_blank');
+		window.open(constants.SPARROW_MARKETING_URL + '/pricing/#pricing-comparison', '_blank');
 	}
 </script>
 
