@@ -58,6 +58,7 @@
 	let loginLoader = false;
 
 	let redirctSource = localStorage.getItem('source');
+	let flow = localStorage.getItem('flow');
 </script>
 
 {#if isLogin}
@@ -114,9 +115,12 @@
 							const sparrowWebRedirect =
 								constants.SPARROW_WEB_URL +
 								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
-							const sparrowAdminRedirect =
+							let sparrowAdminRedirect =
 								constants.SPARROW_ADMIN_URL +
 								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
+							if(flow === "standard") { 
+								sparrowAdminRedirect = sparrowAdminRedirect + '&flow=standard';
+							}
 							if (redirctSource === 'desktop') {
 								let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
 								let firstName = data.name;
