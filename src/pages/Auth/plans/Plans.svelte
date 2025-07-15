@@ -48,7 +48,7 @@
 			period: 'per user/month',
 			features: [
 				'Unlimited collaborators',
-				'Unlimited workspaces',
+				'Up to 5 workspaces',
 				'Up to 1 Private hub',
 				'Unlimited Collections'
 			],
@@ -61,7 +61,7 @@
 			period: 'per user/month',
 			features: [
 				'Unlimited collaborators',
-				'Unlimited workspaces',
+				'Up to 10 workspaces',
 				'Up to 1 Private hub',
 				'Unlimited Collections'
 			],
@@ -100,10 +100,10 @@
 			title: 'Standard',
 			price: '$99',
 			period: 'per user/year',
-			savings: 'Save 17%',
+			savings: 'Save 17.4%',
 			features: [
 				'Unlimited collaborators',
-				'Unlimited workspaces',
+				'Up to 5 workspaces',
 				'Up to 1 Private hub',
 				'Unlimited Collections'
 			],
@@ -116,8 +116,8 @@
 			savings: 'Save 17%',
 			features: [
 				'Unlimited collaborators',
-				'Unlimited workspaces',
-				'Up to 10 Private hub',
+				'Up to 10 workspaces',
+				'Up to 1 Private hub',
 				'Unlimited Collections'
 			],
 			buttonText: 'Start 14-day Trial'
@@ -126,7 +126,7 @@
 			title: 'Enterprise',
 			price: '$499',
 			period: 'per user/year',
-			savings: 'Save 17%',
+			savings: 'Save 17.4%',
 			features: [
 				'Unlimited collaborators',
 				'Unlimited workspaces',
