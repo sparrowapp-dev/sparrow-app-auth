@@ -31,7 +31,7 @@
 	const monthlyPlans = [
 		{
 			title: 'Community',
-			price: '$0.00',
+			price: '$0',
 			period: 'per user/month',
 			features: [
 				'Up to 5 collaborators',
@@ -86,7 +86,7 @@
 	const annualPlans = [
 		{
 			title: 'Community',
-			price: '$0.00',
+			price: '$0',
 			period: 'per user/year',
 			features: [
 				'Up to 5 collaborators',
@@ -126,7 +126,7 @@
 			title: 'Enterprise',
 			price: '$499',
 			period: 'per user/year',
-			savings: 'Save 17.4%',
+			savings: 'Save 16.8%',
 			features: [
 				'Unlimited collaborators',
 				'Unlimited workspaces',
