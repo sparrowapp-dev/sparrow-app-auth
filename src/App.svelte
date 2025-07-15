@@ -4,7 +4,7 @@
 	import LoginPage from './pages/Auth/login-page/LoginPage.svelte';
 	import RegisterPage from './pages/Auth/register-page/RegisterPage.svelte';
 	import Navigate from './routing/Navigate.svelte';
-	import Toast from "$lib/components/toast-notification/ToastNotification.svelte";
+	import Toast from '$lib/components/toast-notification/ToastNotification.svelte';
 	import UpdatePassword from './pages/Auth/update-password/UpdatePassword.svelte';
 	import ResetPassword from './pages/Auth/reset-password/ResetPassword.svelte';
 	import ForgotPassword from './pages/Auth/forgot-password/ForgotPassword.svelte';
@@ -20,12 +20,11 @@
 	import PasswordUpdateRedirect from './pages/Auth/password-update-redirect/PasswordUpdateRedirect.svelte';
 	import TeamInviteAcceptance from './pages/Auth/team-invite-acceptance/TeamInviteAcceptance.svelte';
 	import ResendInviteTeam from './pages/Auth/resend-invite-team/ResendInviteTeam.svelte';
+	import Plans from './pages/Auth/plans/Plans.svelte';
 	export let url = '/';
-
 </script>
 
 <Router {url}>
-
 	<!-- MagicCodeOriginPage
 	Initial page shown when the app starts -->
 	<Route path="/init" component={EntryPoint} />
@@ -42,7 +41,7 @@
 	User login page with an optional ID parameter for specific login contexts -->
 	<Route path="/login/:id" component={LoginPage} />
 	<Route path="/login" component={LoginPage} />
-	
+
 	<!-- RegisterPage
 	User registration page with an optional ID parameter for specific registration contexts -->
 	<Route path="/register/:id" component={RegisterPage} />
@@ -73,27 +72,33 @@
 	<Route path="/redirect" component={OauthRedirect} />
 
 	<!-- Team invite acceptance page that accepts teams invite -->
-	<Route path="/accept-team-invite/:teamId/:inviteId/:email" component={TeamInviteAcceptance}/>
+	<Route path="/accept-team-invite/:teamId/:inviteId/:email" component={TeamInviteAcceptance} />
 
 	<!-- Team invite acceptance page that accepts teams invite -->
-	<Route path="/resend-invite/:teamId/:inviteId" component={ResendInviteTeam}/>
+	<Route path="/resend-invite/:teamId/:inviteId" component={ResendInviteTeam} />
 
 	<!-- CooldownPage
 	Page displayed when the user has triggered too many requests, enforcing a cooldown period -->
 	<Route path="/cool-down-active" component={CoolDownPage} />
-	
+
+	<!-- PlansPage
+	Page displayed about different plans including different time periods -->
+	<Route path="/plans" component={Plans} />
 
 	<!-- Support page that opens the user's default email client with a pre-filled support email -->
 	<Route path="/support">
-		<ExternalNavigation to={`mailto:${constants.SPARROW_SUPPORT_EMAIL}`}/>
+		<ExternalNavigation to={`mailto:${constants.SPARROW_SUPPORT_EMAIL}`} />
 	</Route>
 
 	<!-- Wildcard route that redirects any unmatched paths to the entry point page -->
 	<Route path="/*"><Navigate to="/init" /></Route>
 </Router>
-<Toast/>
+<Toast />
 
-<div style="height: 100vh; top:0; left:0;
-right:0; z-index:-100 !important" class="w-100 position-fixed">
-	<img src={SparrowBackgroundV2} alt="" style="height:100%; width:100%;">
+<div
+	style="height: 100vh; top:0; left:0;
+right:0; z-index:-100 !important"
+	class="w-100 position-fixed"
+>
+	<img src={SparrowBackgroundV2} alt="" style="height:100%; width:100%;" />
 </div>
