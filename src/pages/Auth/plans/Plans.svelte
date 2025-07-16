@@ -190,7 +190,7 @@
 			const trialperiod = billingPeriod === 'monthly' ? 'monthly' : 'annual';
 			const url =
 				constants.SPARROW_ADMIN_URL +
-				`?accessToken=${accessToken}&refreshToken=${refreshToken}&name=${firstName}&flow=${flow}&trialPeriod=${trialperiod}&email=${email}`;
+				`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${response}&name=${firstName}&flow=${flow}&trialPeriod=${trialperiod}&email=${email}&source=${redirctSource}`;
 			navigate(url);
 			return;
 		}
