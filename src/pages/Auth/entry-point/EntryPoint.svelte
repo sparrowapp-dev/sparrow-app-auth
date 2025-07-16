@@ -44,6 +44,7 @@
 		const source = urlParams.get('source'); // Get 'source' from query param
 		const flow = urlParams.get('flow'); // Get 'flow' from query param
 		const trial_id = urlParams.get('trialId'); // Get 'trial_id' from query param
+		const trialPeriod = urlParams.get('trialPeriod') || ""; // Get 'trial_period' from query param
 		if (source === 'web') {
 			localStorage.setItem('source', 'web');
 		} else if (source === 'admin') {
@@ -56,7 +57,10 @@
 			localStorage.setItem('trial_id', trial_id);
 			const email = urlParams.get('email'); // Get 'email' from query param
 			navigate(`/register/${email}`);
-		}
+		} else if (flow === "marketing_standard_trial" || flow === "marketing_professional_trial") {
+			localStorage.setItem('flow', flow);
+			localStorage.setItem('trialPeriod', trialPeriod);
+		} 
 		
 	});
 

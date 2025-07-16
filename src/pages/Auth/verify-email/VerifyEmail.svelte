@@ -586,9 +586,28 @@
 						isRegistered = true;
 						const accessToken = response?.data.accessToken?.token;
 						const refreshToken = response?.data.refreshToken?.token;
-						navigate(
-							`/plans?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${encodeURIComponent(JSON.stringify(response.data))}&email=${encodeURIComponent(verifyCodeCredential.email)}`
-						);
+						const trialFlow = localStorage.getItem('flow');
+						const trialPeriod = localStorage.getItem('trialPeriod');
+						if (
+							trialFlow &&
+							(trialFlow === 'marketing_standard_trial' ||
+								trialFlow === 'marketing_professional_trial')
+						) {
+							let data = JSON.parse(window.atob(accessToken.split('.')[1]));
+							let firstName = data.name;
+							firstName = firstName.split(' ')[0];
+							firstName = firstName.length > 11 ? firstName.substring(0, 5) + '...' : firstName;
+							const sparrowAdminRedirect =
+								constants.SPARROW_ADMIN_URL +
+								`?accessToken=${accessToken}&refreshToken=${refreshToken}&name=${firstName}&flow=${trialFlow}&trialPeriod=${trialPeriod}&email=${encodeURIComponent(verifyCodeCredential.email)}`;
+							localStorage.removeItem('flow');
+							localStorage.removeItem('trialPeriod');
+							navigate(sparrowAdminRedirect);
+						} else {
+							navigate(
+								`/plans?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${encodeURIComponent(JSON.stringify(response.data))}&email=${encodeURIComponent(verifyCodeCredential.email)}`
+							);
+						}
 
 						// const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=register&method=email`;
 						// const sparrowWebRedirect =
