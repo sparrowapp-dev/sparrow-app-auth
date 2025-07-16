@@ -586,8 +586,8 @@
 						isRegistered = true;
 						const accessToken = response?.data.accessToken?.token;
 						const refreshToken = response?.data.refreshToken?.token;
-						const trialFlow = localStorage.getItem('flow');
-						const trialPeriod = localStorage.getItem('trialPeriod');
+						const trialFlow = sessionStorage.getItem('flow');
+						const trialPeriod = sessionStorage.getItem('trialPeriod');
 						if (
 							trialFlow &&
 							(trialFlow === 'marketing_standard_trial' ||
@@ -600,8 +600,8 @@
 							const sparrowAdminRedirect =
 								constants.SPARROW_ADMIN_URL +
 								`?accessToken=${accessToken}&refreshToken=${refreshToken}&name=${firstName}&flow=${trialFlow}&trialPeriod=${trialPeriod}&email=${encodeURIComponent(verifyCodeCredential.email)}`;
-							localStorage.removeItem('flow');
-							localStorage.removeItem('trialPeriod');
+							sessionStorage.removeItem('flow');
+							sessionStorage.removeItem('trialPeriod');
 							navigate(sparrowAdminRedirect);
 						} else {
 							navigate(
