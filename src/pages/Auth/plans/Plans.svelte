@@ -221,7 +221,8 @@
 			<div class="text-white mb-3">
 				<h5>Welcome to Sparrow! Let’s find the right plan for you</h5>
 				<p class="sparrow-fs-14" style="color: #D8D8D9; margin-bottom: 0">
-					Select the plan that works best for your needs
+					Before you dive in, take a moment to explore the plans we offer, from free to fully
+					loaded. You can switch plans at any time.
 				</p>
 			</div>
 
