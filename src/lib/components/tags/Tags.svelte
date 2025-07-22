@@ -10,6 +10,8 @@
 	} else {
 		height = 18;
 	}
+	let fontSize = 10;
+	$: fontSize = size === 'medium' ? 12 : 10;
 
 	const convertCasing = (sentence: string) => {
 		let sen = sentence?.charAt(0).toUpperCase() + sentence.slice(1).toLowerCase();
@@ -41,8 +43,9 @@
     max-width: 188px;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;"
-	class="text-ds-font-weight-medium text-ds-line-height-150 text-ds-font-size-12 d-flex align-items-center"
+    white-space: nowrap;
+	font-size: {fontSize}px;"
+	class="text-ds-font-weight-medium text-ds-line-height-150 d-flex align-items-center"
 >
 	<span class={endIcon ? 'text-content' : ''}>{convertCasing(text)}</span>
 	{#if endIcon}
