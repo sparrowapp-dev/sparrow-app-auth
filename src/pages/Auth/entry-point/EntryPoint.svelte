@@ -44,6 +44,7 @@
 		const source = urlParams.get('source'); // Get 'source' from query param
 		const flow = urlParams.get('flow'); // Get 'flow' from query param
 		const trial_id = urlParams.get('trialId'); // Get 'trial_id' from query param
+		const trialPeriod = urlParams.get('trialPeriod') || ''; // Get 'trial_period' from query param
 		if (source === 'web') {
 			localStorage.setItem('source', 'web');
 		} else if (source === 'admin') {
@@ -51,13 +52,15 @@
 		} else {
 			localStorage.setItem('source', 'desktop');
 		}
-		if (trial_id && flow === "trial_standard") { 
+		if (trial_id && flow === 'trial_standard') {
 			localStorage.setItem('flow', 'trial_standard');
 			localStorage.setItem('trial_id', trial_id);
 			const email = urlParams.get('email'); // Get 'email' from query param
 			navigate(`/register/${email}`);
+		} else if (flow === 'marketing_standard_trial' || flow === 'marketing_professional_trial') {
+			sessionStorage.setItem('flow', flow);
+			sessionStorage.setItem('trialPeriod', trialPeriod);
 		}
-		
 	});
 
 	let emailExists = false;
@@ -132,9 +135,12 @@
 		<p class="" style="color: lightGray; font-size:12px;">The only API Sidekick you need.</p>
 	</div>
 
-	<Tabs variant="primary" onClick={(value) => {
-		recalculateHeight();
-	}}>
+	<Tabs
+		variant="primary"
+		onClick={(value) => {
+			recalculateHeight();
+		}}
+	>
 		<div slot="managed">
 			<form
 				class="login-form w-100 text-whiteColor ps-1 pe-1 mb-2 mt-4"

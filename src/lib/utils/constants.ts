@@ -22,7 +22,9 @@ const constants = {
 	SPARROW_PRIVACY_POLICY:
 		runtimeConfig.VITE_SPARROW_PRIVACY_POLICY ?? import.meta.env.VITE_SPARROW_PRIVACY_POLICY,
 	CANNY_FEEBACK_URL:
-		runtimeConfig.VITE_CANNY_FEEDBACK_URL || import.meta.env.VITE_CANNY_FEEDBACK_URL
+		runtimeConfig.VITE_CANNY_FEEDBACK_URL || import.meta.env.VITE_CANNY_FEEDBACK_URL,
+	SPARROW_CONTACT_SALES_URL :
+		runtimeConfig.VITE_SPARROW_CONTACT_SALES_URL || import.meta.env.VITE_SPARROW_CONTACT_SALES_URL
 };
 
 export default constants;
