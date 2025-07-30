@@ -11,9 +11,7 @@
 	let sparrowRedirect;
 	onMount(async () => {
 		redirctSource = await localStorage.getItem('source');
-		if (redirctSource === 'desktop') {
-			sparrowRedirect = `sparrow://?accessToken=&refreshToken=&response=&event=login&method=email&isSparrowEdge=true`;
-		} else if (redirctSource === 'admin') {
+		if (redirctSource === 'admin') {
 			sparrowRedirect = constants.SPARROW_ADMIN_URL;
 		} else {
 			sparrowRedirect = constants.SPARROW_WEB_URL;
