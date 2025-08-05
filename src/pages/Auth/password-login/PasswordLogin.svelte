@@ -78,7 +78,7 @@
 			const magicCodeResponse = await sendMagicCodeEmail({ email });
 			if (magicCodeResponse.isSuccessful) {
 				navigate(`/verify-magic-code/${email}`); // Updated this line
-				notifications.success('Magic code sent! Check your email');
+				notifications.success('Magic code is sent to your email ID.');
 			} else {
 				if (magicCodeResponse?.message === 'Cooldown Active') {
 					navigate('/cool-down-active');
