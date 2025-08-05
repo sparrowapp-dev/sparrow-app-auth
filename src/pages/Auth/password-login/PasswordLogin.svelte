@@ -87,7 +87,7 @@
 				}
 			}
 		} catch (error) {
-			notifications.error('Failed to send magic code.');
+			notifications.error('Failed to send magic code to your email ID.Please try again.');
 		}
 	};
 
