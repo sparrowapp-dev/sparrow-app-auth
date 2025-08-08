@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+)$/;
+const emailRegex = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const firstNameRegex = /^[A-Za-z\s]+$/;
 const lastNameRegex = /^[A-Za-z\s]*$/;
 const firstNameSpaceCheck = /^[^\s].*$/;
@@ -26,7 +26,7 @@ export const registrationSchema = yup.object().shape({
 		.email()
 		.matches(emailRegex, 'Please enter a valid Email ID')
 		.required('Please enter a valid Email ID'),
-	firstName:yup
+	firstName: yup
 		.string()
 		.matches(firstNameRegex, 'Your first name cannot have numbers or special characters.')
 		.matches(firstNameSpaceCheck, 'Your first name cannot start with spaces.')
@@ -39,7 +39,7 @@ export const registrationSchema = yup.object().shape({
 		.required()
 		.min(8, 'Password must be at least 8 characters.')
 		.matches(/(?=.*[0-9])/, 'Password must contain a number.')
-		.matches(/(?=.*[!@#$%^&*])/, 'Password must contain a special character.'),
+		.matches(/(?=.*[!@#$%^&*])/, 'Password must contain a special character.')
 });
 
 //------------------- login Schema ---------------------------//
