@@ -3,7 +3,6 @@
 	import sparrowicon from '$lib/assets/logoSparrowSquare.svg';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
 	import Button from '$lib/components/button/Button.svelte';
-	import Lock from '$lib/assets/lock.svelte';
 	import Lockv2 from '$lib/assets/lockv2.svelte';
 
 	export let handleContinueButtonClick;
