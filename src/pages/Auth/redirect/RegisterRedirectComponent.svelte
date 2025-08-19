@@ -3,6 +3,8 @@
 	import sparrowicon from '$lib/assets/logoSparrowSquare.svg';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
 	import Button from '$lib/components/button/Button.svelte';
+	import Lock from '$lib/assets/lock.svelte';
+	import Lockv2 from '$lib/assets/lockv2.svelte';
 
 	export let handleContinueButtonClick;
 
@@ -32,15 +34,26 @@
 		</div>
 		<p style="font-weight:500;">Sparrow</p>
 	</div>
-
+	<Lockv2 />
 	<div class="" style="margin-top:20px ;">
-		<p style="font-size:12px;  text-align:center; letter-spacing:-4%; line-height:18px">
-			We are committed to protecting your privacy. <br />
+		<p
+			style="font-size:12px;  text-align:center; letter-spacing:-4%; line-height:18px; color:#9B9DA1"
+		>
+			<span
+				style="
+  font-family: Inter, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0;
+  text-align: center;
+  color: #FFFFFF;">We are committed to protecting your privacy</span
+			> <br />
 			Sparrow may send product updates and marketing emails if you opt in. You can unsubscribe from these
 			communications at any time.
 		</p>
 
-		<div class="w-100 d-flex gap-2" style="margin-top: 44px;">
+		<div class="w-100 d-flex gap-2" style="margin-top: 16px;">
 			<input type="checkbox" class="form-check-input mt-0" id="marketingUpdates" />
 			<p class="sparrow-fs-12 w-100" style="line-height: 18px;">
 				I agree to receive occasional updates and helpful resources from Sparrow
