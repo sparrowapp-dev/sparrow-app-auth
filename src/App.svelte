@@ -20,6 +20,7 @@
 	import PasswordUpdateRedirect from './pages/Auth/password-update-redirect/PasswordUpdateRedirect.svelte';
 	import TeamInviteAcceptance from './pages/Auth/team-invite-acceptance/TeamInviteAcceptance.svelte';
 	import ResendInviteTeam from './pages/Auth/resend-invite-team/ResendInviteTeam.svelte';
+	import { AppEdition } from '$lib/utils/enums/enums';
 	import Plans from './pages/Auth/plans/Plans.svelte';
 	export let url = '/';
 </script>
@@ -44,8 +45,10 @@
 
 	<!-- RegisterPage
 	User registration page with an optional ID parameter for specific registration contexts -->
-	<Route path="/register/:id" component={RegisterPage} />
-	<Route path="/register" component={RegisterPage} />
+	{#if constants.APP_EDITION === AppEdition.MANAGED}
+		<Route path="/register/:id" component={RegisterPage} />
+		<Route path="/register" component={RegisterPage} />
+	{/if}
 
 	<!-- EmailVerificationPage (OTP)
 	OTP verification page for email verification during registration -->
@@ -86,9 +89,11 @@
 	<Route path="/plans" component={Plans} />
 
 	<!-- Support page that opens the user's default email client with a pre-filled support email -->
-	<Route path="/support">
-		<ExternalNavigation to={`mailto:${constants.SPARROW_SUPPORT_EMAIL}`} />
-	</Route>
+	{#if constants.APP_EDITION === AppEdition.MANAGED}
+	 <Route path="/support">
+		 <ExternalNavigation to={`mailto:${constants.SPARROW_SUPPORT_EMAIL}`}/>
+	 </Route>
+	{/if}
 
 	<!-- Wildcard route that redirects any unmatched paths to the entry point page -->
 	<Route path="/*"><Navigate to="/init" /></Route>
