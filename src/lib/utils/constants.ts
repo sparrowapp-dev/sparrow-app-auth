@@ -24,6 +24,8 @@ const constants = {
 	CANNY_FEEBACK_URL:
 		runtimeConfig.VITE_CANNY_FEEDBACK_URL || import.meta.env.VITE_CANNY_FEEDBACK_URL,
 	APP_EDITION : runtimeConfig.VITE_APP_EDITION || import.meta.env.VITE_APP_EDITION,
+	SPARROW_CONTACT_SALES_URL :
+		runtimeConfig.VITE_SPARROW_CONTACT_SALES_URL || import.meta.env.VITE_SPARROW_CONTACT_SALES_URL
 };
 
 export default constants;
