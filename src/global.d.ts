@@ -10,5 +10,6 @@ interface Window {
 		VITE_SPARROW_ADMIN_URL?: string;
 		VITE_SPARROW_PRIVACY_POLICY?: string;
 		VITE_CANNY_FEEDBACK_URL?: string;
+		VITE_APP_EDITION?: string;
 	};
 }

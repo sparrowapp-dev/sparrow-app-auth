@@ -12,6 +12,8 @@
 	import AiSparkle from '$lib/assets/AiSparkle.svelte';
 	import Spinner from '$lib/components/transition/Spinner.svelte';
 	import CircleTick from '$lib/assets/CircleTick.svelte';
+	import constants from '$lib/utils/constants';
+	import { AppEdition } from '$lib/utils/enums/enums';
 	let isEmailTouched = false;
 	//---------------- Login Validation --------------------//
 	let validationErrors: any = {};
@@ -142,8 +144,13 @@
 						// Send magic code before redirecting
 						navigate(`/login/${entryCredentials?.email}`);
 					} else {
-						// New user - redirect to registration
-						navigate(`/register/${entryCredentials?.email}`);
+						if (constants.APP_EDITION === AppEdition.MANAGED){
+							// New user - redirect to registration
+							navigate(`/register/${entryCredentials?.email}`);
+						}
+						else if(constants.APP_EDITION === AppEdition.SELFHOSTED){
+							notifications.error("User account not registered.");
+						}
 					}
 				} else {
 					notifications.error(response?.message);
