@@ -6,7 +6,7 @@ on:
       - main
   workflow_dispatch:
 
-env:	
+env:
   VITE_API_URL: ${{ vars.VITE_API_URL_PROD }}
   VITE_SPARROW_SUPPORT_EMAIL: ${{ vars.VITE_SPARROW_SUPPORT_EMAIL_PROD }}
   VITE_SPARROW_OAUTH: ${{ vars.VITE_SPARROW_OAUTH_PROD }}
@@ -19,30 +19,31 @@ env:
   VITE_SPARROW_ADMIN_URL: ${{ vars.VITE_SPARROW_ADMIN_URL_PROD }}
   VITE_SPARROW_CONTACT_SALES_URL: ${{ vars.VITE_SPARROW_CONTACT_SALES_URL_PROD }}
   VITE_SPARROW_MARKETING_URL: ${{ vars.VITE_SPARROW_MARKETING_URL_PROD }}
+  VITE_APP_EDITION: ${{ vars.VITE_APP_EDITION_PROD }}
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Node.js version
-      uses: actions/setup-node@v2
-      with:
-        node-version: '18'
+      - name: Set up Node.js version
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
 
-    - name: Install dependencies
-      run: yarn install
+      - name: Install dependencies
+        run: yarn install
 
-    - name: Build app
-      run: yarn build
+      - name: Build app
+        run: yarn build
 
-    - name: Deploy to Azure Static Web App
-      uses: Azure/static-web-apps-deploy@v1
-      with:
-        azure_static_web_apps_api_token: ${{ secrets.MANAGE_DEPLOYMENT_TOKEN }}
-        #repo_token: ${{ secrets.MY_GITHUB_TOKEN }}
-        action: "upload"
-        app_location: "./dist"
-        api_location: ""
+      - name: Deploy to Azure Static Web App
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.MANAGE_DEPLOYMENT_TOKEN }}
+          #repo_token: ${{ secrets.MY_GITHUB_TOKEN }}
+          action: 'upload'
+          app_location: './dist'
+          api_location: ''
