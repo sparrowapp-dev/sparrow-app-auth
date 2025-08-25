@@ -20,6 +20,10 @@ COPY --from=build /app/dist/ .
 
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
+# Generated Runtime Config that holds env
+COPY docker-entrypoint.d/10-runtime-rewrite.sh /docker-entrypoint.d/10-runtime-rewrite.sh
+RUN chmod +x /docker-entrypoint.d/10-runtime-rewrite.sh
+
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
