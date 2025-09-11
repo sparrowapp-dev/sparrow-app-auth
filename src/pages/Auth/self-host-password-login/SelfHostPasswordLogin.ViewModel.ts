@@ -1,21 +1,17 @@
-import { getConfig, getUser, loginUser } from '$lib/services/auth.service';
-import type { loginUserPostBody } from '$lib/utils/dto';
+import { getSelfHostUser, getUser } from '$lib/services/auth.service';
 import { checkValidation, entrySchema } from '$lib/utils/validation';
-import { navigate } from 'svelte-navigator';
 
 //---------------- Handle Login ------------------//
 export const handleEntry = async (entryCredentials) => {
-	return await getUser(entryCredentials.email);
+	const baseUrl = sessionStorage.getItem('selfhost-backendurl') || '';
+	if (!baseUrl) {
+		return { isSuccessful: false, message: 'Hub URL not found. Please try again.' };
+	}
+	return await getSelfHostUser(baseUrl, entryCredentials.email);
 };
 
 //------------------------- Handle Login Validation -----------------//
 export const handleEntryValidation = async (entryCredentials) => {
 	const { errorObject: response } = await checkValidation(entrySchema, entryCredentials);
-	return response;
-};
-
-// Get Config deatils of backend
-export const handleGetConfig = async (hubUrl: string) => {
-	const response = await getConfig(hubUrl);
 	return response;
 };

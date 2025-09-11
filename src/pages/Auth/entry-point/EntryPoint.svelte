@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { handleEntryValidation, handleEntry } from './EntryPoint.ViewModel';
+	import { handleEntryValidation, handleEntry, handleGetConfig } from './EntryPoint.ViewModel';
 	import { sendMagicCodeEmail } from '$lib/services/auth.service';
 	import sparrowicon from '$lib/assets/logoSparrowSquare.svg';
 	import { navigate } from 'svelte-navigator';
@@ -40,6 +40,9 @@
 	let entryLoader = false;
 	let isSubmitting = false; // Add this new state variable
 	let showContinueButton = false;
+	let hubUrlError: string = '';
+	let hubUrlTouched: boolean = false;
+	let hubUrl: string = '';
 	onMount(() => {
 		// Check the query parameters in the URL
 		const urlParams = new URLSearchParams(window.location.search);
@@ -281,18 +284,118 @@
 				</div>
 			</div>
 			<div slot="self-hosted">
-				<div class="d-flex justify-content-center mt-4">
-					<CloudCube />
-				</div>
+				<form
+					class="login-form w-100 text-whiteColor ps-1 pe-1 mb-2 mt-4"
+					novalidate
+					on:submit|preventDefault={async () => {
+						isSubmitting = true;
+						hubUrlTouched = true;
+						hubUrlError = hubUrl.trim() === '' ? 'Hub URL is required.' : '';
+						if (hubUrlError === '') {
+							entryLoader = true;
+							const response = await handleGetConfig(hubUrl);
+							if (response.isSuccessful) {
+								// if (
+								// 	response?.data?.registeredWith === 'email' ||
+								// 	response?.data?.registeredWith === 'google'
+								// ) {
+								// Send magic code before redirecting
+								sessionStorage.setItem(`selfhost-backendurl`, response?.data?.appUrl);
+								sessionStorage.setItem(`selfhost-adminurl`, response?.data?.adminUrl);
+								navigate('/selfhost-password-login');
+
+								// 	await handleMagicCodeAndRedirect(entryCredentials?.email);
+								// } else {
+								// 	// New user - redirect to registration
+								// 	navigate(`/register/${entryCredentials?.email}`);
+								// }
+							} else {
+								notifications.error(response?.message);
+							}
+							entryLoader = false;
+						}
+						isSubmitting = false;
+					}}
+				>
+					<!-- <div class="d-flex justify-content-center mt-4"> -->
+					<div class="mb-3 mt-4">
+						<label for="exampleInputHubUrl1" class="form-label text-Gray sparrow-fs-14 d-flex"
+							>Hub URL
+							<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label
+						>
+
+						<div class="d-flex position-relative mt-1">
+							<input
+								type="huburl"
+								class="form-control pe-5 sparrow-fs-16 border:{hubUrlError && hubUrlTouched
+									? '3px'
+									: '1px'} solid {hubUrlError && hubUrlTouched ? 'border-error' : 'border-default'}"
+								id="exampleInputHubUrl1"
+								aria-describedby="emailHelp"
+								placeholder="Enter hub URL"
+								autocorrect="off"
+								autocapitalize="none"
+								autocomplete="off"
+								bind:value={hubUrl}
+								on:blur={async () => {
+									// isEmailTouched = true;
+									// validationErrors = await handleEntryValidation(entryCredentials);
+									// clearTimeout(checkTimeout);
+									// checkTimeout = setTimeout(
+									// 	() => checkEmailExistenceOnInput(entryCredentials.email),
+									// 	1000
+									// );
+									hubUrlTouched = true;
+									hubUrlError = hubUrl.trim() === '' ? 'Hub URL is required.' : '';
+								}}
+								on:input={async () => {
+									// entryLoader = true;
+									// validationErrors = await handleEntryValidation(entryCredentials);
+									// clearTimeout(checkTimeout);
+									// checkTimeout = setTimeout(
+									// 	() => checkEmailExistenceOnInput(entryCredentials.email),
+									// 	1000
+									// );
+									hubUrlError = hubUrl.trim() === '' ? 'Hub URL is required.' : '';
+								}}
+							/>
+
+							<!-- <button
+							type="button"
+							on:click={() => {}}
+							class=" border-0 position-absolute eye-icon d-flex align-items-center"
+						>
+							{#if entryLoader}
+								<Spinner size={'16px'} />
+							{:else if emailExists && entryCredentials.email.trim().length > 0}
+								<CircleTick height={'16px'} width={'16px'} />
+							{/if}
+						</button> -->
+						</div>
+
+						{#if hubUrlError && hubUrlTouched}
+							<small class="form-text text-dangerColor"> {hubUrlError}</small>
+						{/if}
+					</div>
+					<div class="mb-3">
+						<Button
+							disable={entryLoader || isSubmitting}
+							title={'Continue'}
+							buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-16'}
+							type={'primary'}
+						/>
+					</div>
+				</form>
+				<!-- </div> -->
 				<div class="self-hosting-container">
-					<p class="d-flex justify-content-center text-center" style="margin: 0px; color:#ffffff;">
+					<!-- <p class="d-flex justify-content-center text-center" style="margin: 0px; color:#ffffff;">
 						Self Hosting is Coming Soon!
-					</p>
+					</p> -->
 					<p
 						class="d-flex justify-content-center text-center"
 						style="margin: 0px; color:#9B9DA1; font-size:12px;"
 					>
-						Gain full control of your deployment with our upcoming self-hosting feature. Stay tuned!
+						Gain full control of your deployment with our self-hosting feature.
 					</p>
 				</div>
 			</div>
