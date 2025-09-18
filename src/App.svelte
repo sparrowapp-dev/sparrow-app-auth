@@ -22,8 +22,6 @@
 	import ResendInviteTeam from './pages/Auth/resend-invite-team/ResendInviteTeam.svelte';
 	import { AppEdition } from '$lib/utils/enums/enums';
 	import Plans from './pages/Auth/plans/Plans.svelte';
-	import SelfHostPasswordLogin from './pages/Auth/self-host-password-login/SelfHostPasswordLogin.svelte';
-	import SelfHostLoginPage from './pages/Auth/self-host-login-page/SelfHostLoginPage.svelte';
 	export let url = '/';
 </script>
 
@@ -40,19 +38,10 @@
 	Page where the user enters their email, redirecting to login or registration based on context -->
 	<Route path="/password-login" component={PasswordLogin} />
 
-	<!-- Self Host EmailEntryPage
-	Page where the user enters their email, redirecting to login or registration based on context -->
-	<Route path="/selfhost-password-login" component={SelfHostPasswordLogin} />
-
 	<!-- LoginPage
 	User login page with an optional ID parameter for specific login contexts -->
 	<Route path="/login/:id" component={LoginPage} />
 	<Route path="/login" component={LoginPage} />
-
-	<!-- Self Host LoginPage
-	User login page with an optional ID parameter for specific login contexts -->
-	<Route path="/selfhost-login/:id" component={SelfHostLoginPage} />
-	<Route path="/selfhost-login" component={SelfHostLoginPage} />
 
 	<!-- RegisterPage
 	User registration page with an optional ID parameter for specific registration contexts -->

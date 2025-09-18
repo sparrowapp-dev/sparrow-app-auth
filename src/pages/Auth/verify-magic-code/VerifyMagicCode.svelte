@@ -15,6 +15,7 @@
 
 	import CircleCheck from '$lib/assets/CircleCheck.svelte';
 	import { handleVerifyUserEmail, isSuccessfulResponseMagicCode } from './verify-magic-code';
+	import { AppEdition } from '$lib/utils/enums/enums';
 	export let id: string;
 	export let name: string = '';
 
@@ -596,7 +597,7 @@
 								isRegistered = true;
 								const accessToken = response?.data.accessToken?.token;
 								const refreshToken = response?.data.refreshToken?.token;
-								const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=login&method=code`;
+								const sparrowRedirect = `sparrow://?selfHostbackendUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.API_URL : ""}&accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=login&method=code`;
 								const sparrowWebRedirect =
 									constants.SPARROW_WEB_URL +
 									`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=code`;
