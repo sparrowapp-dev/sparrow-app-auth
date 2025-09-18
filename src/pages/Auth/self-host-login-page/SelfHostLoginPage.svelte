@@ -16,6 +16,7 @@
 	import Button from '$lib/components/button/Button.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
 	import AiSparkle from '$lib/assets/AiSparkle.svelte';
+	import { AppEdition } from '$lib/utils/enums/enums';
 
 	export let id;
 
@@ -111,7 +112,7 @@
 						isLogin = true;
 						const accessToken = response?.accessToken?.token;
 						const refreshToken = response?.refreshToken?.token;
-						const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email&isSelfHostLogin=true&backendUrl=${btoa(
+						const sparrowRedirect = `sparrow://?selfHostbackendUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.API_URL : ""}&accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email&isSelfHostLogin=true&backendUrl=${btoa(
 							sessionStorage.getItem(`selfhost-backendurl`) || ''
 						)}&adminUrl=${btoa(sessionStorage.getItem(`selfhost-adminurl`) || '')}`;
 						const sparrowWebRedirect =

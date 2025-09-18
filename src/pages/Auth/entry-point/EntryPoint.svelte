@@ -300,10 +300,19 @@
 								// 	response?.data?.registeredWith === 'google'
 								// ) {
 								// Send magic code before redirecting
-								sessionStorage.setItem(`selfhost-backendurl`, response?.data?.appUrl);
-								sessionStorage.setItem(`selfhost-adminurl`, response?.data?.adminUrl);
-								navigate('/selfhost-password-login');
-
+								// sessionStorage.setItem(`selfhost-backendurl`, response?.data?.appUrl);
+								// sessionStorage.setItem(`selfhost-adminurl`, response?.data?.identityUrl);
+								// navigate(response?.data?.identityUrl);
+								let redirectSource = localStorage.getItem('source');
+								if(redirectSource === "desktop"){
+                                    window.location.href = response?.data?.identityUrl + `/init?source=desktop`;
+								}
+								else if(redirectSource === "admin"){
+                                    window.location.href = response?.data?.identityUrl + `/init?source=admin`;
+								}
+								else{
+									window.location.href = response?.data?.identityUrl + `/init?source=web`;
+								}
 								// 	await handleMagicCodeAndRedirect(entryCredentials?.email);
 								// } else {
 								// 	// New user - redirect to registration

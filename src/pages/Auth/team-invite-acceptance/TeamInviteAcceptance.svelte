@@ -30,7 +30,7 @@
      const sparrowRedirect = `sparrow://`;
   
 
-    //  sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
+    //  sparrow://?selfHostbackendUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.API_URL : ""}&accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
      
      const  buttonClick = () => {
         navigate(sparrowRedirect);

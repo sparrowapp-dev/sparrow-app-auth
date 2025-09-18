@@ -5,6 +5,7 @@
 	import constants from '$lib/utils/constants';
 	import RegisterRedirectComponent from '../redirect/RegisterRedirectComponent.svelte';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
+	import { AppEdition } from '$lib/utils/enums/enums';
 
 	let redirctSource = localStorage.getItem('source');
 
@@ -21,7 +22,7 @@
 		accessToken = urlParams.get('accessToken') as string;
 		refreshToken = urlParams.get('refreshToken') as string;
 		source = urlParams.get('source') as string;
-		sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
+		sparrowRedirect = `sparrow://?selfHostbackendUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.API_URL : ""}&accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
 		sparrowWebRedirect =
 			constants.SPARROW_WEB_URL +
 			`?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;

@@ -16,6 +16,7 @@
 
 	import CircleCheck from '$lib/assets/CircleCheck.svelte';
 	import AiSparkle from '$lib/assets/AiSparkle.svelte';
+	import { AppEdition } from '$lib/utils/enums/enums';
 	export let id: string;
 
 	let seconds = 300; // Changed from 600 to 300 (5 minutes)
@@ -585,7 +586,7 @@
 							isRegistered = true;
 							const accessToken = response?.data.accessToken?.token;
 							const refreshToken = response?.data.refreshToken?.token;
-							const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=register&method=email`;
+							const sparrowRedirect = `sparrow://?selfHostbackendUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.API_URL : ""}&accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=register&method=email`;
 							const sparrowWebRedirect =
 								constants.SPARROW_WEB_URL +
 								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=register&method=email`;

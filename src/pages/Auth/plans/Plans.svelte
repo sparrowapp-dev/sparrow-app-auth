@@ -4,6 +4,7 @@
 	import constants from '$lib/utils/constants';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 	import Redirect from '../redirect/Redirect.svelte';
+	import { AppEdition } from '$lib/utils/enums/enums';
 
 	const location = useLocation();
 	let redirctSource = localStorage.getItem('source');
@@ -153,7 +154,7 @@
 			return;
 		} else if (plan.title === 'Community') {
 			isRegistered = true;
-			const sparrowRedirect = `sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${response}&event=register&method=email`;
+			const sparrowRedirect = `sparrow://?selfHostbackendUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.API_URL : ""}&accessToken=${accessToken}&refreshToken=${refreshToken}&response=${response}&event=register&method=email`;
 			const sparrowWebRedirect =
 				constants.SPARROW_WEB_URL +
 				`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${response}&event=register&method=email`;
