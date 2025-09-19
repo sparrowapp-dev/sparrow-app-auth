@@ -154,7 +154,7 @@
 			return;
 		} else if (plan.title === 'Community') {
 			isRegistered = true;
-			const sparrowRedirect = `sparrow://?selfHostbackendUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.API_URL : ""}&accessToken=${accessToken}&refreshToken=${refreshToken}&response=${response}&event=register&method=email`;
+			const sparrowRedirect = `sparrow://?selfhostBackendUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.API_URL : ""}&selfhostAdminUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_ADMIN_URL : ""}&selfhostWebUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_WEB_URL : ""}&accessToken=${accessToken}&refreshToken=${refreshToken}&response=${response}&event=register&method=email`;
 			const sparrowWebRedirect =
 				constants.SPARROW_WEB_URL +
 				`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${response}&event=register&method=email`;

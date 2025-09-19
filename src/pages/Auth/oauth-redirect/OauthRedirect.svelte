@@ -22,7 +22,7 @@
 		accessToken = urlParams.get('accessToken') as string;
 		refreshToken = urlParams.get('refreshToken') as string;
 		source = urlParams.get('source') as string;
-		sparrowRedirect = `sparrow://?selfHostbackendUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.API_URL : ""}&accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
+		sparrowRedirect = `sparrow://?selfhostBackendUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.API_URL : ""}&selfhostAdminUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_ADMIN_URL : ""}&selfhostWebUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_WEB_URL : ""}&accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
 		sparrowWebRedirect =
 			constants.SPARROW_WEB_URL +
 			`?accessToken=${accessToken}&refreshToken=${refreshToken}&event=${source}&method=google`;
