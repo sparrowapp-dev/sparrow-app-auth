@@ -290,11 +290,11 @@
 					on:submit|preventDefault={async () => {
 						isSubmitting = true;
 						hubUrlTouched = true;
-						hubUrlError = hubUrl.trim() === '' ? 'Hub URL is required.' : '';
+						hubUrlError = hubUrl.trim() === '' ? 'Self Host URL is required.' : '';
 						if (hubUrlError === '') {
 							entryLoader = true;
 							const response = await handleGetConfig(hubUrl);
-							if (response.isSuccessful) {
+							if (response?.isSuccessful && response?.data?.identityUrl) {
 								// if (
 								// 	response?.data?.registeredWith === 'email' ||
 								// 	response?.data?.registeredWith === 'google'
@@ -318,8 +318,12 @@
 								// 	// New user - redirect to registration
 								// 	navigate(`/register/${entryCredentials?.email}`);
 								// }
-							} else {
-								notifications.error(response?.message);
+							} 
+							else if(response?.message.startsWith('Cannot GET')){
+								notifications.error('Self Host URL entered is invalid.');
+							}
+							else {
+								notifications.error(response?.message || 'Self Host URL entered is invalid.');
 							}
 							entryLoader = false;
 						}
@@ -329,19 +333,19 @@
 					<!-- <div class="d-flex justify-content-center mt-4"> -->
 					<div class="mb-3 mt-4">
 						<label for="exampleInputHubUrl1" class="form-label text-Gray sparrow-fs-14 d-flex"
-							>Hub URL
+							>Self Host URL
 							<p class="ms-1 mb-0 sparrow-fw-600 text-dangerColor">*</p></label
 						>
 
 						<div class="d-flex position-relative mt-1">
 							<input
 								type="huburl"
-								class="form-control pe-5 sparrow-fs-16 border:{hubUrlError && hubUrlTouched
+								class="form-control sparrow-fs-16 border:{hubUrlError && hubUrlTouched
 									? '3px'
 									: '1px'} solid {hubUrlError && hubUrlTouched ? 'border-error' : 'border-default'}"
 								id="exampleInputHubUrl1"
 								aria-describedby="emailHelp"
-								placeholder="Enter hub URL"
+								placeholder="Enter Self Host URL"
 								autocorrect="off"
 								autocapitalize="none"
 								autocomplete="off"
@@ -355,7 +359,7 @@
 									// 	1000
 									// );
 									hubUrlTouched = true;
-									hubUrlError = hubUrl.trim() === '' ? 'Hub URL is required.' : '';
+									hubUrlError = hubUrl.trim() === '' ? 'Self Host URL is required.' : '';
 								}}
 								on:input={async () => {
 									// entryLoader = true;
@@ -365,7 +369,7 @@
 									// 	() => checkEmailExistenceOnInput(entryCredentials.email),
 									// 	1000
 									// );
-									hubUrlError = hubUrl.trim() === '' ? 'Hub URL is required.' : '';
+									hubUrlError = hubUrl.trim() === '' ? 'Self Host URL is required.' : '';
 								}}
 							/>
 

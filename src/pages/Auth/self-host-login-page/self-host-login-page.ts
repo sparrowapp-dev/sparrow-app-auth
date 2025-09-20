@@ -12,7 +12,7 @@ export const navigateToRegister = () => {
 export const handleLogin = async (loginCredentials: loginUserPostBody) => {
 	const baseUrl = sessionStorage.getItem('selfhost-backendurl') || '';
 	if (!baseUrl) {
-		return { isSuccessful: false, message: 'Hub URL not found. Please try again.' };
+		return { isSuccessful: false, message: 'Self Host URL not found. Please try again.' };
 	}
 	return await selfHostLoginUser(baseUrl, loginCredentials);
 };
