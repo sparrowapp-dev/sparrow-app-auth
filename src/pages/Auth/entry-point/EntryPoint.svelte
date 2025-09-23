@@ -319,7 +319,7 @@
 								// 	navigate(`/register/${entryCredentials?.email}`);
 								// }
 							} 
-							else if(response?.message.startsWith('Cannot GET')){
+							else if(response?.message.startsWith('Cannot GET') || response?.message === "Internal server error"){
 								notifications.error('Self Host URL entered is invalid.');
 							}
 							else {
@@ -393,6 +393,7 @@
 					<div class="mb-3">
 						<Button
 							disable={entryLoader || isSubmitting}
+							loader={entryLoader || isSubmitting}
 							title={'Continue'}
 							buttonClassProp={'w-100 align-items-center d-flex justify-content-center sparrow-fs-16'}
 							type={'primary'}

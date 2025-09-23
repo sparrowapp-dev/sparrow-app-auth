@@ -16,6 +16,8 @@ export const handleEntryValidation = async (entryCredentials) => {
 
 // Get Config deatils of backend
 export const handleGetConfig = async (hubUrl: string) => {
+	hubUrl = hubUrl.trim();
+
 	//if hubUrl end with / then remove it
 	if (hubUrl.endsWith('/')) {
 		hubUrl = hubUrl.slice(0, -1);
