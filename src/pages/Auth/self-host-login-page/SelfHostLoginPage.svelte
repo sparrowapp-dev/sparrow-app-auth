@@ -4,7 +4,7 @@
 	import googleLogo from '$lib/assets/googlelogo.svg';
 	import eyeHide from '$lib/assets/eye-hide.svg';
 	import eyeShow from '$lib/assets/eye-show.svg';
-	import { handleLogin, handleLoginValidation } from './login-page';
+	import { handleLogin, handleLoginValidation } from './self-host-login-page';
 	import sparrowicon from '$lib/assets/logoSparrowSquare.svg';
 	import LoginLoader from '$lib/components/transition/LoginLoader.svelte';
 	import Redirect from '../redirect/Redirect.svelte';
@@ -108,52 +108,54 @@
 					const result = await handleLogin(loginCredentials);
 					if (result.isSuccessful) {
 						const response = result.data;
-						if (response?.isEmailVerified) {
-							isLogin = true;
-							const accessToken = response?.accessToken?.token;
-							const refreshToken = response?.refreshToken?.token;
-							const sparrowRedirect = `sparrow://?selfhostBackendUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.API_URL : ""}&selfhostAdminUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_ADMIN_URL : ""}&selfhostWebUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_WEB_URL : ""}&accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
-							const sparrowWebRedirect =
-								constants.SPARROW_WEB_URL +
-								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
-							let sparrowAdminRedirect =
-								constants.SPARROW_ADMIN_URL +
-								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
-							if(flow === "standard") { 
-								sparrowAdminRedirect = sparrowAdminRedirect + '&flow=standard';
-							}
-							if (redirctSource === 'desktop') {
-								let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
-								let firstName = data.name;
-								firstName = firstName.split(' ')[0];
-								firstName = firstName.length > 11 ? firstName.substring(0, 5) + '...' : firstName;
-								redirectRules.title = `Welcome Back ${firstName}`;
-								setTimeout(() => {
-									redirectRules.description = `Redirecting you to desktop app...`;
-									redirectRules.message = `the link if the application does not open automatically.`;
-									redirectRules.loadingMessage = '';
-									redirectRules.isSpinner = false;
-									navigate(sparrowRedirect);
-									redirectRules.buttonClick = () => {
-										navigate(sparrowRedirect);
-									};
-									redirectRules.copyLink = () => {
-										if (navigator.clipboard) {
-											notifications.success('Link copied to clipboard.');
-											return navigator.clipboard.writeText(sparrowRedirect);
-										}
-									};
-								}, 1000);
-							} else if (redirctSource === 'admin') {
-								navigate(sparrowAdminRedirect);
-							} else {
-								navigate(sparrowWebRedirect);
-							}
-						} else {
-							localStorage.setItem(`timer-verify-${loginCredentials.email}`, new Date().getTime());
-							notifications.success('Verification code has been sent to your registered Email ID.');
-							navigate(`/verify/email/${loginCredentials.email}`);
+						// if (response?.isEmailVerified) {
+						isLogin = true;
+						const accessToken = response?.accessToken?.token;
+						const refreshToken = response?.refreshToken?.token;
+						const sparrowRedirect = `sparrow://?selfhostBackendUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.API_URL : ""}&selfhostAdminUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_ADMIN_URL : ""}&selfhostWebUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_WEB_URL : ""}&accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email&isSelfHostLogin=true&backendUrl=${btoa(
+							sessionStorage.getItem(`selfhost-backendurl`) || ''
+						)}&adminUrl=${btoa(sessionStorage.getItem(`selfhost-adminurl`) || '')}`;
+						const sparrowWebRedirect =
+							constants.SPARROW_WEB_URL +
+							`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
+						let sparrowAdminRedirect =
+							constants.SPARROW_ADMIN_URL +
+							`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
+						if (flow === 'standard') {
+							sparrowAdminRedirect = sparrowAdminRedirect + '&flow=standard';
 						}
+						// if (redirctSource === 'desktop') {
+						let data = JSON.parse(window.atob(accessToken?.split('.')[1]));
+						let firstName = data.name;
+						firstName = firstName.split(' ')[0];
+						firstName = firstName.length > 11 ? firstName.substring(0, 5) + '...' : firstName;
+						redirectRules.title = `Welcome Back ${firstName}`;
+						setTimeout(() => {
+							redirectRules.description = `Redirecting you to desktop app...`;
+							redirectRules.message = `the link if the application does not open automatically.`;
+							redirectRules.loadingMessage = '';
+							redirectRules.isSpinner = false;
+							navigate(sparrowRedirect);
+							redirectRules.buttonClick = () => {
+								navigate(sparrowRedirect);
+							};
+							redirectRules.copyLink = () => {
+								if (navigator.clipboard) {
+									notifications.success('Link copied to clipboard.');
+									return navigator.clipboard.writeText(sparrowRedirect);
+								}
+							};
+						}, 1000);
+						// } else if (redirctSource === 'admin') {
+						// 	navigate(sparrowAdminRedirect);
+						// } else {
+						// 	navigate(sparrowWebRedirect);
+						// }
+						// } else {
+						// 	localStorage.setItem(`timer-verify-${loginCredentials.email}`, new Date().getTime());
+						// 	notifications.success('Verification code has been sent to your registered Email ID.');
+						// 	navigate(`/verify/email/${loginCredentials.email}`);
+						// }
 					} else {
 						const response = result.message;
 						if (
@@ -261,18 +263,18 @@
 					>
 				{/if}
 			</div>
-			<div class="d-flex mb-4 align-items-center justify-content-end">
+			<!-- <div class="d-flex mb-4 align-items-center justify-content-end">
 				<Link
 					to="/forgot/password"
 					class="text-decoration-none text-primaryColor sparrow-fs-12 sparrow-fw-500"
 					>Forgot Password?</Link
 				>
-			</div>
+			</div> -->
 
 			<div class="mb-1">
 				<Button
 					disable={loginLoader}
-					title={'Login'}
+					title={'Continue'}
 					buttonClassProp={'w-100 py-2 align-items-center d-flex justify-content-center sparrow-fs-16'}
 					type={'primary'}
 					loader={loginLoader}
@@ -280,24 +282,11 @@
 			</div>
 		</form>
 		<div class="d-flex align-items-start">
-			<div style="height: 24px; width:24px;">
-				<AiSparkle height={'24px'} width={'24px'} />
-			</div>
-			<p class="text-center sparrow-fs-12 pt-1 mb-0" style="color: #CCCCCCE5;">
-				Looking for password less Login? <br />
-				<span
-					on:click={() => {
-						const isDesktopUser = localStorage.getItem('source');
-						if (isDesktopUser === 'desktop') {
-							navigate('/init?source=desktop');
-						} else if (isDesktopUser === 'admin') {
-							navigate('/init?source=admin');
-						} else {
-							navigate('/init?source=web');
-						}
-					}}
-					style="color:#3760F7; cursor:pointer;">Continue with magic code.</span
-				>
+			<p
+				class="d-flex justify-content-center text-center"
+				style="margin: 0px; color:#9B9DA1; font-size:12px;"
+			>
+				Gain full control of your deployment with our self-hosting feature.
 			</p>
 		</div>
 		<!-- <Oauth /> -->

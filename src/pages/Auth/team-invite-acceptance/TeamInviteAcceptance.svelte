@@ -30,7 +30,7 @@
      const sparrowRedirect = `sparrow://`;
   
 
-    //  sparrow://?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
+    //  sparrow://?selfhostBackendUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.API_URL : ""}&selfhostAdminUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_ADMIN_URL : ""}&selfhostWebUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_WEB_URL : ""}&accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
      
      const  buttonClick = () => {
         navigate(sparrowRedirect);

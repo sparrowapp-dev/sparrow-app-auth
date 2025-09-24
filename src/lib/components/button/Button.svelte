@@ -120,7 +120,7 @@
 	}
 
 	.custom-btn-primary {
-		height: 44px;
+		height: 36px;
 		font-weight: 400;
 		background-color: white;
 		color: black;

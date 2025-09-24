@@ -101,40 +101,72 @@ const verifyMagicCode = async (verifyInfo: MagicCodeVerifyBody) => {
 	return response;
 };
 
-const updateOccaisonalUpdatesStatus = async (occaisonalUpdates: OccaisonalUpdatesBody) => { 
-	const response = await makeRequest('POST', `${apiUrl}/aoi/user/update-occasional-updates-status`, { 
-		body: occaisonalUpdates
-	})
+const updateOccaisonalUpdatesStatus = async (occaisonalUpdates: OccaisonalUpdatesBody) => {
+	const response = await makeRequest(
+		'POST',
+		`${apiUrl}/aoi/user/update-occasional-updates-status`,
+		{
+			body: occaisonalUpdates
+		}
+	);
 	return response;
-}
+};
 
-const acceptTeamInvite = async (teamId: string, inviteId: string) => { 
-	const response = await makeRequest('POST', `${apiUrl}/api/team/${teamId}/invite/user/accept/${inviteId}`, { 
-		body: {}
-	})
+const acceptTeamInvite = async (teamId: string, inviteId: string) => {
+	const response = await makeRequest(
+		'POST',
+		`${apiUrl}/api/team/${teamId}/invite/user/accept/${inviteId}`,
+		{
+			body: {}
+		}
+	);
 	return response;
-}
+};
 
-const resendInviteTeam = async (teamId:string, inviteId:string)=>{
-	const response = await makeRequest('POST',`${apiUrl}/api/team/${teamId}/resend-invite/${inviteId}`,{})
+const resendInviteTeam = async (teamId: string, inviteId: string) => {
+	const response = await makeRequest(
+		'POST',
+		`${apiUrl}/api/team/${teamId}/resend-invite/${inviteId}`,
+		{}
+	);
 	return response;
-}
+};
 
- 
-export { 
-	registerUser, 
-	loginUser, 
-	forgotPassword, 
-	loginWithGoogle, 
-	verifyEmail, 
-	resetPassword, 
-	getUser, 
-	sendUserEmailVerification, 
+const getConfig = async (hubUrl: string) => {
+	const response = await makeRequest('GET', `${hubUrl}/api/team/config`);
+	return response;
+};
+
+const getSelfHostUser = async (baseUrl: string, email: string) => {
+	const response = await makeRequest('GET', `${baseUrl}/api/user/email/${email}`);
+
+	return response;
+};
+
+const selfHostLoginUser = async (baseUrl: string, userInfo: loginUserPostBody) => {
+	const response = await makeRequest('POST', `${baseUrl}/api/auth/login`, {
+		body: userInfo
+	});
+	return response;
+};
+
+export {
+	registerUser,
+	loginUser,
+	forgotPassword,
+	loginWithGoogle,
+	verifyEmail,
+	resetPassword,
+	getUser,
+	sendUserEmailVerification,
 	verifyUserEmail,
 	sendMagicCodeEmail,
 	verifyMagicCode,
 	updateOccaisonalUpdatesStatus,
 	acceptTeamInvite,
 	resendInviteTeam,
-	registerVerifiedUser
+	registerVerifiedUser,
+	getConfig,
+	getSelfHostUser,
+	selfHostLoginUser
 };

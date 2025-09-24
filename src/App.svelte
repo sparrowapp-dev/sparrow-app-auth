@@ -90,9 +90,9 @@
 
 	<!-- Support page that opens the user's default email client with a pre-filled support email -->
 	{#if constants.APP_EDITION === AppEdition.MANAGED}
-	 <Route path="/support">
-		 <ExternalNavigation to={`mailto:${constants.SPARROW_SUPPORT_EMAIL}`}/>
-	 </Route>
+		<Route path="/support">
+			<ExternalNavigation to={`mailto:${constants.SPARROW_SUPPORT_EMAIL}`} />
+		</Route>
 	{/if}
 
 	<!-- Wildcard route that redirects any unmatched paths to the entry point page -->
