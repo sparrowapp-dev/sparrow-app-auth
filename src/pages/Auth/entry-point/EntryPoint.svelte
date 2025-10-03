@@ -284,10 +284,7 @@
 				</div>
 			</div>
 			<div slot="self-hosted">
-				<div class="d-flex justify-content-center mt-4">
-					<CloudCube />
-				</div>
-				<!-- <form
+				<form
 					class="login-form w-100 text-whiteColor ps-1 pe-1 mb-2 mt-4"
 					novalidate
 					on:submit|preventDefault={async () => {
@@ -332,7 +329,8 @@
 						}
 						isSubmitting = false;
 					}}
-				>					
+				>
+					<!-- <div class="d-flex justify-content-center mt-4"> -->
 					<div class="mb-3 mt-4">
 						<label for="exampleInputHubUrl1" class="form-label text-Gray sparrow-fs-14 d-flex"
 							>Self Host URL
@@ -353,14 +351,39 @@
 								autocomplete="off"
 								bind:value={hubUrl}
 								on:blur={async () => {
+									// isEmailTouched = true;
+									// validationErrors = await handleEntryValidation(entryCredentials);
+									// clearTimeout(checkTimeout);
+									// checkTimeout = setTimeout(
+									// 	() => checkEmailExistenceOnInput(entryCredentials.email),
+									// 	1000
+									// );
 									hubUrlTouched = true;
 									hubUrlError = hubUrl.trim() === '' ? 'Self Host URL is required.' : '';
 								}}
 								on:input={async () => {
+									// entryLoader = true;
+									// validationErrors = await handleEntryValidation(entryCredentials);
+									// clearTimeout(checkTimeout);
+									// checkTimeout = setTimeout(
+									// 	() => checkEmailExistenceOnInput(entryCredentials.email),
+									// 	1000
+									// );
 									hubUrlError = hubUrl.trim() === '' ? 'Self Host URL is required.' : '';
 								}}
 							/>
 
+							<!-- <button
+							type="button"
+							on:click={() => {}}
+							class=" border-0 position-absolute eye-icon d-flex align-items-center"
+						>
+							{#if entryLoader}
+								<Spinner size={'16px'} />
+							{:else if emailExists && entryCredentials.email.trim().length > 0}
+								<CircleTick height={'16px'} width={'16px'} />
+							{/if}
+						</button> -->
 						</div>
 
 						{#if hubUrlError && hubUrlTouched}
@@ -376,12 +399,12 @@
 							type={'primary'}
 						/>
 					</div>
-				</form> -->
+				</form>
 				<!-- </div> -->
 				<div class="self-hosting-container">
-					<p class="d-flex justify-content-center text-center" style="margin: 0px; color:#ffffff;">
+					<!-- <p class="d-flex justify-content-center text-center" style="margin: 0px; color:#ffffff;">
 						Self Hosting is Coming Soon!
-					</p>
+					</p> -->
 					<p
 						class="d-flex justify-content-center text-center"
 						style="margin: 0px; color:#9B9DA1; font-size:12px;"
