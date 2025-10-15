@@ -1,0 +1,46 @@
+name: Staging Deployment
+
+on:
+  push:
+    branches:
+      - release/stg-workflow
+  workflow_dispatch:
+
+env:	
+  VITE_API_URL: ${{ vars.VITE_API_URL }}
+  VITE_SPARROW_SUPPORT_EMAIL: ${{ vars.VITE_SPARROW_SUPPORT_EMAIL }}
+  VITE_SPARROW_OAUTH: ${{ vars.VITE_SPARROW_OAUTH }}
+  VITE_ENABLE_MIX_PANEL: ${{ vars.VITE_ENABLE_MIX_PANEL }}
+  VITE_MIX_PANEL_TOKEN: ${{ vars.VITE_MIX_PANEL_TOKEN }}
+  VITE_TERMS_OF_SERVICE: ${{ vars.VITE_TERMS_OF_SERVICE }}
+  VITE_SPARROW_PRIVACY_POLICY: ${{ vars.VITE_SPARROW_PRIVACY_POLICY }}
+  VITE_SPARROW_WEB_URL: ${{ vars.VITE_SPARROW_WEB_URL }}
+  VITE_CANNY_FEEDBACK_URL: ${{ vars.VITE_CANNY_FEEDBACK_URL }}
+  VITE_SPARROW_ADMIN_URL: ${{ vars.VITE_SPARROW_ADMIN_URL }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: qa
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Node.js version
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Build app
+      run: yarn build
+
+    - name: Deploy to Azure Static Web App
+      uses: Azure/static-web-apps-deploy@v1
+      with:
+        azure_static_web_apps_api_token: ${{ secrets.MANAGE_QA_TOKEN }}
+        action: "upload"
+        app_location: "./dist"
+        api_location: ""
