@@ -10,6 +10,8 @@ export const handleAcceptTeamInvite = async (
     return response;
   } else if(response.message === "User is already a member of the hub"){
     notifications.warning("You are already a member of this hub");
+  } else if(response.message === "Plan limit reached."){
+    notifications.error("The user limit for the Hub Plan has been reached.");
   } else {
     //  window.location.href = 'sparrow://';
     notifications.error("Failed to accept invitation");
