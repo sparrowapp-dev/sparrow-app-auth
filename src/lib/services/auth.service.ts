@@ -112,10 +112,10 @@ const updateOccaisonalUpdatesStatus = async (occaisonalUpdates: OccaisonalUpdate
 	return response;
 };
 
-const acceptTeamInvite = async (teamId: string, inviteId: string) => {
+const acceptTeamInvite = async (teamId: string, inviteId: string,email:string) => {
 	const response = await makeRequest(
 		'POST',
-		`${apiUrl}/api/team/${teamId}/invite/user/accept/${inviteId}`,
+		`${apiUrl}/api/team/${teamId}/invite/user/accept/${inviteId}/email/${email}`,
 		{
 			body: {}
 		}

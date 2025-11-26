@@ -13,7 +13,7 @@
 	export let email;
 
 	onMount(async () => {
-		await handleAcceptTeamInvite(teamId, inviteId);
+		await handleAcceptTeamInvite(teamId, inviteId, email);
         isSpinner = false;
 	});
 
