@@ -150,6 +150,12 @@ const selfHostLoginUser = async (baseUrl: string, userInfo: loginUserPostBody) =
 	return response;
 };
 
+const acceptInviteAndLogin = async (teamId: string, inviteId: string, email: string) => {
+	return makeRequest('POST', `${apiUrl}/api/auth/invite/accept-and-login`, {
+		body: { teamId, inviteId, email }
+	});
+};
+
 export {
 	registerUser,
 	loginUser,
@@ -168,5 +174,6 @@ export {
 	registerVerifiedUser,
 	getConfig,
 	getSelfHostUser,
-	selfHostLoginUser
+	selfHostLoginUser,
+	acceptInviteAndLogin
 };
