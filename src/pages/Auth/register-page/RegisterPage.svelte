@@ -176,7 +176,14 @@
 					if (response.isSuccessful) {
 						localStorage.setItem(`timer-verify-${userData.email}`, new Date().getTime());
 						notifications.success('Verification code has been sent to your registered Email ID.');
-						navigate(`/verify/email/${userData.email}`);
+						const params = new URLSearchParams(window.location.search);
+
+						const inviteQuery =
+							params.get('flow') === 'invite'
+								? `?flow=invite&teamId=${params.get('teamId')}&inviteId=${params.get('inviteId')}&email=${params.get('email')}`
+								: '';
+
+						navigate(`/verify/email/${userData.email}${inviteQuery}`);
 					} else {
 						if (
 							response.message ===
