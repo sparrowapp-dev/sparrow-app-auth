@@ -17,7 +17,7 @@
 		const res = await acceptInviteAndLogin(teamId, inviteId, email);
 
 		if (res?.data?.accessToken?.token) {
-			const { accessToken, refreshToken, teamId, workspaces, role } = res.data;
+			const { accessToken, refreshToken, teamId, teamName, workspaces, role } = res.data;
 
 			const workspaceNames = workspaces?.map((w) => w.name).join(', ') ?? '';
 			const deepLink =
@@ -25,6 +25,7 @@
 				`?accessToken=${accessToken.token}` +
 				`&refreshToken=${refreshToken.token}` +
 				`&teamId=${teamId}` +
+				`&teamName=${encodeURIComponent(teamName)}` +
 				`&role=${encodeURIComponent(role)}` +
 				`&workspaceNames=${encodeURIComponent(workspaceNames)}`;
 			// +(workspaceId ? `&workspaceId=${workspaceId}` : '');
