@@ -161,14 +161,20 @@
 
 		const finalRefreshToken = inviteLoginResponse?.data?.refreshToken?.token || refreshToken;
 
+		const teamId = inviteLoginResponse?.data?.teamId;
+		const teamName = inviteLoginResponse?.data?.teamName;
+		const role = inviteLoginResponse?.data?.role;
+
+		const workspaceNames = inviteLoginResponse?.data?.workspaces?.map((w) => w.name).join(',');
+
 		return (
 			`sparrow://invite-login` +
 			`?accessToken=${finalAccessToken}` +
 			`&refreshToken=${finalRefreshToken}` +
-			(inviteLoginResponse?.data?.teamId ? `&teamId=${inviteLoginResponse.data.teamId}` : '') +
-			(inviteLoginResponse?.data?.workspaceId
-				? `&workspaceId=${inviteLoginResponse.data.workspaceId}`
-				: '')
+			(teamId ? `&teamId=${teamId}` : '') +
+			(teamName ? `&teamName=${encodeURIComponent(teamName)}` : '') +
+			(role ? `&role=${encodeURIComponent(role)}` : '') +
+			(workspaceNames ? `&workspaceNames=${encodeURIComponent(workspaceNames)}` : '')
 		);
 	}
 
@@ -194,14 +200,6 @@
 
 			const finalRefreshToken = inviteLoginResponse?.data?.refreshToken?.token || refreshToken;
 
-			const sparrowRedirect =
-				`sparrow://invite-login` +
-				`?accessToken=${finalAccessToken}` +
-				`&refreshToken=${finalRefreshToken}` +
-				(inviteLoginResponse?.data?.teamId ? `&teamId=${inviteLoginResponse.data.teamId}` : '') +
-				(inviteLoginResponse?.data?.workspaceId
-					? `&workspaceId=${inviteLoginResponse.data.workspaceId}`
-					: '');
 
 			const sparrowWebRedirect =
 				constants.SPARROW_WEB_URL +
@@ -217,6 +215,7 @@
 					redirectRules.message = `the token if you are facing any issue in redirecting to the login page`;
 					redirectRules.loadingMessage = '';
 					redirectRules.isSpinner = false;
+					const sparrowRedirect = buildInviteRedirect(inviteLoginResponse);
 					navigate(sparrowRedirect);
 					redirectRules.buttonClick = () => {
 						navigate(sparrowRedirect);
