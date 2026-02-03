@@ -7,7 +7,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { navigate, useLocation } from 'svelte-navigator';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
-	import { sendUserEmailVerification } from '$lib/services/auth.service';
+	import { acceptInviteAndLogin, sendUserEmailVerification } from '$lib/services/auth.service';
 	import Button from '$lib/components/button/Button.svelte';
 	import BgContainer from '$lib/components/bgContainer/BgContainer.svelte';
 	import Redirect from '../redirect/Redirect.svelte';
@@ -625,7 +625,43 @@
 									? `&flow=invite&teamId=${inviteTeamId}&inviteId=${inviteId}&email=${encodeURIComponent(inviteEmail)}`
 									: '';
 
-							navigate(basePlansUrl + inviteQuery);
+							if (inviteFlow && inviteTeamId && inviteId && inviteEmail) {
+								const inviteLoginRes = await acceptInviteAndLogin(
+									inviteTeamId,
+									inviteId,
+									inviteEmail
+								);
+
+								if (inviteLoginRes?.data?.accessToken?.token) {
+									const { accessToken, refreshToken, teamId, teamName, workspaces, role } =
+										inviteLoginRes.data;
+
+									const workspaceNames = workspaces?.map((w) => w.name).join(',') ?? '';
+
+									const deepLink =
+										`sparrow://invite-login` +
+										`?accessToken=${accessToken.token}` +
+										`&refreshToken=${refreshToken.token}` +
+										`&teamId=${teamId}` +
+										`&teamName=${encodeURIComponent(teamName)}` +
+										`&role=${encodeURIComponent(role)}` +
+										`&workspaceNames=${encodeURIComponent(workspaceNames)}`;
+
+									window.location.href = deepLink;
+									return;
+								}
+
+								const basePlansUrl =
+									`/plans?accessToken=${accessToken}` +
+									`&refreshToken=${refreshToken}` +
+									`&response=${encodeURIComponent(JSON.stringify(response.data))}` +
+									`&email=${encodeURIComponent(verifyCodeCredential.email)}`;
+
+								navigate(basePlansUrl);
+
+								notifications.error('Invite accepted, but login failed');
+								return;
+							}
 						}
 
 						// const sparrowRedirect = `sparrow://?selfhostBackendUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.API_URL : ""}&selfhostAdminUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_ADMIN_URL : ""}&selfhostWebUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_WEB_URL : ""}&accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response.data)}&event=register&method=email`;
