@@ -649,6 +649,10 @@
 										`&workspaceNames=${encodeURIComponent(workspaceNames)}`;
 
 									window.location.href = deepLink;
+									navigate(
+										`/accept-team-invite/${inviteTeamId}/${inviteId}/${verifyCodeCredential.email}`
+									);
+
 									return;
 								}
 

@@ -31,7 +31,7 @@
 
 			window.location.href = deepLink;
 		} else {
-			notifications.error('Invite accepted, but login failed');
+			// notifications.error('Invite accepted, but login failed');
 		}
 	});
 
