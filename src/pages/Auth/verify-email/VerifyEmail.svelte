@@ -640,7 +640,8 @@
 
 									const deepLink =
 										`sparrow://invite-login` +
-										`?accessToken=${accessToken.token}` +
+										`?source=invite` +
+										`&accessToken=${accessToken.token}` +
 										`&refreshToken=${refreshToken.token}` +
 										`&teamId=${teamId}` +
 										`&teamName=${encodeURIComponent(teamName)}` +
