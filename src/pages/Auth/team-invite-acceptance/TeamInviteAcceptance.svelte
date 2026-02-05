@@ -8,13 +8,31 @@
 	import Button from '$lib/components/button/Button.svelte';
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 	import { navigate } from 'svelte-navigator';
+	import { acceptInviteAndLogin } from '$lib/services/auth.service';
 	export let teamId;
 	export let inviteId;
 	export let email;
 
 	onMount(async () => {
-		await handleAcceptTeamInvite(teamId, inviteId, email);
-        isSpinner = false;
+		const res = await acceptInviteAndLogin(teamId, inviteId, email);
+
+		if (res?.data?.accessToken?.token) {
+			const { accessToken, refreshToken, teamId, workspaces } = res.data;
+
+			const workspaceId = workspaces?.[0]?.id;
+
+			const deepLink =
+				`sparrow://invite-login` +
+				`?source=invite` +
+				`&accessToken=${accessToken.token}` +
+				`&refreshToken=${refreshToken.token}` +
+				`&teamId=${teamId}` +
+				(workspaceId ? `&workspaceId=${workspaceId}` : '');
+
+			window.location.href = deepLink;
+		} else {
+			// notifications.error('Invite accepted, but login failed');
+		}
 	});
 
 	 let title = 'Title';

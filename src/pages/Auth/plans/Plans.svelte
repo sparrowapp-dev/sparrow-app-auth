@@ -5,10 +5,16 @@
 	import { notifications } from '$lib/components/toast-notification/ToastNotification';
 	import Redirect from '../redirect/Redirect.svelte';
 	import { AppEdition } from '$lib/utils/enums/enums';
+	import { acceptInviteAndLogin } from '$lib/services/auth.service';
 
 	const location = useLocation();
 	let redirctSource = localStorage.getItem('source');
 	$: params = new URLSearchParams($location.search);
+	$: inviteFlow = params.get('flow') === 'invite';
+	$: inviteTeamId = params.get('teamId');
+	$: inviteId = params.get('inviteId');
+	$: inviteEmail = params.get('email');
+
 	$: accessToken = params.get('accessToken');
 	$: refreshToken = params.get('refreshToken');
 	$: response = params.get('response');
@@ -140,10 +146,46 @@
 
 	$: pricingPlans = billingPeriod === 'monthly' ? monthlyPlans : annualPlans;
 
-	function handlePlanSelect(plan) {
+	async function acceptInviteIfNeeded() {
+		if (!inviteFlow || !inviteTeamId || !inviteId || !inviteEmail) {
+			return null;
+		}
+
+		const res = await acceptInviteAndLogin(inviteTeamId, inviteId, inviteEmail);
+
+		return res;
+	}
+
+	function buildInviteRedirect(inviteLoginResponse) {
+		const finalAccessToken = inviteLoginResponse?.data?.accessToken?.token || accessToken;
+
+		const finalRefreshToken = inviteLoginResponse?.data?.refreshToken?.token || refreshToken;
+
+		const teamId = inviteLoginResponse?.data?.teamId;
+		const teamName = inviteLoginResponse?.data?.teamName;
+		const role = inviteLoginResponse?.data?.role;
+
+		const workspaceNames = inviteLoginResponse?.data?.workspaces?.map((w) => w.name).join(',');
+
+		return (
+			`sparrow://invite-login` +
+			`?accessToken=${finalAccessToken}` +
+			`&refreshToken=${finalRefreshToken}` +
+			(teamId ? `&teamId=${teamId}` : '') +
+			(teamName ? `&teamName=${encodeURIComponent(teamName)}` : '') +
+			(role ? `&role=${encodeURIComponent(role)}` : '') +
+			(workspaceNames ? `&workspaceNames=${encodeURIComponent(workspaceNames)}` : '')
+		);
+	}
+
+	async function handlePlanSelect(plan) {
 		if (!accessToken) {
 			console.error('Access token is missing');
 			return;
+		}
+		let inviteLoginResponse = null;
+		if (inviteFlow) {
+			inviteLoginResponse = await acceptInviteIfNeeded();
 		}
 		let data = JSON.parse(window.atob(accessToken.split('.')[1]));
 		let firstName = data.name;
@@ -154,7 +196,11 @@
 			return;
 		} else if (plan.title === 'Community') {
 			isRegistered = true;
-			const sparrowRedirect = `sparrow://?selfhostBackendUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.API_URL : ""}&selfhostAdminUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_ADMIN_URL : ""}&selfhostWebUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_WEB_URL : ""}&accessToken=${accessToken}&refreshToken=${refreshToken}&response=${response}&event=register&method=email`;
+			const finalAccessToken = inviteLoginResponse?.data?.accessToken?.token || accessToken;
+
+			const finalRefreshToken = inviteLoginResponse?.data?.refreshToken?.token || refreshToken;
+
+
 			const sparrowWebRedirect =
 				constants.SPARROW_WEB_URL +
 				`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${response}&event=register&method=email`;
@@ -169,6 +215,7 @@
 					redirectRules.message = `the token if you are facing any issue in redirecting to the login page`;
 					redirectRules.loadingMessage = '';
 					redirectRules.isSpinner = false;
+					const sparrowRedirect = buildInviteRedirect(inviteLoginResponse);
 					navigate(sparrowRedirect);
 					redirectRules.buttonClick = () => {
 						navigate(sparrowRedirect);
