@@ -17,17 +17,19 @@
 		const res = await acceptInviteAndLogin(teamId, inviteId, email);
 
 		if (res?.data?.accessToken?.token) {
-			const { accessToken, refreshToken, teamId, workspaces } = res.data;
+			const { accessToken, refreshToken, teamId, teamName, workspaces, role } = res.data;
 
-			const workspaceId = workspaces?.[0]?.id;
-
+			const workspaceNames = workspaces?.map((w) => w.name).join(', ') ?? '';
 			const deepLink =
 				`sparrow://invite-login` +
 				`?source=invite` +
 				`&accessToken=${accessToken.token}` +
 				`&refreshToken=${refreshToken.token}` +
 				`&teamId=${teamId}` +
-				(workspaceId ? `&workspaceId=${workspaceId}` : '');
+				`&teamName=${encodeURIComponent(teamName)}` +
+				`&role=${encodeURIComponent(role)}` +
+				`&workspaceNames=${encodeURIComponent(workspaceNames)}`;
+			// +(workspaceId ? `&workspaceId=${workspaceId}` : '');
 
 			window.location.href = deepLink;
 		} else {
