@@ -626,41 +626,11 @@
 									: '';
 
 							if (inviteFlow && inviteTeamId && inviteId && inviteEmail) {
-								const inviteLoginRes = await acceptInviteAndLogin(
-									inviteTeamId,
-									inviteId,
-									inviteEmail
-								);
-
-								if (inviteLoginRes?.data?.accessToken?.token) {
-									const { accessToken, refreshToken, teamId, teamName, workspaces, role } =
-										inviteLoginRes.data;
-
-									const workspaceNames = workspaces?.map((w) => w.name).join(',') ?? '';
-
-									const deepLink =
-										`sparrow://invite-login` +
-										`?source=invite` +
-										`&accessToken=${accessToken.token}` +
-										`&refreshToken=${refreshToken.token}` +
-										`&teamId=${teamId}` +
-										`&teamName=${encodeURIComponent(teamName)}` +
-										`&role=${encodeURIComponent(role)}` +
-										`&workspaceNames=${encodeURIComponent(workspaceNames)}`;
-
-									window.location.href = deepLink;
 									navigate(
 										`/accept-team-invite/${inviteTeamId}/${inviteId}/${verifyCodeCredential.email}`
 									);
-
 									return;
 								}
-
-								const basePlansUrl =
-									`/plans?accessToken=${accessToken}` +
-									`&refreshToken=${refreshToken}` +
-									`&response=${encodeURIComponent(JSON.stringify(response.data))}` +
-									`&email=${encodeURIComponent(verifyCodeCredential.email)}`;
 
 								navigate(basePlansUrl);
 
@@ -703,7 +673,6 @@
 						// } else {
 						// 	navigate(sparrowWebRedirect);
 						// }
-					}
 
 					verifyCodeLoader = false;
 				}}
