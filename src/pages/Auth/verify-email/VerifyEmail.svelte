@@ -633,8 +633,6 @@
 								}
 
 								navigate(basePlansUrl);
-
-								notifications.error('Invite accepted, but login failed');
 								return;
 							}
 						}
