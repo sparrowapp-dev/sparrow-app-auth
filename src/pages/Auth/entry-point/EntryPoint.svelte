@@ -43,6 +43,13 @@
 	let hubUrlError: string = '';
 	let hubUrlTouched: boolean = false;
 	let hubUrl: string = '';
+	const urlParams = new URLSearchParams(window.location.search);
+
+	const inviteFlow = urlParams.get('flow') === 'invite';
+	const inviteTeamId = urlParams.get('teamId');
+	const inviteId = urlParams.get('inviteId');
+	const inviteEmail = urlParams.get('email');
+
 	onMount(() => {
 		// Check the query parameters in the URL
 		const urlParams = new URLSearchParams(window.location.search);
@@ -177,7 +184,17 @@
 									await handleMagicCodeAndRedirect(entryCredentials?.email);
 								} else {
 									// New user - redirect to registration
-									navigate(`/register/${entryCredentials?.email}`);
+									if (inviteFlow && inviteTeamId && inviteId && inviteEmail) {
+										navigate(
+											`/register/${entryCredentials.email}` +
+												`?flow=invite` +
+												`&teamId=${inviteTeamId}` +
+												`&inviteId=${inviteId}` +
+												`&email=${encodeURIComponent(inviteEmail)}`
+										);
+									} else {
+										navigate(`/register/${entryCredentials.email}`);
+									}
 								}
 							} else {
 								notifications.error(response?.message);
