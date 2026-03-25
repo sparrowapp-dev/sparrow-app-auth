@@ -1,0 +1,33 @@
+name: PR Preview Cleanup
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Pull Request number to cleanup'
+        required: true
+        type: string
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Print cleanup info
+      run: |
+        echo "Cleaning up auth preview for PR #${{ inputs.pr_number }}"
+
+    - name: Delete Azure Static Web App Preview
+      id: cleanup
+      uses: Azure/static-web-apps-deploy@v1
+      with:
+        azure_static_web_apps_api_token: ${{ secrets.PREVIEW_DEPLOY_TOKEN }}
+        action: "close"
+        deployment_environment: "preview"
+      env:
+        DEPLOYMENT_ID: pr-${{ inputs.pr_number }}
+      continue-on-error: true
+
+    - name: Log cleanup result
+      run: |
+        echo "Auth preview cleanup completed (or already deleted) for PR #${{ inputs.pr_number }}"

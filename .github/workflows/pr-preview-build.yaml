@@ -1,0 +1,98 @@
+name: PR Preview Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Pull Request number'
+        required: true
+        type: string
+      web_preview_url:
+        description: 'Web app preview URL for redirect'
+        required: true
+        type: string
+
+env:
+  VITE_API_URL: ${{ vars.VITE_API_URL_DEV }}
+  VITE_SPARROW_SUPPORT_EMAIL: ${{ vars.VITE_SPARROW_SUPPORT_EMAIL_DEV }}
+  VITE_SPARROW_OAUTH: ${{ vars.VITE_SPARROW_OAUTH_DEV }}
+  VITE_ENABLE_MIX_PANEL: ${{ vars.VITE_ENABLE_MIX_PANEL_DEV }}
+  VITE_MIX_PANEL_TOKEN: ${{ vars.VITE_MIX_PANEL_TOKEN_DEV }}
+  VITE_TERMS_OF_SERVICE: ${{ vars.VITE_TERMS_OF_SERVICE_DEV }}
+  VITE_SPARROW_PRIVACY_POLICY: ${{ vars.VITE_SPARROW_PRIVACY_POLICY_DEV }}
+  VITE_CANNY_FEEDBACK_URL: ${{ vars.VITE_CANNY_FEEDBACK_URL_DEV }}
+  VITE_SPARROW_ADMIN_URL: ${{ vars.VITE_SPARROW_ADMIN_URL_DEV }}
+  VITE_SPARROW_CONTACT_SALES_URL: ${{ vars.VITE_SPARROW_CONTACT_SALES_URL_DEV }}
+  VITE_SPARROW_MARKETING_URL: ${{ vars.VITE_SPARROW_MARKETING_URL_DEV }}
+  VITE_APP_EDITION: ${{ vars.VITE_APP_EDITION_DEV }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout auth repo
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Build with preview redirect URL
+      run: |
+        echo "Building auth with redirect URL: ${{ inputs.web_preview_url }}"
+        VITE_SPARROW_WEB_URL="${{ inputs.web_preview_url }}" yarn build
+
+    - name: Deploy to Azure Static Web App
+      uses: Azure/static-web-apps-deploy@v1
+      with:
+        azure_static_web_apps_api_token: ${{ secrets.PREVIEW_DEPLOY_TOKEN }}
+        action: "upload"
+        app_location: "./dist"
+        api_location: ""
+        skip_app_build: true
+        deployment_environment: "preview"
+      env:
+        DEPLOYMENT_ID: pr-${{ inputs.pr_number }}
+
+    - name: Update PR comment
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const authUrl = "https://auth-pr-${{ inputs.pr_number }}.preview.sparrowapp.dev";
+          const webUrl = "${{ inputs.web_preview_url }}";
+          const prNumber = ${{ inputs.pr_number }};
+          
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: 'sparrowapp-dev',
+            repo: 'sparrow-app',
+            issue_number: prNumber
+          });
+          
+          const authComment = comments.find(c => c.body.includes("🔐 Auth Preview"));
+          const commentBody = `🔐 **Auth Preview Ready**
+          
+          **Auth Service:** ${authUrl}
+          **Redirects to:** ${webUrl}
+          
+          Login should now work in the web preview.`;
+          
+          if (authComment) {
+            await github.rest.issues.updateComment({
+              owner: 'sparrowapp-dev',
+              repo: 'sparrow-app',
+              comment_id: authComment.id,
+              body: commentBody
+            });
+          } else {
+            await github.rest.issues.createComment({
+              owner: 'sparrowapp-dev',
+              repo: 'sparrow-app',
+              issue_number: prNumber,
+              body: commentBody
+            });
+          }
