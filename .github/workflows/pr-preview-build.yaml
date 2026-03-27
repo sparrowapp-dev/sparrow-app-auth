@@ -12,6 +12,10 @@ on:
         required: true
         type: string
 
+permissions:
+  issues: write
+  pull-requests: write
+
 env:
   VITE_API_URL: ${{ vars.VITE_API_URL_DEV }}
   VITE_SPARROW_SUPPORT_EMAIL: ${{ vars.VITE_SPARROW_SUPPORT_EMAIL_DEV }}
