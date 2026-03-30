@@ -49,19 +49,47 @@ jobs:
     - name: Build with preview redirect URL
       run: |
         echo "Building auth with redirect URL: ${{ inputs.web_preview_url }}"
-        VITE_SPARROW_WEB_URL="${{ inputs.web_preview_url }}" yarn build
+        # Note: yarn build is now done inside the Dockerfile in the next step
 
-    - name: Deploy to Azure Static Web App
-      uses: Azure/static-web-apps-deploy@v1
+    - name: Login to Azure Container Registry
+      uses: azure/docker-login@v1
       with:
-        azure_static_web_apps_api_token: ${{ secrets.MANAGE_DEV_TOKEN }}
-        action: "upload"
-        app_location: "./dist"
-        api_location: ""
-        skip_app_build: true
-        deployment_environment: "preview"
+        login-server: sparrowprod.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    - name: Build and Push Auth Preview Image
+      run: |
+        docker build -f ./Dockerfile \
+          --build-arg VITE_SPARROW_WEB_URL="${{ inputs.web_preview_url }}" \
+          --no-cache \
+          -t sparrowprod.azurecr.io/sparrow-auth:pr-${{ inputs.pr_number }}-${{ github.run_number }} .
+
+        docker push sparrowprod.azurecr.io/sparrow-auth:pr-${{ inputs.pr_number }}-${{ github.run_number }}
+
+    - name: Setup kubectl
+      uses: azure/setup-kubectl@v3
+
+    - name: Set Kubernetes context
+      uses: Azure/k8s-set-context@v3
+      with:
+        kubeconfig: ${{ secrets.KUBE_CONFIG }}
+
+    - name: Deploy Auth PR Preview
       env:
-        DEPLOYMENT_ID: pr-${{ inputs.pr_number }}
+        PR_NUMBER: ${{ inputs.pr_number }}
+        IMAGE_TAG: pr-${{ inputs.pr_number }}-${{ github.run_number }}
+      run: |
+        kubectl get namespace sparrow-dev-preview || kubectl create namespace sparrow-dev-preview
+        envsubst < .github/k8s/pr-preview/deployment.yaml | kubectl apply -f -
+        envsubst < .github/k8s/pr-preview/service.yaml | kubectl apply -f -
+        envsubst < .github/k8s/pr-preview/ingress.yaml | kubectl apply -f -
+        kubectl rollout restart deployment/sparrow-auth-preview-pr-${{ inputs.pr_number }} --namespace=sparrow-dev-preview
+
+    - name: Wait for rollout
+      run: |
+        kubectl rollout status deployment/sparrow-auth-preview-pr-${{ inputs.pr_number }} \
+        --namespace=sparrow-dev-preview --timeout=300s
 
     - name: Update PR comment
       uses: actions/github-script@v7
