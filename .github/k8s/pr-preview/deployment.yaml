@@ -22,6 +22,31 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 80
+        env:
+        - name: VITE_API_URL
+          value: "${VITE_API_URL}"
+        - name: VITE_SPARROW_WEB_URL
+          value: "${VITE_SPARROW_WEB_URL}"
+        - name: VITE_SPARROW_SUPPORT_EMAIL
+          value: "${VITE_SPARROW_SUPPORT_EMAIL}"
+        - name: VITE_TERMS_OF_SERVICE
+          value: "${VITE_TERMS_OF_SERVICE}"
+        - name: VITE_SPARROW_PRIVACY_POLICY
+          value: "${VITE_SPARROW_PRIVACY_POLICY}"
+        - name: VITE_SPARROW_OAUTH
+          value: "${VITE_SPARROW_OAUTH}"
+        - name: VITE_ENABLE_MIX_PANEL
+          value: "${VITE_ENABLE_MIX_PANEL}"
+        - name: VITE_MIX_PANEL_TOKEN
+          value: "${VITE_MIX_PANEL_TOKEN}"
+        - name: VITE_SPARROW_MARKETING_URL
+          value: "${VITE_SPARROW_MARKETING_URL}"
+        - name: VITE_CANNY_FEEDBACK_URL
+          value: "${VITE_CANNY_FEEDBACK_URL}"
+        - name: VITE_SPARROW_CONTACT_SALES_URL
+          value: "${VITE_SPARROW_CONTACT_SALES_URL}"
+        - name: VITE_APP_EDITION
+          value: "${VITE_APP_EDITION}"
         resources:
           requests:
             memory: "128Mi"
