@@ -79,6 +79,18 @@ jobs:
       env:
         PR_NUMBER: ${{ inputs.pr_number }}
         IMAGE_TAG: pr-${{ inputs.pr_number }}-${{ github.run_number }}
+        VITE_API_URL: ${{ vars.VITE_API_URL_DEV }}
+        VITE_SPARROW_WEB_URL: ${{ inputs.web_preview_url }}
+        VITE_SPARROW_SUPPORT_EMAIL: ${{ vars.VITE_SPARROW_SUPPORT_EMAIL_DEV }}
+        VITE_TERMS_OF_SERVICE: ${{ vars.VITE_TERMS_OF_SERVICE_DEV }}
+        VITE_SPARROW_PRIVACY_POLICY: ${{ vars.VITE_SPARROW_PRIVACY_POLICY_DEV }}
+        VITE_SPARROW_OAUTH: ${{ vars.VITE_SPARROW_OAUTH_DEV }}
+        VITE_ENABLE_MIX_PANEL: ${{ vars.VITE_ENABLE_MIX_PANEL_DEV }}
+        VITE_MIX_PANEL_TOKEN: ${{ vars.VITE_MIX_PANEL_TOKEN_DEV }}
+        VITE_SPARROW_MARKETING_URL: ${{ vars.VITE_SPARROW_MARKETING_URL_DEV }}
+        VITE_CANNY_FEEDBACK_URL: ${{ vars.VITE_CANNY_FEEDBACK_URL_DEV }}
+        VITE_SPARROW_CONTACT_SALES_URL: ${{ vars.VITE_SPARROW_CONTACT_SALES_URL_DEV }}
+        VITE_APP_EDITION: ${{ vars.VITE_APP_EDITION_DEV }}
       run: |
         kubectl get namespace sparrow-dev-preview || kubectl create namespace sparrow-dev-preview
         envsubst < .github/k8s/pr-preview/deployment.yaml | kubectl apply -f -
