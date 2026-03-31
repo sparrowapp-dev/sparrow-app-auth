@@ -112,32 +112,14 @@
 							isLogin = true;
 							const accessToken = response?.accessToken?.token;
 							const refreshToken = response?.refreshToken?.token;
-							const payload = {
-								selfhostBackendUrl:
-									constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.API_URL : '',
-								selfhostAdminUrl:
-									constants.APP_EDITION === AppEdition.SELFHOSTED
-										? constants.SPARROW_ADMIN_URL
-										: '',
-								selfhostWebUrl:
-									constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_WEB_URL : '',
-								accessToken,
-								refreshToken,
-								response,
-								event: 'login',
-								method: 'email'
-							};
-
-							const encodedPayload = encodeURIComponent(btoa(JSON.stringify(payload)));
-
-							const sparrowRedirect = `sparrow://?data=${encodedPayload}`;
+							const sparrowRedirect = `sparrow://?selfhostBackendUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.API_URL : ""}&selfhostAdminUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_ADMIN_URL : ""}&selfhostWebUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_WEB_URL : ""}&accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
 							const sparrowWebRedirect =
 								constants.SPARROW_WEB_URL +
 								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
 							let sparrowAdminRedirect =
 								constants.SPARROW_ADMIN_URL +
 								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
-							if (flow === 'standard') {
+							if(flow === "standard") { 
 								sparrowAdminRedirect = sparrowAdminRedirect + '&flow=standard';
 							}
 							if (redirctSource === 'desktop') {
