@@ -137,7 +137,7 @@
 							let sparrowAdminRedirect =
 								constants.SPARROW_ADMIN_URL +
 								`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
-							if(flow === "standard") { 
+							if (flow === 'standard') {
 								sparrowAdminRedirect = sparrowAdminRedirect + '&flow=standard';
 							}
 							if (redirctSource === 'desktop') {
@@ -146,22 +146,25 @@
 								firstName = firstName.split(' ')[0];
 								firstName = firstName.length > 11 ? firstName.substring(0, 5) + '...' : firstName;
 								redirectRules.title = `Welcome Back ${firstName}`;
-								setTimeout(() => {
-									redirectRules.description = `Redirecting you to desktop app...`;
-									redirectRules.message = `the link if the application does not open automatically.`;
-									redirectRules.loadingMessage = '';
-									redirectRules.isSpinner = false;
-									navigate(sparrowRedirect);
-									redirectRules.buttonClick = () => {
-										navigate(sparrowRedirect);
-									};
-									redirectRules.copyLink = () => {
-										if (navigator.clipboard) {
-											notifications.success('Link copied to clipboard.');
-											return navigator.clipboard.writeText(sparrowRedirect);
-										}
-									};
-								}, 1000);
+								redirectRules.description = `Redirecting you to desktop app...`;
+								redirectRules.message = `Click below if the app does not open automatically.`;
+								redirectRules.loadingMessage = '';
+								redirectRules.isSpinner = false;
+
+								// IMPORTANT: set handler BEFORE redirect
+								redirectRules.buttonClick = () => {
+									window.location.href = sparrowRedirect;
+								};
+
+								redirectRules.copyLink = () => {
+									if (navigator.clipboard) {
+										notifications.success('Link copied to clipboard.');
+										return navigator.clipboard.writeText(sparrowRedirect);
+									}
+								};
+
+								// trigger redirect (user gesture context)
+								window.location.href = sparrowRedirect;
 							} else if (redirctSource === 'admin') {
 								navigate(sparrowAdminRedirect);
 							} else {
