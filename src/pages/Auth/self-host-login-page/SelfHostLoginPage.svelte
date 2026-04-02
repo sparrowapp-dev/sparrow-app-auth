@@ -112,9 +112,23 @@
 						isLogin = true;
 						const accessToken = response?.accessToken?.token;
 						const refreshToken = response?.refreshToken?.token;
-						const sparrowRedirect = `sparrow://?selfhostBackendUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.API_URL : ""}&selfhostAdminUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_ADMIN_URL : ""}&selfhostWebUrl=${constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_WEB_URL : ""}&accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email&isSelfHostLogin=true&backendUrl=${btoa(
-							sessionStorage.getItem(`selfhost-backendurl`) || ''
-						)}&adminUrl=${btoa(sessionStorage.getItem(`selfhost-adminurl`) || '')}`;
+						const payload = {
+							selfhostBackendUrl:
+								constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.API_URL : '',
+							selfhostAdminUrl:
+								constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_ADMIN_URL : '',
+							selfhostWebUrl:
+								constants.APP_EDITION === AppEdition.SELFHOSTED ? constants.SPARROW_WEB_URL : '',
+							accessToken,
+							refreshToken,
+							response,
+							event: 'login',
+							method: 'email'
+						};
+
+						const encodedPayload = encodeURIComponent(btoa(JSON.stringify(payload)));
+
+						const sparrowRedirect = `sparrow://?data=${encodedPayload}`;
 						const sparrowWebRedirect =
 							constants.SPARROW_WEB_URL +
 							`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
@@ -130,22 +144,25 @@
 						firstName = firstName.split(' ')[0];
 						firstName = firstName.length > 11 ? firstName.substring(0, 5) + '...' : firstName;
 						redirectRules.title = `Welcome Back ${firstName}`;
-						setTimeout(() => {
-							redirectRules.description = `Redirecting you to desktop app...`;
-							redirectRules.message = `the link if the application does not open automatically.`;
-							redirectRules.loadingMessage = '';
-							redirectRules.isSpinner = false;
-							navigate(sparrowRedirect);
-							redirectRules.buttonClick = () => {
-								navigate(sparrowRedirect);
-							};
-							redirectRules.copyLink = () => {
-								if (navigator.clipboard) {
-									notifications.success('Link copied to clipboard.');
-									return navigator.clipboard.writeText(sparrowRedirect);
-								}
-							};
-						}, 1000);
+						redirectRules.description = `Redirecting you to desktop app...`;
+						redirectRules.message = `Click below if the app does not open automatically.`;
+						redirectRules.loadingMessage = '';
+						redirectRules.isSpinner = false;
+
+						// IMPORTANT: set handler BEFORE redirect
+						redirectRules.buttonClick = () => {
+							window.location.href = sparrowRedirect;
+						};
+
+						redirectRules.copyLink = () => {
+							if (navigator.clipboard) {
+								notifications.success('Link copied to clipboard.');
+								return navigator.clipboard.writeText(sparrowRedirect);
+							}
+						};
+
+						// trigger redirect (user gesture context)
+						window.location.href = sparrowRedirect;
 						// } else if (redirctSource === 'admin') {
 						// 	navigate(sparrowAdminRedirect);
 						// } else {
