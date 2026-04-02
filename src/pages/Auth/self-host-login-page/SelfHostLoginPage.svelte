@@ -128,7 +128,7 @@
 
 						const encodedPayload = encodeURIComponent(btoa(JSON.stringify(payload)));
 
-						const sparrowRedirect = `sparrow://?data=${encodedPayload}`;
+						const sparrowRedirect = `sparrow://invite-login?data=${encodedPayload}`;
 						const sparrowWebRedirect =
 							constants.SPARROW_WEB_URL +
 							`?accessToken=${accessToken}&refreshToken=${refreshToken}&response=${JSON.stringify(response)}&event=login&method=email`;
