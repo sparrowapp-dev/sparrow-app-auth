@@ -153,7 +153,9 @@
 
 								// IMPORTANT: set handler BEFORE redirect
 								redirectRules.buttonClick = () => {
-									window.location.href = sparrowRedirect;
+									setTimeout(() => {
+										window.location.href = sparrowRedirect;
+									}, 1000);
 								};
 
 								redirectRules.copyLink = () => {
